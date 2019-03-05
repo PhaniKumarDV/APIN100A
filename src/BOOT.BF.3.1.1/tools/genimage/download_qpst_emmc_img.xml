@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<configuration>
+<options>
+VERBOSE_FEEDBACK = true
+SEARCH_CWD_LAST = true
+HEX_PROGRAMMER = MPRG40xx.mbn
+ERASE_DEVICE = true
+CREATE_GPP1_SIZE_IN_KB = 524288
+SET_ACTIVE_BOOT_PARTITION_TO_PHY_PARTITION = 0
+</options>
+<search_paths>
+C:\Users\LAdmin\Desktop\Dakota\IPQ4019.ILQ.1.0-00076-S-1\ipq\
+</search_paths>
+<rawprogram>
+rawprogram0.xml
+</rawprogram>
+<patch>
+patch0.xml
+</patch>
+</configuration>

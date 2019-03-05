@@ -1,0 +1,94 @@
+#!/bin/sh /etc/rc.common
+
+START=99
+start() {
+local fw_file=""
+local serial=""
+local log_file=""
+local tmp_config_file="upgrade_config.txt"
+local path="/tmp/"
+local upgrade_env=""
+local first_upgrade=""
+local server_IP=192.168.1.230
+local model=""
+local upload_id=""
+local upload_pass=""
+local fw_type=""
+local customer_fw=""
+local img_md5=""
+local tmp_md5=""
+
+if ping -c 3 -w 20 $server_IP > /dev/null 2>&1;then
+        ftpget -v -u tina -p 1234 $server_IP $path$tmp_config_file $tmp_config_file
+        if [ -f "$path$tmp_config_file" ]; then
+                fw_file=$(awk -F"=" '/fw/{print $2}' $path$tmp_config_file)
+		upgrade_env=$(awk -F"=" '/upgrade_env/{print $2}' $path$tmp_config_file)
+		fw_type=$(fw_printenv | grep "fw_type" | awk -F'=' '/fw_type/{print $2}')
+		upload_id=$(awk -F"=" '/id/{print $2}' $path$tmp_config_file)
+		upload_pass=$(awk -F"=" '/pass/{print $2}' $path$tmp_config_file)
+		img_md5=$(awk -F"=" '/img_md5/{print $2}' $path$tmp_config_file)
+
+		#production version
+		if [ $fw_type == "production" ]; then
+			first_upgrade=$(fw_printenv | grep "first_upgrade" | awk -F'=' '/first_upgrade/{print $2}')
+			#first upgrade
+			if [ $first_upgrade == "true" ]; then
+				serial=$(fw_printenv | grep "amigoserial" | awk -F'=' '/amigoserial/{print $2}')
+				log_file=$serial".txt"
+				echo "serial_number:"$serial >> $log_file
+				echo "firmware:"$fw_file >> $log_file
+				ftpput -v -u $upload_id -p $upload_pass $server_IP "/Log/"$log_file $log_file
+				fw_setenv first_upgrade "false"
+				rm $log_file
+			fi
+			rm $path$tmp_config_file
+
+		#factory version
+		else
+	                ftpget -v -u $upload_id -p $upload_pass $server_IP $path$fw_file $fw_file
+			if [ -f "$path$fw_file" ]; then
+				tmp_md5=`md5sum $path$fw_file | awk '{ print $1 }'`
+				if [ $tmp_md5 != $img_md5 ]; then
+			               	echo "*** IMG MD5 error! ***" >> /dev/console
+				else
+					#set upgrade env for OWL550
+					if [ $upgrade_env == "yes" ]; then
+						fw_setenv bootargs "ubi.mtd=rootfs root=mtd:ubi_rootfs_1 rootfstype=squashfs"
+						fw_setenv bootcmd "ubi part fs; ubi read 0x84000000 kernel_1; bootm 84000000"
+						fw_setenv mtdids "nand0=nand0"
+						fw_setenv mtdparts "mtdparts=nand0:0x8000000@0x0(fs)"
+						fw_setenv upgrade_env "yes"
+					else
+						fw_setenv upgrade_env "no"
+					fi
+					
+					echo "*** Start to upgrade firmware... ***" >> /dev/console
+					fw_setenv first_upgrade "true"
+					serial=$(fw_printenv | grep "amigoserial" | awk -F'=' '/amigoserial/{print $2}')
+				    	echo "Serial number: $serial" >> /dev/console
+					customer_fw=$(fw_printenv | grep "customer_fw" | awk -F'=' '/customer_fw/{print $2}')
+					#for customer firmware only
+					if [ $customer_fw == "yes" ]; then
+						log_file=$serial".txt"
+						echo "serial_number:"$serial >> $log_file
+						echo "firmware:"$fw_file >> $log_file
+						fw_setenv first_upgrade "false"
+						mv $log_file /etc/config/
+						sysupgrade -v $path$fw_file >> /dev/console
+					else
+						sysupgrade -n $path$fw_file >> /dev/console
+					fi
+				fi
+				
+		                				
+			else
+		               	echo "*** Can not get IMG file - $fw_file ***" >> /dev/console
+			fi
+		fi
+        else
+                echo "*** Can not get config file - $tmp_config_file ***" >> /dev/console
+        fi
+else
+        echo "##### Can not connect Server $server_IP. #####" >> /dev/console
+fi
+}

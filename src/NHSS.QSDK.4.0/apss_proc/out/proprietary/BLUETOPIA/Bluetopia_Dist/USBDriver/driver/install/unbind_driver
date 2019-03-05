@@ -1,0 +1,29 @@
+#!/bin/bash
+# This script will unbind the SS1BTUSB driver
+
+# Go through the SS1BTUSB directory and find the devices
+DEVICES=$(ls /sys/bus/usb/drivers/SS1BTUSB/ | grep '[0-9]')
+
+echo "Unbinding SS1BTUSB Devices:"
+
+if [ -n "$DEVICES" ] ; then
+   for dir in $DEVICES; do
+      # unbind the current btdevice
+      echo "   $dir"
+
+      if [ -d /sys/bus/usb/drivers/SS1BTUSB/"$dir" ] ; then
+         echo "$dir" > /sys/bus/usb/drivers/SS1BTUSB/unbind
+         sleep 1
+      fi
+   done
+else
+   echo "  None"
+fi
+
+# Make sure the module is loaded
+if /sbin/lsmod | grep SS1BTUSBM > /dev/null 2>&1
+then
+   echo "Unloading driver..."
+	/sbin/rmmod SS1BTUSBM
+fi
+

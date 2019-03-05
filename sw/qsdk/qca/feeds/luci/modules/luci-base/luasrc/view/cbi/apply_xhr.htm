@@ -1,0 +1,55 @@
+<% export("cbi_apply_xhr", function(id, configs, redirect) -%>
+<fieldset class="cbi-section" id="cbi-apply-<%=id%>">
+	<legend><%:Applying changes%></legend>
+	<script type="text/javascript">//<![CDATA[
+		var apply_xhr = new XHR();
+
+		apply_xhr.get('<%=luci.dispatcher.build_url("servicectl", "restart", table.concat(configs, ","))%>', null,
+			function() {
+				var checkfinish = function() {
+					apply_xhr.get('<%=luci.dispatcher.build_url("servicectl", "status")%>', null,
+						function(x) {
+							if( x.responseText == 'finish' )
+							{
+								var e = document.getElementById('cbi-apply-<%=id%>-status');
+								if( e )
+								{
+									e.innerHTML = '<%:Configuration applied.%>';
+									window.setTimeout(function() {
+										e.parentNode.style.display = 'none';
+										<% if redirect then %>location.href='<%=redirect%>';<% end %>
+										var e_apply = document.getElementById('cbi.apply');
+										var e_save = document.getElementById('cbi.save');
+										var e_reset = document.getElementById('cbi.reset');
+										if ( e_apply ) document.getElementById('cbi.apply').style.visibility = "";
+										if ( e_save ) document.getElementById('cbi.save').style.visibility = "";
+										if ( e_reset ) document.getElementById('cbi.reset').style.visibility = "";
+									}, 3500);
+								}
+							}
+							else
+							{
+								var e = document.getElementById('cbi-apply-<%=id%>-status');
+								if( e && x.responseText ) e.innerHTML = x.responseText;
+								var e_apply = document.getElementById('cbi.apply');
+								var e_save = document.getElementById('cbi.save');
+								var e_reset = document.getElementById('cbi.reset');
+								if ( e_apply ) document.getElementById('cbi.apply').style.visibility = "hidden";
+								if ( e_save ) document.getElementById('cbi.save').style.visibility = "hidden";
+								if ( e_reset ) document.getElementById('cbi.reset').style.visibility = "hidden";
+
+								window.setTimeout(checkfinish, 1000);
+							}
+						}
+					);
+				}
+
+				window.setTimeout(checkfinish, 1000);
+			}
+		);
+	//]]></script>
+
+	<img src="<%=resource%>/icons/loading.gif" alt="<%:Loading%>" style="vertical-align:middle" />
+	<span id="cbi-apply-<%=id%>-status"><%:Waiting for changes to be applied...%></span>
+</fieldset>
+<%-	end) %>

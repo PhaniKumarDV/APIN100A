@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ * Copyright (c) 2016 Qualcomm Atheros, Inc.
+ *
+ * All Rights Reserved.
+ * Qualcomm Atheros Confidential and Proprietary
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<%=luci.i18n.context.lang%>" lang="<%=luci.i18n.context.lang%>">
+<%
+    local os = require "os"
+    local http = require "luci.http"
+    local luci  = {}
+    luci.util   = require "luci.util"
+
+    --Get the wifi ssid we are interested in
+    local wifi = http.formvalue("wifi")
+
+    --execute our command
+    local status = luci.util.exec("iwpriv " .. wifi .. " get_commitatf 2>&1")
+
+    --output the results in std html
+    http.prepare_content("text/html")
+    http.write("<pre>")
+    http.write(status)
+    http.write("</pre>")
+%>
+</html>

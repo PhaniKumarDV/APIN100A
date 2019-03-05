@@ -1,0 +1,34 @@
+<smem>
+  <data type="SMEM_BOOT_FLASH_TYPE">
+    <flash_type>0x6</flash_type>
+  </data>
+  <data type="SMEM_BOOT_FLASH_INDEX">
+    <flash_index>0x5</flash_index>
+  </data>
+  <data type="SMEM_BOOT_FLASH_CHIP_SELECT">
+    <flash_chip_select>0x0</flash_chip_select>
+  </data>
+  <data type="SMEM_BOOT_FLASH_BLOCK_SIZE">
+    <flash_block_size>0x10000</flash_block_size>
+  </data>
+  <data type="SMEM_MACHID_INFO_LOCATION">
+    <format>1</format>
+    <machid>0x1260</machid>
+  </data>
+  <data type="SMEM_AARM_PARTITION_TABLE">
+    <magic>0x55ee73aa</magic>
+    <magic>0xe35ebddb</magic>
+    <version>0</version>
+    <len>6</len>
+    <partition type="array" length="16">
+      <entry><name length="16" type="string">0:SBL1</name><start>0x0</start><size>0x1</size><attr>0x0</attr></entry>
+      <entry><name length="16" type="string">0:MIBIB</name><start>0x1</start><size>0x2</size><attr>0x0</attr></entry>
+      <entry><name length="16" type="string">0:APPSBLENV</name><start>0x3</start><size>0x4</size><attr>0x0</attr></entry>
+      <entry><name length="16" type="string">0:HLOS</name><start>0x35</start><size>0xa0</size><attr>0x0</attr></entry>
+      <entry><name length="16" type="string">0:NSS0</name><start>0xd5</start><size>0x10</size><attr>0x0</attr></entry>
+      <entry><name length="16" type="string">0:NSS1</name><start>0xe5</start><size>0x10</size><attr>0x0</attr></entry>
+      <!-- NOTE: If you add an entry here don't forget to update the len field above !!! -->
+    </partition>
+  </data>
+</smem>
+

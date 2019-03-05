@@ -1,0 +1,11 @@
+--- a/state.c
++++ b/state.c
+@@ -129,6 +129,8 @@
+ 
+ 	case STATE_RUNNING:
+ 		LOG("- init complete -\n");
++		system("echo none > /sys/class/leds/ap_status/trigger");
++		system("echo 1 > /sys/class/leds/ap_status/brightness");
+ 		break;
+ 
+ 	case STATE_SHUTDOWN:

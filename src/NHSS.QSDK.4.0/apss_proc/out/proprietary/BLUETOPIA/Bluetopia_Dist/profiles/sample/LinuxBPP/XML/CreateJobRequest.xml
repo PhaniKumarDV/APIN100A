@@ -1,0 +1,13 @@
+<CreateJobRequest>
+    <JobName>MyJob</JobName>
+    <JobOriginatingUserName>mailto:MyEmail</JobOriginatingUserName>
+    <DocumentFormat>text/plain</DocumentFormat>
+    <Copies>1</Copies>
+    <Sides>one-sided</Sides>
+    <NumberUp>1</NumberUp>
+    <OrientationRequested>portrait</OrientationRequested>
+    <MediaSize>iso_a4_210x297mm</MediaSize>
+    <MediaType>stationery</MediaType>
+    <PrintQuality>normal</PrintQuality>
+    <CancelOnLostLink>true</CancelOnLostLink>
+</CreateJobRequest>

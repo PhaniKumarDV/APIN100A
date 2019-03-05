@@ -1,0 +1,7 @@
+# LBD configs
+config LBD_SUPPORT_VHT160
+	bool "Support VHT 160 MHz"
+	depends on PACKAGE_kmod-qca-wifi-10.4-unified-profile||PACKAGE_kmod-qca-wifi-10.4-akronite-perf||PACKAGE_kmod-qca-wifi-10.4-dakota-perf||PACKAGE_kmod_qca-wifi-10.4-perf||PACKAGE_kmod_qca-wifi-10.4-unified-perf
+	default y
+	help
+	  This enables the LBD support for 160 MHz

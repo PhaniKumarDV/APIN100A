@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cdt>
+  <cdb1>
+    <comment>  this block belongs to DDR parameters </comment>
+
+    <num_rows_cs0 length="4" endian="big" index="96">       0xE         </num_rows_cs0>
+    <num_cols_cs0 length="4" endian="big" index="100">       0xA         </num_cols_cs0>
+    <num_banks_cs0 length="4" endian="big" index="104">      0x8         </num_banks_cs0>
+    <num_rows_cs1 length="4" endian="big" index="108">       0x0         </num_rows_cs1>
+    <num_cols_cs1 length="4" endian="big" index="112">       0x0         </num_cols_cs1>
+    <num_banks_cs1 length="4" endian="big" index="116">      0x0         </num_banks_cs1>
+    <interface_width length="4" endian="big" index="120">    0x10        </interface_width>
+
+  </cdb1>
+
+  <cdb2>
+    <comment> Board Specific details </comment>
+    <version length="1" index="0">0x1</version>
+    <linuxmach_id length="4" index="1"> 0x60120000 </linuxmach_id>
+  </cdb2>
+
+  <!-- Board level voltage rail configuration for Akronite -->
+
+  <cdb3>
+
+    <!-- There are 4 voltage rails in total and the order of the ids
+         as mentioned below should be maintained -->
+
+    <!-- Voltage Rail     -->
+    <!--  VDD_APC0        -->
+    <!--  VDD_APC1        -->
+    <!--  VDD_UBI         -->
+    <!--  VDD_CX          -->
+
+	<!-- Voltage rail Grouping: Mapping of the Voltage sources to voltage rails
+         Ex: If AP148: APC0 and APC1 have independent voltage sources. Whereas
+         VDD_CX and UBI are tied to the same voltage source. For this Group id's
+         are :
+         APC0   : 0x0
+         APC1   : 0x1
+         UBI    : 0x2
+         CX     : 0x2 -->
+
+    <!--  While maintaining the above sequence, the rails can be grouped by
+          specifying the same I2C/Channel/group info for the rails in the same
+          group. For example, VDD_CX and VDD_UBI are grouped below withe same
+          I2C and channel numbers -->
+
+    <!-- VDD_APC0 rail configuration -->
+
+   <vdd_apc0>
+
+      <!-- Voltage source: Discrete or Dynamic (PMIC driven through I2C bus )
+           0x0 - Discrete, 0x1 - Dynamic. "i2c/channel #" is valid only if this
+           field is 0x1 -->
+        <voltage_src_type length="1" index="0">   0x1          </voltage_src_type>
+
+        <!-- Max voltage limit for this rail. 0 - Nominal/1 - Turbo -->
+        <max_mode    length="1" index="1">       0x1          </max_mode>
+
+		<!-- Group id of the summit device. -->
+        <group_id length="1" index="2">            0x0          </group_id>
+
+         <!-- I2C address of the summit device for this rail -->
+        <i2c_address length="1" index="3">        0x52         </i2c_address>
+
+         <!-- Channel number on the summit device in a dual channel summit -->
+        <channel     length="1" index="4">        0x1          </channel>
+
+
+   </vdd_apc0>
+
+    <!-- VDD_APC1 - Shares the same summit device as VDD_APC0 but channel is
+         different -->
+
+   <vdd_apc1>
+
+      <!-- Voltage source: Discrete or Dynamic (PMIC driven through I2C bus )
+           0x0 - Discrete, 0x1 - Dynamic. "i2c/channel #" is valid only if this
+           field is 0x1 -->
+        <voltage_src_type length="1" index="5">   0x1          </voltage_src_type>
+
+        <!-- Max voltage limit for this rail. 0 - Nominal/1 - Turbo -->
+        <max_mode    length="1" index="6">       0x1          </max_mode>
+
+		<!-- Group id of the summit device. -->
+
+        <group_id length="1" index="7">            0x1          </group_id>
+
+         <!-- I2C address of the summit device for this rail -->
+        <i2c_address length="1" index="8">        0x52         </i2c_address>
+
+         <!-- Channel number on the summit device in a dual channel summit -->
+        <channel     length="1" index="9">        0x0          </channel>
+
+   </vdd_apc1>
+
+
+    <!-- VDD_UBI - Uses different summit device than VDD_APC0/APC1 but the
+         rail is tied together with VDD_CX rail.  -->
+
+   <vdd_ubi>
+
+      <!-- Voltage source: Discrete or Dynamic (PMIC driven through I2C bus )
+           0x0 - Discrete, 0x1 - Dynamic. "i2c/channel #" is valid only if this
+           field is 0x1 -->
+        <voltage_src_type length="1" index="10">   0x1          </voltage_src_type>
+
+        <!-- Max voltage limit for this rail. 0 - Nominal/1 - Turbo -->
+        <max_mode    length="1" index="11">       0x1          </max_mode>
+
+		<!-- Group id of the summit device. -->
+
+        <group_id length="1" index="12">            0x3          </group_id>
+
+         <!-- I2C address of the summit device for this rail -->
+        <i2c_address length="1" index="13">        0x51         </i2c_address>
+
+         <!-- Channel number on the summit device in a dual channel summit -->
+        <channel     length="1" index="14">        0x0          </channel>
+
+   </vdd_ubi>
+
+    <!-- VDD_CX - Both I2C address and Channel are same as in VDD_UBI as both
+         are tied together -->
+
+   <vdd_cx>
+
+      <!-- Voltage source: Discrete or Dynamic (PMIC driven through I2C bus )
+           0x0 - Discrete, 0x1 - Dynamic. "i2c/channel #" is valid only if this
+           field is 0x1 -->
+        <voltage_src_type length="1" index="15">    0x1         </voltage_src_type>
+
+        <!-- Max voltage limit for this rail. 0 - Nominal/1 - Turbo -->
+        <max_mode    length="1" index="16">       0x1          </max_mode>
+
+		<!-- Group id of the summit device. -->
+
+        <group_id length="1" index="17">             0x3          </group_id>
+
+         <!-- I2C address of the summit device for this rail -->
+        <i2c_address length="1" index="18">        0x51         </i2c_address>
+
+         <!-- Channel number on the summit device in a dual channel summit -->
+        <channel     length="1" index="19">        0x0          </channel>
+
+
+   </vdd_cx>
+
+  </cdb3>
+
+
+</cdt>

@@ -1,0 +1,55 @@
+#!/bin/sh
+
+. /lib/functions.sh
+. /lib/functions/network.sh
+. /lib/functions/hyfi-iface.sh
+. /lib/functions/hyfi-network.sh
+
+hyd_restart_aggr() {
+	local fileflag="/tmp/.hyd.restart.pending"
+
+	touch "$fileflag"
+
+	sleep 5
+
+	[ -f "$fileflag" ] || return
+
+	a=`stat -c %Y $fileflag`
+	b=`date +%s`
+	c=`expr $b - $a`
+	[ "$c" -ge 5 ] || return
+
+	[ -f "$fileflag" ] || return
+	rm -f $fileflag
+
+	/etc/init.d/hyd restart
+}
+
+hyd_restart() {
+	local exescript
+
+	exescript=`ls /etc/hotplug.d/net/*hyd* 2>&-`
+	[ -n "$exescript" ] || return
+
+	# Restart with aggregation(background)
+	exescript="$exescript &"
+	eval $exescript
+}
+
+trap '' INT TERM ABRT QUIT ALRM
+
+local enabled
+config_load 'hyd'
+config_get_bool enabled config 'Enable' '0'
+[ "$enabled" -eq 0 ] && return
+
+if [ -n "$1" ] ; then # Called by hotplugd
+	case "$INTERFACE" in
+		ath*|eth*|eth*.*|br*)
+		hyd_restart
+		;;
+	esac
+else                  # Called directly
+	hyd_restart_aggr
+fi
+

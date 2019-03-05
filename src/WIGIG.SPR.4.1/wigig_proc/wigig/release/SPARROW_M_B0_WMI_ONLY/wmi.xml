@@ -1,0 +1,1621 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 2015 Qualcomm Atheros, Inc.
+All Rights Reserved.
+Qualcomm Atheros Confidential and Proprietary.
+-->
+<WMI_XML>
+	<WMI_DATA>
+		<Define comment="General" name="WMI_MAX_ASSOC_STA" publishFW="True" publishLinux="True" publishWin="True" value="(8)"/>
+		<Define name="WMI_DEFAULT_ASSOC_STA" publishFW="True" publishLinux="True" publishWin="True" value="(1)"/>
+		<Define name="WMI_MAC_LEN" publishFW="True" publishLinux="True" publishWin="True" value="(6)"/>
+		<Define name="WMI_PROX_RANGE_NUM" publishFW="True" publishLinux="True" publishWin="True" value="(3)"/>
+		<Define name="WMI_MAX_LOSS_DMG_BEACONS" publishFW="True" publishLinux="True" publishWin="True" value="(20)"/>
+		<Define name="WMI_EMPTY_ARRAY_SIZE" publishFW="False" publishLinux="False" publishWin="True" value="(0)"/>
+		<Enum comment="\nMailbox interface \nused for commands and events\n" name="wmi_mid" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="MID_DEFAULT" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="FIRST_DBG_MID_ID" publishFW="True" publishLinux="True" publishWin="True" value="0x10"/>
+			<EnumValue name="LAST_DBG_MID_ID" publishFW="True" publishLinux="True" publishWin="True" value="0xFE"/>
+			<EnumValue name="MID_BROADCAST" publishFW="True" publishLinux="True" publishWin="True" value="0xFF"/>
+		</Enum>
+		<Enum name="ap_ssid_type" publishFW="True" publishLinux="False" publishWin="True">
+			<EnumValue name="HIDDEN_SSID_NOT_IN_USE" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="HIDDEN_SSID_ZERO_LEN" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+			<EnumValue name="HIDDEN_SSID_ZERO_CONTENTS" publishFW="True" publishLinux="True" publishWin="True" value="0x02"/>
+		</Enum>
+		<Enum comment="FW capability IDs\nEach ID maps to a bit in a 32-bit bitmask value provided by the FW to\nthe host" name="wmi_fw_capability" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_FW_CAPABILITY_FTM" publishFW="True" publishLinux="True" publishWin="True" value="0"/>
+			<EnumValue name="WMI_FW_CAPABILITY_PS_CONFIG" publishFW="True" publishLinux="True" publishWin="True" value="1"/>
+			<EnumValue name="WMI_FW_CAPABILITY_RF_SECTORS" publishFW="True" publishLinux="True" publishWin="True" value="2"/>
+			<EnumValue name="WMI_FW_CAPABILITY_MGMT_RETRY_LIMIT" publishFW="True" publishLinux="True" publishWin="True" value="3"/>
+			<EnumValue name="WMI_FW_CAPABILITY_MAX" publishFW="True" publishLinux="True" publishWin="True" value=""/>
+		</Enum>
+		<Struct comment="\nWMI_CMD_HDR\n" name="CMD" publishFW="True" publishLinux="True" publishWin="True" type="header">
+			<Member isArray="False" name="mid" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="command_id" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member isArray="False" name="fw_timestamp" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+		</Struct>
+		<Enum comment="List of Commands" name="WMI_COMMAND_ID" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_CONNECT_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x01" event="0x1002"/>
+			<EnumValue name="WMI_DISCONNECT_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x03" event="0x1003"/>
+			<EnumValue name="WMI_DISCONNECT_STA_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x04" event="0x1004"/>
+			<EnumValue name="WMI_START_SCAN_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x07" event="0x1007"/>
+			<EnumValue name="WMI_SET_BSS_FILTER_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x09" event="0x1009"/>
+			<EnumValue name="WMI_SET_PROBED_SSID_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x0A" event="0x100A"/>
+			<EnumValue name="WMI_SET_LISTEN_INT_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x0B" event="0x100B"/>
+			<EnumValue name="WMI_BCON_CTRL_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x0F" event=""/>
+			<EnumValue name="WMI_ADD_CIPHER_KEY_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x16" event=""/>
+			<EnumValue name="WMI_DELETE_CIPHER_KEY_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x17" event=""/>
+			<EnumValue name="WMI_PCP_CONF_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x18" event=""/>
+			<EnumValue name="WMI_SET_APPIE_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x3F" event=""/>
+			<EnumValue name="WMI_SET_WSC_STATUS_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x41" event=""/>
+			<EnumValue name="WMI_PXMT_RANGE_CFG_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x42" event=""/>
+			<EnumValue name="WMI_PXMT_SNR2_RANGE_CFG_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x43" event=""/>
+			<EnumValue name="WMI_MEM_READ_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x800" event="0x1800"/>
+			<EnumValue name="WMI_MEM_WR_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x801" event="0x1801"/>
+			<EnumValue name="WMI_ECHO_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x803" event="0x1803"/>
+			<EnumValue name="WMI_DEEP_ECHO_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x804" event=""/>
+			<EnumValue name="WMI_CONFIG_MAC_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x805" event=""/>
+			<EnumValue name="WMI_CONFIG_PHY_DEBUG_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x806" event=""/>
+			<EnumValue name="WMI_ADD_DEBUG_TX_PCKT_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x808" event=""/>
+			<EnumValue name="WMI_PHY_GET_STATISTICS_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x809" event=""/>
+			<EnumValue name="WMI_FS_TUNE_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x80A" event="0x180A"/>
+			<EnumValue name="WMI_CORR_MEASURE_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x80B" event="0x180B"/>
+			<EnumValue name="WMI_READ_RSSI_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x80C" event="0x180C"/>
+			<EnumValue name="WMI_TEMP_SENSE_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x80E" event="0x180E"/>
+			<EnumValue name="WMI_DC_CALIB_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x80F" event="0x180F"/>
+			<EnumValue name="WMI_SEND_TONE_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x810" event=""/>
+			<EnumValue name="WMI_IQ_TX_CALIB_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x811" event="0x1811"/>
+			<EnumValue name="WMI_IQ_RX_CALIB_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x812" event="0x1812"/>
+			<EnumValue name="WMI_SET_UCODE_IDLE_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x813" event=""/>
+			<EnumValue name="WMI_SET_WORK_MODE_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x815" event="0x1815"/>
+			<EnumValue name="WMI_LO_LEAKAGE_CALIB_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x816" event="0x1816"/>
+			<EnumValue name="WMI_MARLON_R_READ_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x818" event="0x1818"/>
+			<EnumValue name="WMI_MARLON_R_WRITE_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x819" event="0x1819"/>
+			<EnumValue name="WMI_MARLON_R_TXRX_SEL_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x81A" event="0x181A"/>
+			<EnumValue name="MAC_IO_STATIC_PARAMS_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x81B" event=""/>
+			<EnumValue name="MAC_IO_DYNAMIC_PARAMS_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x81C" event=""/>
+			<EnumValue name="WMI_SILENT_RSSI_CALIB_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x81D" event="0x181D"/>
+			<EnumValue name="WMI_RF_RX_TEST_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x81E" event="0x181E"/>
+			<EnumValue name="WMI_CFG_RX_CHAIN_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x820" event="0x1820"/>
+			<EnumValue name="WMI_VRING_CFG_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x821" event="0x1821"/>
+			<EnumValue name="WMI_BCAST_VRING_CFG_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x822" event=""/>
+			<EnumValue name="WMI_VRING_BA_EN_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x823" event="0x1823"/>
+			<EnumValue name="WMI_VRING_BA_DIS_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x824" event="0x1824"/>
+			<EnumValue name="WMI_RCP_ADDBA_RESP_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x825" event="0x1825"/>
+			<EnumValue name="WMI_RCP_DELBA_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x826" event="0x1826"/>
+			<EnumValue name="WMI_SET_SSID_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x827" event=""/>
+			<EnumValue name="WMI_GET_SSID_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x828" event="0x1828"/>
+			<EnumValue name="WMI_SET_PCP_CHANNEL_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x829" event=""/>
+			<EnumValue name="WMI_GET_PCP_CHANNEL_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x82A" event="0x182A"/>
+			<EnumValue name="WMI_SW_TX_REQ_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x82B" event="0x182B"/>
+			<EnumValue name="WMI_READ_MAC_RXQ_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x830" event="0x1830"/>
+			<EnumValue name="WMI_READ_MAC_TXQ_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x831" event="0x1831"/>
+			<EnumValue name="WMI_WRITE_MAC_RXQ_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x832" event="0x1832"/>
+			<EnumValue name="WMI_WRITE_MAC_TXQ_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x833" event="0x1833"/>
+			<EnumValue name="WMI_WRITE_MAC_XQ_FIELD_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x834" event="0x1834"/>
+			<EnumValue name="WMI_MLME_PUSH_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x835" event=""/>
+			<EnumValue name="WMI_BEAMFORMING_MGMT_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x836" event="0x1836"/>
+			<EnumValue name="WMI_BF_TXSS_MGMT_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x837" event="0x1837"/>
+			<EnumValue name="WMI_BF_SM_MGMT_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x838" event="0x1838"/>
+			<EnumValue name="WMI_BF_RXSS_MGMT_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x839" event="0x1839"/>
+			<EnumValue name="WMI_BF_TRIG_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x83A" event=""/>
+			<EnumValue name="WMI_LINK_MAINTAIN_CFG_WRITE_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x842" event="0x1842"/>
+			<EnumValue name="WMI_LINK_MAINTAIN_CFG_READ_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x843" event="0x1843"/>
+			<EnumValue name="WMI_SET_SECTORS_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x849" event=""/>
+			<EnumValue name="WMI_MAINTAIN_PAUSE_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x850" event=""/>
+			<EnumValue name="WMI_MAINTAIN_RESUME_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x851" event=""/>
+			<EnumValue name="WMI_RS_MGMT_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x852" event="0x1852"/>
+			<EnumValue name="WMI_RF_MGMT_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x853" event="0x1853"/>
+			<EnumValue name="WMI_THERMAL_THROTTLING_CTRL_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x854" event=""/>
+			<EnumValue name="WMI_THERMAL_THROTTLING_GET_STATUS_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x855" event="0x1855"/>
+			<EnumValue name="WMI_OTP_READ_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x856" event="0x1856"/>
+			<EnumValue name="WMI_OTP_WRITE_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x857" event=""/>
+			<EnumValue name="WMI_LED_CFG_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x858" event="0x1858"/>
+			<EnumValue comment="Performance monitoring commands" name="WMI_BF_CTRL_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x862" event="0x1862"/>
+			<EnumValue name="WMI_NOTIFY_REQ_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x863" event="0x1863"/>
+			<EnumValue name="WMI_GET_STATUS_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x864" event="0x1864"/>
+			<EnumValue name="WMI_GET_RF_STATUS_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x866" event="0x1866"/>
+			<EnumValue name="WMI_GET_BASEBAND_TYPE_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x867" event="0x1867"/>
+			<EnumValue name="WMI_UNIT_TEST_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x900" event="0x1900"/>
+			<EnumValue name="WMI_HICCUP_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x901" event=""/>
+			<EnumValue name="WMI_FLASH_READ_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x902" event="0x1902"/>
+			<EnumValue name="WMI_FLASH_WRITE_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x903" event="0x1903"/>
+			<EnumValue comment="Power management" name="WMI_TRAFFIC_DEFERRAL_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x904" event="0x1904"/>
+			<EnumValue name="WMI_TRAFFIC_RESUME_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x905" event="0x1905"/>
+			<EnumValue comment="P2P" name="WMI_P2P_CFG_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x910" event="0x1910"/>
+			<EnumValue name="WMI_PORT_ALLOCATE_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x911" event="0x1911"/>
+			<EnumValue name="WMI_PORT_DELETE_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x912" event="0x1912"/>
+			<EnumValue name="WMI_POWER_MGMT_CFG_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x913" event=""/>
+			<EnumValue name="WMI_START_LISTEN_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x914" event="0x1914"/>
+			<EnumValue name="WMI_START_SEARCH_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x915" event="0x1915"/>
+			<EnumValue name="WMI_DISCOVERY_START_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x916" event="0x1916"/>
+			<EnumValue name="WMI_DISCOVERY_STOP_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x917" event="0x1917"/>
+			<EnumValue name="WMI_PCP_START_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x918" event="0x1918"/>
+			<EnumValue name="WMI_PCP_STOP_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x919" event="0x1919"/>
+			<EnumValue name="WMI_GET_PCP_FACTOR_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x91B" event=""/>
+			<EnumValue name="WMI_PS_DEV_PROFILE_CFG_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x91C" comment="Power Save Configuration Commands" event="0x191C"/>
+			<EnumValue name="WMI_PS_DEV_CFG_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x91D" comment="Not supported yet" event="0x191D"/>
+			<EnumValue name="WMI_PS_DEV_CFG_READ_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x91E" comment="Not supported yet" even="0x191E"/>
+			<EnumValue name="WMI_PS_MID_CFG_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x91F" comment="Per MAC Power Save Configuration commands\nNot supported yet" event="0x191F"/>
+			<EnumValue name="WMI_PS_MID_CFG_READ_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x920" comment="Not supported yet" event="0x1920"/>
+			<EnumValue name="WMI_RS_CFG_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x921" event="0x1921"/>
+			<EnumValue name="WMI_GET_DETAILED_RS_RES_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x922" event="0x1922"/>
+			<EnumValue name="WMI_AOA_MEAS_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x923" event=""/>
+			<EnumValue name="WMI_SET_MGMT_RETRY_LIMIT_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x930" event="0x1930"/>
+			<EnumValue name="WMI_GET_MGMT_RETRY_LIMIT_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x931" event="0x1931"/>
+			<EnumValue name="WMI_TOF_SESSION_START_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x991" event=""/>
+			<EnumValue name="WMI_TOF_GET_CAPABILITIES_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x992" event=""/>
+			<EnumValue name="WMI_TOF_SET_LCR_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x993" event=""/>
+			<EnumValue name="WMI_TOF_SET_LCI_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x994" event=""/>
+			<EnumValue name="WMI_TOF_CHANNEL_INFO_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x995" event=""/>
+			<EnumValue name="WMI_GET_RF_SECTOR_PARAMS_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x9A0" event="0x19A0"/>
+			<EnumValue name="WMI_SET_RF_SECTOR_PARAMS_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x9A1" event="0x19A1"/>
+			<EnumValue name="WMI_GET_SELECTED_RF_SECTOR_INDEX_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x9A2" event="0x19A2"/>
+			<EnumValue name="WMI_SET_SELECTED_RF_SECTOR_INDEX_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x9A3" event="0x19A3"/>
+			<EnumValue name="WMI_SET_RF_SECTOR_ON_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0x9A4" event="0x19A4"/>
+			<EnumValue name="WMI_SET_MAC_ADDRESS_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0xF003" event=""/>
+			<EnumValue name="WMI_ABORT_SCAN_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0xF007" event=""/>
+			<EnumValue name="WMI_SET_PROMISCUOUS_MODE_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0xF041" event=""/>
+			<EnumValue name="WMI_GET_PMK_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0xF048" event=""/>
+			<EnumValue name="WMI_SET_PASSPHRASE_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0xF049" event=""/>
+			<EnumValue name="WMI_SEND_ASSOC_RES_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0xF04A" event=""/>
+			<EnumValue name="WMI_SET_ASSOC_REQ_RELAY_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0xF04B" event=""/>
+			<EnumValue name="WMI_MAC_ADDR_REQ_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0xF04D" event=""/>
+			<EnumValue name="WMI_FW_VER_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0xF04E" event=""/>
+			<EnumValue name="WMI_PMC_CMDID" publishFW="True" publishLinux="True" publishWin="True" value="0xF04F" event=""/>
+		</Enum>
+		<Enum comment="\nWMI_CONNECT_CMDID\n" name="wmi_network_type" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_NETTYPE_INFRA" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+			<EnumValue name="WMI_NETTYPE_ADHOC" publishFW="True" publishLinux="True" publishWin="True" value="0x02"/>
+			<EnumValue name="WMI_NETTYPE_ADHOC_CREATOR" publishFW="True" publishLinux="True" publishWin="True" value="0x04"/>
+			<EnumValue name="WMI_NETTYPE_AP" publishFW="True" publishLinux="True" publishWin="True" value="0x10"/>
+			<EnumValue name="WMI_NETTYPE_P2P" publishFW="True" publishLinux="True" publishWin="True" value="0x20"/>
+			<EnumValue comment="PCIE over 60g" name="WMI_NETTYPE_WBE" publishFW="True" publishLinux="True" publishWin="True" value="0x40"/>
+		</Enum>
+		<Enum name="wmi_dot11_auth_mode" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_AUTH11_OPEN" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+			<EnumValue name="WMI_AUTH11_SHARED" publishFW="True" publishLinux="True" publishWin="True" value="0x02"/>
+			<EnumValue name="WMI_AUTH11_LEAP" publishFW="True" publishLinux="True" publishWin="True" value="0x04"/>
+			<EnumValue name="WMI_AUTH11_WSC" publishFW="True" publishLinux="True" publishWin="True" value="0x08"/>
+		</Enum>
+		<Enum name="wmi_auth_mode" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_AUTH_NONE" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+			<EnumValue name="WMI_AUTH_WPA" publishFW="True" publishLinux="True" publishWin="True" value="0x02"/>
+			<EnumValue name="WMI_AUTH_WPA2" publishFW="True" publishLinux="True" publishWin="True" value="0x04"/>
+			<EnumValue name="WMI_AUTH_WPA_PSK" publishFW="True" publishLinux="True" publishWin="True" value="0x08"/>
+			<EnumValue name="WMI_AUTH_WPA2_PSK" publishFW="True" publishLinux="True" publishWin="True" value="0x10"/>
+			<EnumValue name="WMI_AUTH_WPA_CCKM" publishFW="True" publishLinux="True" publishWin="True" value="0x20"/>
+			<EnumValue name="WMI_AUTH_WPA2_CCKM" publishFW="True" publishLinux="True" publishWin="True" value="0x40"/>
+		</Enum>
+		<Enum name="wmi_crypto_type" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_CRYPT_NONE" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+			<EnumValue name="WMI_CRYPT_WEP" publishFW="False" publishLinux="False" publishWin="False" value="0x02"/>
+			<EnumValue name="WMI_CRYPT_TKIP" publishFW="False" publishLinux="False" publishWin="False" value="0x04"/>
+			<EnumValue name="WMI_CRYPT_AES" publishFW="False" publishLinux="False" publishWin="False" value="0x08"/>
+			<EnumValue name="WMI_CRYPT_AES_GCMP" publishFW="True" publishLinux="True" publishWin="True" value="0x20"/>
+		</Enum>
+		<Enum name="wmi_connect_ctrl_flag_bits" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_CONNECT_ASSOC_POLICY_USER" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+			<EnumValue name="WMI_CONNECT_SEND_REASSOC" publishFW="True" publishLinux="True" publishWin="True" value="0x02"/>
+			<EnumValue name="WMI_CONNECT_IGNORE_WPA_GROUP_CIPHER" publishFW="True" publishLinux="True" publishWin="True" value="0x04"/>
+			<EnumValue name="WMI_CONNECT_PROFILE_MATCH_DONE" publishFW="True" publishLinux="True" publishWin="True" value="0x08"/>
+			<EnumValue name="WMI_CONNECT_IGNORE_AAC_BEACON" publishFW="True" publishLinux="True" publishWin="True" value="0x10"/>
+			<EnumValue name="WMI_CONNECT_CSA_FOLLOW_BSS" publishFW="True" publishLinux="True" publishWin="True" value="0x20"/>
+			<EnumValue name="WMI_CONNECT_DO_WPA_OFFLOAD" publishFW="True" publishLinux="True" publishWin="True" value="0x40"/>
+			<EnumValue name="WMI_CONNECT_DO_NOT_DEAUTH" publishFW="True" publishLinux="True" publishWin="True" value="0x80"/>
+		</Enum>
+		<Define name="WMI_MAX_SSID_LEN" publishFW="True" publishLinux="True" publishWin="True" value="(32)"/>
+		<Struct comment="\nWMI_CONNECT_CMDID\n" name="CONNECT" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member isArray="False" name="network_type" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="dot11_auth_mode" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="auth_mode" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="pairwise_crypto_type" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="pairwise_crypto_len" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="group_crypto_type" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="group_crypto_len" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="ssid_len" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="True" name="ssid" publishFW="True" publishLinux="True" publishWin="True" size="WMI_MAX_SSID_LEN" type="U08"/>
+			<Member isArray="False" name="channel" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="reserved0" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="True" name="bssid" publishFW="True" publishLinux="True" publishWin="True" size="WMI_MAC_LEN" type="U08"/>
+			<Member isArray="False" name="ctrl_flags" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="True" name="dst_mac" publishFW="True" publishLinux="True" publishWin="True" size="WMI_MAC_LEN" type="U08"/>
+			<Member isArray="True" name="reserved1" publishFW="True" publishLinux="True" publishWin="True" size="2" type="U08"/>
+		</Struct>
+		<Struct comment="\nWMI_DISCONNECT_STA_CMDID\n" name="DISCONNECT_STA" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member isArray="True" name="dst_mac" publishFW="True" publishLinux="True" publishWin="True" size="WMI_MAC_LEN" type="U08"/>
+			<Member isArray="False" name="disconnect_reason" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+		</Struct>
+		<Define name="WMI_MIN_KEY_INDEX" publishFW="False" publishLinux="False" publishWin="False" value="(0)"/>
+		<Define name="WMI_MAX_KEY_INDEX" publishFW="True" publishLinux="True" publishWin="True" value="(3)"/>
+		<Define name="WMI_MAX_KEY_LEN" publishFW="True" publishLinux="True" publishWin="True" value="(32)"/>
+		<Define name="WMI_PASSPHRASE_LEN" publishFW="True" publishLinux="True" publishWin="True" value="(64)"/>
+		<Struct comment="\nWMI_SET_PASSPHRASE_CMDID\n" name="SET_PASSPHRASE" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member isArray="True" name="ssid" publishFW="True" publishLinux="True" publishWin="True" size="WMI_MAX_SSID_LEN" type="U08"/>
+			<Member isArray="True" name="passphrase" publishFW="True" publishLinux="True" publishWin="True" size="WMI_PASSPHRASE_LEN" type="U08"/>
+			<Member isArray="False" name="ssid_len" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="passphrase_len" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+		</Struct>
+		<Enum comment="\nWMI_ADD_CIPHER_KEY_CMDID\n" name="wmi_key_usage" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_KEY_USE_PAIRWISE" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="WMI_KEY_USE_RX_GROUP" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+			<EnumValue name="WMI_KEY_USE_TX_GROUP" publishFW="True" publishLinux="True" publishWin="True" value="0x02"/>
+		</Enum>
+		<Struct name="ADD_CIPHER_KEY" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member isArray="False" name="key_index" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="key_type" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member comment="enum wmi_key_usage" isArray="False" name="key_usage" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="key_len" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member comment="key replay sequence counter" isArray="True" name="key_rsc" publishFW="True" publishLinux="True" publishWin="True" size="8" type="U08"/>
+			<Member isArray="True" name="key" publishFW="True" publishLinux="True" publishWin="True" size="WMI_MAX_KEY_LEN" type="U08"/>
+			<Member comment="Additional Key Control information" isArray="False" name="key_op_ctrl" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="True" name="mac" publishFW="True" publishLinux="True" publishWin="True" size="WMI_MAC_LEN" type="U08"/>
+		</Struct>
+		<Struct comment="\nWMI_DELETE_CIPHER_KEY_CMDID\n" name="DELETE_CIPHER_KEY" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member isArray="False" name="key_index" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="True" name="mac" publishFW="True" publishLinux="True" publishWin="True" size="WMI_MAC_LEN" type="U08"/>
+		</Struct>
+		<Enum comment="\nWMI_START_SCAN_CMDID\n\nStart L1 scan operation\n\nReturned events:\n- WMI_RX_MGMT_PACKET_EVENTID - for every probe resp.\n- WMI_SCAN_COMPLETE_EVENTID\n" name="wmi_scan_type" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_ACTIVE_SCAN" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="WMI_SHORT_SCAN" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+			<EnumValue name="WMI_PASSIVE_SCAN" publishFW="True" publishLinux="True" publishWin="True" value="0x02"/>
+			<EnumValue name="WMI_DIRECT_SCAN" publishFW="True" publishLinux="True" publishWin="True" value="0x03"/>
+			<EnumValue name="WMI_LONG_SCAN" publishFW="True" publishLinux="True" publishWin="True" value="0x04"/>
+		</Enum>
+		<Struct comment="\nWMI_START_SCAN_CMD::$_9ID\n" name="START_SCAN::$_9" publishFW="False" publishLinux="False" publishWin="False" type="cmd">
+			<Member isArray="False" name="channel" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+		</Struct>
+		<Struct comment="\nWMI_START_SCAN_CMDID\n" name="START_SCAN" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member isArray="True" name="direct_scan_mac_addr" publishFW="True" publishLinux="True" publishWin="True" size="WMI_MAC_LEN" type="U08"/>
+			<Member comment="run scan with discovery beacon. Relevant for ACTIVE scan only." isArray="False" name="discovery_mode" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member comment="Max duration in the home channel(ms)" isArray="False" name="home_dwell_time" publishFW="True" publishLinux="False" publishWin="True" size="1" type="U32"/>
+			<Member comment="Max duration in the home channel(ms)" isArray="False" name="dwell_time" publishFW="False" publishLinux="True" publishWin="False" size="1" type="U32"/>
+			<Member comment="Time interval between scans (ms)" isArray="False" name="force_scan_interval" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member comment="enum wmi_scan_type" isArray="False" name="scan_type" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member comment="how many channels follow" isArray="False" name="num_channels" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member comment="channels ID's:\n0 - 58320 MHz\n1 - 60480 MHz\n2 - 62640 MHz\n" doExtract="True" isArray="True" name="channel_list" publishFW="True" publishLinux="True" publishWin="False" size="0" type="START_SCAN::$_9"/>
+			<Member comment="channels ID's:\n0 - 58320 MHz\n1 - 60480 MHz\n2 - 62640 MHz\n" doExtract="True" isArray="True" name="channel_list" publishFW="False" publishLinux="False" publishWin="True" size="WMI_EMPTY_ARRAY_SIZE" type="START_SCAN::$_9"/>
+		</Struct>
+		<Define comment="\nWMI_SET_PROBED_SSID_CMDID\n" name="MAX_PROBED_SSID_INDEX" publishFW="True" publishLinux="True" publishWin="True" value="(3)"/>
+		<Enum name="wmi_ssid_flag" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue comment="disables entry" name="WMI_SSID_FLAG_DISABLE" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue comment="probes specified ssid" name="WMI_SSID_FLAG_SPECIFIC" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+			<EnumValue comment="probes for any ssid" name="WMI_SSID_FLAG_ANY" publishFW="True" publishLinux="True" publishWin="True" value="0x02"/>
+		</Enum>
+		<Struct name="PROBED_SSID" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member comment="0 to MAX_PROBED_SSID_INDEX" isArray="False" name="entry_index" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member comment="enum wmi_ssid_flag" isArray="False" name="flag" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="ssid_len" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="True" name="ssid" publishFW="True" publishLinux="True" publishWin="True" size="WMI_MAX_SSID_LEN" type="U08"/>
+		</Struct>
+		<Define comment="\nWMI_SET_APPIE_CMDID\nAdd Application specified IE to a management frame\n" name="WMI_MAX_IE_LEN" publishFW="True" publishLinux="True" publishWin="True" value="(1024)"/>
+		<Enum comment="\nFrame Types\n" name="wmi_mgmt_frame_type" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_FRAME_BEACON" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="WMI_FRAME_PROBE_REQ" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+			<EnumValue name="WMI_FRAME_PROBE_RESP" publishFW="True" publishLinux="True" publishWin="True" value="0x02"/>
+			<EnumValue name="WMI_FRAME_ASSOC_REQ" publishFW="True" publishLinux="True" publishWin="True" value="0x03"/>
+			<EnumValue name="WMI_FRAME_ASSOC_RESP" publishFW="True" publishLinux="True" publishWin="True" value="0x04"/>
+			<EnumValue name="WMI_NUM_MGMT_FRAME" publishFW="True" publishLinux="True" publishWin="True" value="0x05"/>
+		</Enum>
+		<Struct name="SET_APPIE" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member comment="enum wmi_mgmt_frame_type" isArray="False" name="mgmt_frm_type" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member comment="Length of the IE to be added to MGMT frame" isArray="False" name="ie_len" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member isArray="True" name="ie_info" publishFW="True" publishLinux="True" publishWin="False" size="0" type="U08"/>
+			<Member isArray="True" name="ie_info" publishFW="False" publishLinux="False" publishWin="True" size="WMI_EMPTY_ARRAY_SIZE" type="U08"/>
+		</Struct>
+		<Struct comment="\nWMI_PXMT_RANGE_CFG_CMDID\n" name="PXMT_RANGE_CFG" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member isArray="True" name="dst_mac" publishFW="True" publishLinux="True" publishWin="True" size="WMI_MAC_LEN" type="U08"/>
+			<Member isArray="False" name="range" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+		</Struct>
+		<Struct comment="\nWMI_PXMT_SNR2_RANGE_CFG_CMDID\n" name="PXMT_SNR2_RANGE_CFG" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member isArray="True" name="snr2range_arr" publishFW="True" publishLinux="True" publishWin="True" size="2" type="S08"/>
+		</Struct>
+		<Enum comment="\nWMI_RF_MGMT_CMDID\n" name="wmi_rf_mgmt_type" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_RF_MGMT_W_DISABLE" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="WMI_RF_MGMT_W_ENABLE" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+			<EnumValue name="WMI_RF_MGMT_GET_STATUS" publishFW="True" publishLinux="True" publishWin="True" value="0x02"/>
+		</Enum>
+		<Struct comment="\nWMI_RF_MGMT_CMDID\n" name="RF_MGMT" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member isArray="False" name="rf_mgmt_type" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+		</Struct>
+		<Define comment="\nWMI_THERMAL_THROTTLING_CTRL_CMDID\n" name="THERMAL_THROTTLING_USE_DEFAULT_MAX_TXOP_LENGTH" publishFW="True" publishLinux="True" publishWin="True" value="(0xFFFFFFFF)"/>
+		<Struct comment="\nWMI_THERMAL_THROTTLING_CTRL_CMDID\n" name="THERMAL_THROTTLING_CTRL" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member isArray="False" name="time_on_usec" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="time_off_usec" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="max_txop_length_usec" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+		</Struct>
+		<Struct comment="\nWMI_RF_RX_TEST_CMDID\n" name="RF_RX_TEST" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member isArray="False" name="sector" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+		</Struct>
+		<Struct comment="\nWMI_CORR_MEASURE_CMDID\n" name="CORR_MEASURE" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member isArray="False" name="freq_mhz" publishFW="True" publishLinux="True" publishWin="True" size="1" type="S32"/>
+			<Member isArray="False" name="length_samples" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="iterations" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+		</Struct>
+		<Struct comment="\nWMI_SET_SSID_CMDID\n" name="SET_SSID" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member isArray="False" name="ssid_len" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="True" name="ssid" publishFW="True" publishLinux="True" publishWin="True" size="WMI_MAX_SSID_LEN" type="U08"/>
+		</Struct>
+		<Struct comment="\nWMI_SET_PCP_CHANNEL_CMDID\n" name="SET_PCP_CHANNEL" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member isArray="False" name="channel" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="True" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="3" type="U08"/>
+		</Struct>
+		<Struct comment="\nWMI_BCON_CTRL_CMDID\n" name="BCON_CTRL" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member isArray="False" name="bcon_interval" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member isArray="False" name="frag_num" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member isArray="False" name="ss_mask_low" publishFW="True" publishLinux="False" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="ss_mask_high" publishFW="True" publishLinux="False" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="ss_mask" publishFW="False" publishLinux="True" publishWin="False" size="1" type="U64"/>
+			<Member isArray="False" name="network_type" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="pcp_max_assoc_sta" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="disable_sec_offload" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="disable_sec" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="hidden_ssid" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="is_go" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="True" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="2" type="U08"/>
+		</Struct>
+		<Enum comment="\nWMI_PORT_ALLOCATE_CMDID\n" name="wmi_port_role" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_PORT_STA" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="WMI_PORT_PCP" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+			<EnumValue name="WMI_PORT_AP" publishFW="True" publishLinux="True" publishWin="True" value="0x02"/>
+			<EnumValue name="WMI_PORT_P2P_DEV" publishFW="True" publishLinux="True" publishWin="True" value="0x03"/>
+			<EnumValue name="WMI_PORT_P2P_CLIENT" publishFW="True" publishLinux="True" publishWin="True" value="0x04"/>
+			<EnumValue name="WMI_PORT_P2P_GO" publishFW="True" publishLinux="True" publishWin="True" value="0x05"/>
+		</Enum>
+		<Struct comment="\nWMI_PORT_ALLOCATE_CMDID\n" name="PORT_ALLOCATE" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member isArray="True" name="mac" publishFW="True" publishLinux="True" publishWin="True" size="WMI_MAC_LEN" type="U08"/>
+			<Member isArray="False" name="port_role" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="mid" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+		</Struct>
+		<Struct comment="\nWMI_PORT_DELETE_CMDID\n" name="PORT_DELETE" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member isArray="False" name="mid" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="True" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="3" type="U08"/>
+		</Struct>
+		<Struct comment="\nWMI_TRAFFIC_DEFERRAL_CMDID\n" name="TRAFFIC_DEFERRAL" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member comment="Bit vector: bit[0] - wake on Unicast, bit[1] - wake on Broadcast" isArray="False" name="wakeup_trigger" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+		</Struct>
+		<Enum comment="\nWMI_P2P_CFG_CMDID\n" name="wmi_discovery_mode" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_DISCOVERY_MODE_NON_OFFLOAD" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="WMI_DISCOVERY_MODE_OFFLOAD" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+			<EnumValue name="WMI_DISCOVERY_MODE_PEER2PEER" publishFW="True" publishLinux="True" publishWin="True" value="0x02"/>
+		</Enum>
+		<Struct name="P2P_CFG" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member comment="enum wmi_discovery_mode" isArray="False" name="discovery_mode" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="channel" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member comment="base to listen/search duration calculation" isArray="False" name="bcon_interval" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+		</Struct>
+		<Enum comment="\nWMI_POWER_MGMT_CFG_CMDID\n" name="wmi_power_source_type" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_POWER_SOURCE_BATTERY" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="WMI_POWER_SOURCE_OTHER" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+		</Enum>
+		<Struct name="POWER_MGMT_CFG" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member comment="enum wmi_power_source_type" isArray="False" name="power_source" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="True" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="3" type="U08"/>
+		</Struct>
+		<Struct comment="\nWMI_PCP_START_CMDID\n" name="PCP_START" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member isArray="False" name="bcon_interval" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member isArray="False" name="pcp_max_assoc_sta" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="hidden_ssid" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="is_go" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="True" name="reserved0" publishFW="True" publishLinux="True" publishWin="True" size="7" type="U08"/>
+			<Member isArray="False" name="network_type" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="channel" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="disable_sec_offload" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="disable_sec" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+		</Struct>
+		<Struct comment="\nWMI_SW_TX_REQ_CMDID\n" name="SW_TX_REQ" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member isArray="True" name="dst_mac" publishFW="True" publishLinux="True" publishWin="True" size="WMI_MAC_LEN" type="U08"/>
+			<Member isArray="False" name="len" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member isArray="True" name="payload" publishFW="True" publishLinux="True" publishWin="False" size="0" type="U08"/>
+			<Member isArray="True" name="payload" publishFW="False" publishLinux="False" publishWin="True" size="WMI_EMPTY_ARRAY_SIZE" type="U08"/>
+		</Struct>
+		<Struct name="wmi_sw_ring_cfg" publishFW="True" publishLinux="True" publishWin="True" type="reg">
+			<Member isArray="False" name="ring_mem_base" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U64_u"/>
+			<Member isArray="False" name="ring_size" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member isArray="False" name="max_msdu_size" publishFW="True" publishLinux="False" publishWin="True" size="1" type="U16"/>
+			<Member isArray="False" name="max_mpdu_size" publishFW="False" publishLinux="True" publishWin="False" size="1" type="U16"/>
+		</Struct>
+		<Struct comment="\nwmi_vring_cfg_schd\n" name="wmi_vring_cfg_schd" publishFW="True" publishLinux="True" publishWin="True" type="reg">
+			<Member isArray="False" name="priority" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member isArray="False" name="timeslot_us" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+		</Struct>
+		<Enum name="wmi_vring_cfg_encap_trans_type" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_VRING_ENC_TYPE_802_3" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="WMI_VRING_ENC_TYPE_NATIVE_WIFI" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+		</Enum>
+		<Enum name="wmi_vring_cfg_ds_cfg" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_VRING_DS_PBSS" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="WMI_VRING_DS_STATION" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+			<EnumValue name="WMI_VRING_DS_AP" publishFW="True" publishLinux="True" publishWin="True" value="0x02"/>
+			<EnumValue name="WMI_VRING_DS_ADDR4" publishFW="True" publishLinux="True" publishWin="True" value="0x03"/>
+		</Enum>
+		<Enum name="wmi_vring_cfg_nwifi_ds_trans_type" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_NWIFI_TX_TRANS_MODE_NO" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="WMI_NWIFI_TX_TRANS_MODE_AP2PBSS" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+			<EnumValue name="WMI_NWIFI_TX_TRANS_MODE_STA2PBSS" publishFW="True" publishLinux="True" publishWin="True" value="0x02"/>
+		</Enum>
+		<Enum name="wmi_vring_cfg_schd_params_priority" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_SCH_PRIO_REGULAR" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="WMI_SCH_PRIO_HIGH" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+		</Enum>
+		<Define name="CIDXTID_CID_POS" publishFW="True" publishLinux="True" publishWin="True" value="(0)"/>
+		<Define name="CIDXTID_CID_LEN" publishFW="True" publishLinux="True" publishWin="True" value="(4)"/>
+		<Define name="CIDXTID_CID_MSK" publishFW="True" publishLinux="True" publishWin="True" value="(0xF)"/>
+		<Define name="CIDXTID_TID_POS" publishFW="True" publishLinux="True" publishWin="True" value="(4)"/>
+		<Define name="CIDXTID_TID_LEN" publishFW="True" publishLinux="True" publishWin="True" value="(4)"/>
+		<Define name="CIDXTID_TID_MSK" publishFW="True" publishLinux="True" publishWin="True" value="(0xF0)"/>
+		<Define name="VRING_CFG_MAC_CTRL_LIFETIME_EN_POS" publishFW="True" publishLinux="True" publishWin="True" value="(0)"/>
+		<Define name="VRING_CFG_MAC_CTRL_LIFETIME_EN_LEN" publishFW="True" publishLinux="True" publishWin="True" value="(1)"/>
+		<Define name="VRING_CFG_MAC_CTRL_LIFETIME_EN_MSK" publishFW="True" publishLinux="True" publishWin="True" value="(0x1)"/>
+		<Define name="VRING_CFG_MAC_CTRL_AGGR_EN_POS" publishFW="True" publishLinux="True" publishWin="True" value="(1)"/>
+		<Define name="VRING_CFG_MAC_CTRL_AGGR_EN_LEN" publishFW="True" publishLinux="True" publishWin="True" value="(1)"/>
+		<Define name="VRING_CFG_MAC_CTRL_AGGR_EN_MSK" publishFW="True" publishLinux="True" publishWin="True" value="(0x2)"/>
+		<Define name="VRING_CFG_TO_RESOLUTION_VALUE_POS" publishFW="True" publishLinux="True" publishWin="True" value="(0)"/>
+		<Define name="VRING_CFG_TO_RESOLUTION_VALUE_LEN" publishFW="True" publishLinux="True" publishWin="True" value="(6)"/>
+		<Define name="VRING_CFG_TO_RESOLUTION_VALUE_MSK" publishFW="True" publishLinux="True" publishWin="True" value="(0x3F)"/>
+		<Struct name="wmi_vring_cfg" publishFW="True" publishLinux="True" publishWin="True" type="reg">
+			<Member isArray="False" name="tx_sw_ring" publishFW="True" publishLinux="True" publishWin="True" size="1" type="wmi_sw_ring_cfg"/>
+			<Member comment="0-23 vrings" isArray="False" name="ringid" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="cidxtid" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="encap_trans_type" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member comment="802.3 DS cfg" isArray="False" name="ds_cfg" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="nwifi_ds_trans_type" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="mac_ctrl" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="to_resolution" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="agg_max_wsize" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="schd_params" publishFW="True" publishLinux="True" publishWin="True" size="1" type="wmi_vring_cfg_schd"/>
+		</Struct>
+		<Enum name="wmi_vring_cfg_cmd_action" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_VRING_CMD_ADD" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="WMI_VRING_CMD_MODIFY" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+			<EnumValue name="WMI_VRING_CMD_DELETE" publishFW="True" publishLinux="True" publishWin="True" value="0x02"/>
+		</Enum>
+		<Struct comment="\nWMI_VRING_CFG_CMDID\n" name="VRING_CFG" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member isArray="False" name="action" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="vring_cfg" publishFW="True" publishLinux="True" publishWin="True" size="1" type="wmi_vring_cfg"/>
+		</Struct>
+		<Struct name="wmi_bcast_vring_cfg" publishFW="True" publishLinux="True" publishWin="True" type="reg">
+			<Member isArray="False" name="tx_sw_ring" publishFW="True" publishLinux="True" publishWin="True" size="1" type="wmi_sw_ring_cfg"/>
+			<Member comment="0-23 vrings" isArray="False" name="ringid" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="encap_trans_type" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member comment="802.3 DS cfg" isArray="False" name="ds_cfg" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="nwifi_ds_trans_type" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+		</Struct>
+		<Struct comment="\nWMI_BCAST_VRING_CFG_CMDID\n" name="BCAST_VRING_CFG" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member isArray="False" name="action" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="vring_cfg" publishFW="True" publishLinux="True" publishWin="True" size="1" type="wmi_bcast_vring_cfg"/>
+		</Struct>
+		<Struct comment="\nWMI_VRING_BA_EN_CMDID\n" name="VRING_BA_EN" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member isArray="False" name="ringid" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="agg_max_wsize" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="ba_timeout" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member isArray="False" name="amsdu" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="True" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="3" type="U08"/>
+		</Struct>
+		<Struct comment="\nWMI_VRING_BA_DIS_CMDID\n" name="VRING_BA_DIS" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member isArray="False" name="ringid" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="reason" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+		</Struct>
+		<Struct comment="\nWMI_NOTIFY_REQ_CMDID\n" name="NOTIFY_REQ" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member isArray="False" name="cid" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="year" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="month" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="day" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="interval_usec" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="hour" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="minute" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="second" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="miliseconds" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+		</Struct>
+		<Enum comment="\nWMI_CFG_RX_CHAIN_CMDID\n" name="wmi_sniffer_cfg_mode" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_SNIFFER_OFF" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="WMI_SNIFFER_ON" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+		</Enum>
+		<Enum name="wmi_sniffer_cfg_phy_info_mode" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_SNIFFER_PHY_INFO_DISABLED" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="WMI_SNIFFER_PHY_INFO_ENABLED" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+		</Enum>
+		<Enum name="wmi_sniffer_cfg_phy_support" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_SNIFFER_CP" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="WMI_SNIFFER_DP" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+			<EnumValue name="WMI_SNIFFER_BOTH_PHYS" publishFW="True" publishLinux="True" publishWin="True" value="0x02"/>
+		</Enum>
+		<Struct comment="\nwmi_sniffer_cfg\n" name="wmi_sniffer_cfg" publishFW="True" publishLinux="True" publishWin="True" type="reg">
+			<Member comment="enum wmi_sniffer_cfg_mode" isArray="False" name="mode" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member comment="enum wmi_sniffer_cfg_phy_info_mode" isArray="False" name="phy_info_mode" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member comment="enum wmi_sniffer_cfg_phy_support" isArray="False" name="phy_support" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="channel" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="True" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="3" type="U08"/>
+		</Struct>
+		<Enum name="wmi_cfg_rx_chain_cmd_action" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_RX_CHAIN_ADD" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="WMI_RX_CHAIN_DEL" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+		</Enum>
+		<Enum name="wmi_cfg_rx_chain_cmd_decap_trans_type" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_DECAP_TYPE_802_3" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="WMI_DECAP_TYPE_NATIVE_WIFI" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+			<EnumValue name="WMI_DECAP_TYPE_NONE" publishFW="True" publishLinux="True" publishWin="True" value="0x02"/>
+		</Enum>
+		<Enum name="wmi_cfg_rx_chain_cmd_nwifi_ds_trans_type" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_NWIFI_RX_TRANS_MODE_NO" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="WMI_NWIFI_RX_TRANS_MODE_PBSS2AP" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+			<EnumValue name="WMI_NWIFI_RX_TRANS_MODE_PBSS2STA" publishFW="True" publishLinux="True" publishWin="True" value="0x02"/>
+		</Enum>
+		<Enum name="wmi_cfg_rx_chain_cmd_reorder_type" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_RX_HW_REORDER" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="WMI_RX_SW_REORDER" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+		</Enum>
+		<Define name="L2_802_3_OFFLOAD_CTRL_VLAN_TAG_INSERTION_POS" publishFW="True" publishLinux="True" publishWin="True" value="(0)"/>
+		<Define name="L2_802_3_OFFLOAD_CTRL_VLAN_TAG_INSERTION_LEN" publishFW="True" publishLinux="True" publishWin="True" value="(1)"/>
+		<Define name="L2_802_3_OFFLOAD_CTRL_VLAN_TAG_INSERTION_MSK" publishFW="True" publishLinux="True" publishWin="True" value="(0x1)"/>
+		<Define name="L2_802_3_OFFLOAD_CTRL_SNAP_KEEP_POS" publishFW="True" publishLinux="True" publishWin="True" value="(1)"/>
+		<Define name="L2_802_3_OFFLOAD_CTRL_SNAP_KEEP_LEN" publishFW="True" publishLinux="True" publishWin="True" value="(1)"/>
+		<Define name="L2_802_3_OFFLOAD_CTRL_SNAP_KEEP_MSK" publishFW="True" publishLinux="True" publishWin="True" value="(0x2)"/>
+		<Define name="L2_NWIFI_OFFLOAD_CTRL_REMOVE_QOS_POS" publishFW="True" publishLinux="True" publishWin="True" value="(0)"/>
+		<Define name="L2_NWIFI_OFFLOAD_CTRL_REMOVE_QOS_LEN" publishFW="True" publishLinux="True" publishWin="True" value="(1)"/>
+		<Define name="L2_NWIFI_OFFLOAD_CTRL_REMOVE_QOS_MSK" publishFW="True" publishLinux="True" publishWin="True" value="(0x1)"/>
+		<Define name="L2_NWIFI_OFFLOAD_CTRL_REMOVE_PN_POS" publishFW="True" publishLinux="True" publishWin="True" value="(1)"/>
+		<Define name="L2_NWIFI_OFFLOAD_CTRL_REMOVE_PN_LEN" publishFW="True" publishLinux="True" publishWin="True" value="(1)"/>
+		<Define name="L2_NWIFI_OFFLOAD_CTRL_REMOVE_PN_MSK" publishFW="True" publishLinux="True" publishWin="True" value="(0x2)"/>
+		<Define name="L3_L4_CTRL_IPV4_CHECKSUM_EN_POS" publishFW="True" publishLinux="True" publishWin="True" value="(0)"/>
+		<Define name="L3_L4_CTRL_IPV4_CHECKSUM_EN_LEN" publishFW="True" publishLinux="True" publishWin="True" value="(1)"/>
+		<Define name="L3_L4_CTRL_IPV4_CHECKSUM_EN_MSK" publishFW="True" publishLinux="True" publishWin="True" value="(0x1)"/>
+		<Define name="L3_L4_CTRL_TCPIP_CHECKSUM_EN_POS" publishFW="True" publishLinux="True" publishWin="True" value="(1)"/>
+		<Define name="L3_L4_CTRL_TCPIP_CHECKSUM_EN_LEN" publishFW="True" publishLinux="True" publishWin="True" value="(1)"/>
+		<Define name="L3_L4_CTRL_TCPIP_CHECKSUM_EN_MSK" publishFW="True" publishLinux="True" publishWin="True" value="(0x2)"/>
+		<Define name="RING_CTRL_OVERRIDE_PREFETCH_THRSH_POS" publishFW="True" publishLinux="True" publishWin="True" value="(0)"/>
+		<Define name="RING_CTRL_OVERRIDE_PREFETCH_THRSH_LEN" publishFW="True" publishLinux="True" publishWin="True" value="(1)"/>
+		<Define name="RING_CTRL_OVERRIDE_PREFETCH_THRSH_MSK" publishFW="True" publishLinux="True" publishWin="True" value="(0x1)"/>
+		<Define name="RING_CTRL_OVERRIDE_WB_THRSH_POS" publishFW="True" publishLinux="True" publishWin="True" value="(1)"/>
+		<Define name="RING_CTRL_OVERRIDE_WB_THRSH_LEN" publishFW="True" publishLinux="True" publishWin="True" value="(1)"/>
+		<Define name="RING_CTRL_OVERRIDE_WB_THRSH_MSK" publishFW="True" publishLinux="True" publishWin="True" value="(0x2)"/>
+		<Define name="RING_CTRL_OVERRIDE_ITR_THRSH_POS" publishFW="True" publishLinux="True" publishWin="True" value="(2)"/>
+		<Define name="RING_CTRL_OVERRIDE_ITR_THRSH_LEN" publishFW="True" publishLinux="True" publishWin="True" value="(1)"/>
+		<Define name="RING_CTRL_OVERRIDE_ITR_THRSH_MSK" publishFW="True" publishLinux="True" publishWin="True" value="(0x4)"/>
+		<Define name="RING_CTRL_OVERRIDE_HOST_THRSH_POS" publishFW="True" publishLinux="True" publishWin="True" value="(3)"/>
+		<Define name="RING_CTRL_OVERRIDE_HOST_THRSH_LEN" publishFW="True" publishLinux="True" publishWin="True" value="(1)"/>
+		<Define name="RING_CTRL_OVERRIDE_HOST_THRSH_MSK" publishFW="True" publishLinux="True" publishWin="True" value="(0x8)"/>
+		<Struct comment="\nWMI_CFG_RX_CHAIN_CMDID\n" name="CFG_RX_CHAIN" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member isArray="False" name="action" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="rx_sw_ring" publishFW="True" publishLinux="True" publishWin="True" size="1" type="wmi_sw_ring_cfg"/>
+			<Member isArray="False" name="mid" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="decap_trans_type" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="l2_802_3_offload_ctrl" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="l2_nwifi_offload_ctrl" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="vlan_id" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="nwifi_ds_trans_type" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="l3_l4_ctrl" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="ring_ctrl" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="prefetch_thrsh" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member isArray="False" name="wb_thrsh" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member isArray="False" name="itr_value" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="host_thrsh" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member isArray="False" name="reorder_type" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="sniffer_cfg" publishFW="True" publishLinux="True" publishWin="True" size="1" type="wmi_sniffer_cfg"/>
+			<Member isArray="False" name="max_rx_pl_per_desc" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+		</Struct>
+		<Struct comment="\nWMI_RCP_ADDBA_RESP_CMDID\n" name="RCP_ADDBA_RESP" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member isArray="False" name="cidxtid" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="dialog_token" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="status_code" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member comment="ieee80211_ba_parameterset field to send" isArray="False" name="ba_param_set" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member isArray="False" name="ba_timeout" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+		</Struct>
+		<Struct comment="\nWMI_RCP_DELBA_CMDID\n" name="RCP_DELBA" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member isArray="False" name="cidxtid" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="reason" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+		</Struct>
+		<Struct comment="\nWMI_RCP_ADDBA_REQ_CMDID\n" name="RCP_ADDBA_REQ" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member isArray="False" name="cidxtid" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="dialog_token" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member comment="ieee80211_ba_parameterset field as it received" isArray="False" name="ba_param_set" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member isArray="False" name="ba_timeout" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member comment="ieee80211_ba_seqstrl field as it received" isArray="False" name="ba_seq_ctrl" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+		</Struct>
+		<Struct comment="\nWMI_SET_MAC_ADDRESS_CMDID\n" name="SET_MAC_ADDRESS" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member isArray="True" name="mac" publishFW="True" publishLinux="True" publishWin="True" size="WMI_MAC_LEN" type="U08"/>
+			<Member isArray="True" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="2" type="U08"/>
+		</Struct>
+		<Struct comment="\nWMI_ECHO_CMDID\nCheck FW is alive\nWMI_DEEP_ECHO_CMDID\nCheck FW and ucode are alive\nReturned event: WMI_ECHO_RSP_EVENTID\nsame event for both commands\n" name="ECHO" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member isArray="False" name="value" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+		</Struct>
+		<Struct comment="\nWMI_OTP_READ_CMDID\n" name="OTP_READ" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member isArray="False" name="addr" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="size" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="values" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+		</Struct>
+		<Struct comment="\nWMI_OTP_WRITE_CMDID\n" name="OTP_WRITE" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member isArray="False" name="addr" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="size" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="values" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+		</Struct>
+		<Enum comment="\nWMI_TEMP_SENSE_CMDID\n\nMeasure MAC and radio temperatures\n\nPossible modes for temperature measurement\n" name="wmi_temperature_measure_mode" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="TEMPERATURE_USE_OLD_VALUE" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+			<EnumValue name="TEMPERATURE_MEASURE_NOW" publishFW="True" publishLinux="True" publishWin="True" value="0x02"/>
+		</Enum>
+		<Struct comment="\nWMI_TEMP_SENSE_CMDID\n" name="TEMP_SENSE" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member isArray="False" name="measure_baseband_en" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="measure_rf_en" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="measure_mode" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+		</Struct>
+		<Enum name="wmi_pmc_op" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_PMC_ALLOCATE" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="WMI_PMC_RELEASE" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+		</Enum>
+		<Struct comment="\nWMI_PMC_CMDID\n" name="PMC" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member comment="enum wmi_pmc_cmd_op_type" isArray="False" name="op" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="ring_size" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member isArray="False" name="mem_base_l" publishFW="True" publishLinux="False" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="mem_base_h" publishFW="True" publishLinux="False" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="mem_base" publishFW="False" publishLinux="True" publishWin="False" size="1" type="U64"/>
+		</Struct>
+		<Enum name="wmi_aoa_meas_type" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_AOA_PHASE_MEAS" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="WMI_AOA_PHASE_AMP_MEAS" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+		</Enum>
+		<Struct comment="\nWMI_AOA_MEAS_CMDID\n" name="AOA_MEAS" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member isArray="True" name="mac_addr" publishFW="True" publishLinux="True" publishWin="True" size="WMI_MAC_LEN" type="U08"/>
+			<Member comment="channels IDs:\n0 - 58320 MHz\n1 - 60480 MHz\n2 - 62640 MHz\n" isArray="False" name="channel" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member comment="enum wmi_aoa_meas_type" isArray="False" name="aoa_meas_type" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="meas_rf_mask" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+		</Struct>
+		<Struct comment="\nWMI_SET_MGMT_RETRY_LIMIT_CMDID\n" name="SET_MGMT_RETRY_LIMIT" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member comment="MAC retransmit limit for mgmt frames" isArray="False" name="mgmt_retry_limit" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member comment="alignment to 32b" isArray="True" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="3" type="U08"/>
+		</Struct>
+		<Enum name="wmi_tof_burst_duration" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_TOF_BURST_DURATION_250_USEC" publishFW="True" publishLinux="True" publishWin="True" value="2"/>
+			<EnumValue name="WMI_TOF_BURST_DURATION_500_USEC" publishFW="True" publishLinux="True" publishWin="True" value="3"/>
+			<EnumValue name="WMI_TOF_BURST_DURATION_1_MSEC" publishFW="True" publishLinux="True" publishWin="True" value="4"/>
+			<EnumValue name="WMI_TOF_BURST_DURATION_2_MSEC" publishFW="True" publishLinux="True" publishWin="True" value="5"/>
+			<EnumValue name="WMI_TOF_BURST_DURATION_4_MSEC" publishFW="True" publishLinux="True" publishWin="True" value="6"/>
+			<EnumValue name="WMI_TOF_BURST_DURATION_8_MSEC" publishFW="True" publishLinux="True" publishWin="True" value="7"/>
+			<EnumValue name="WMI_TOF_BURST_DURATION_16_MSEC" publishFW="True" publishLinux="True" publishWin="True" value="8"/>
+			<EnumValue name="WMI_TOF_BURST_DURATION_32_MSEC" publishFW="True" publishLinux="True" publishWin="True" value="9"/>
+			<EnumValue name="WMI_TOF_BURST_DURATION_64_MSEC" publishFW="True" publishLinux="True" publishWin="True" value="10"/>
+			<EnumValue name="WMI_TOF_BURST_DURATION_128_MSEC" publishFW="True" publishLinux="True" publishWin="True" value="11"/>
+			<EnumValue name="WMI_TOF_BURST_DURATION_NO_PREFERENCES" publishFW="True" publishLinux="True" publishWin="True" value="15"/>
+		</Enum>
+		<Enum name="wmi_tof_session_start_flags" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_TOF_SESSION_START_FLAG_SECURED" publishFW="True" publishLinux="True" publishWin="True" value="0x1"/>
+			<EnumValue name="WMI_TOF_SESSION_START_FLAG_ASAP" publishFW="True" publishLinux="True" publishWin="True" value="0x2"/>
+			<EnumValue name="WMI_TOF_SESSION_START_FLAG_LCI_REQ" publishFW="True" publishLinux="True" publishWin="True" value="0x4"/>
+			<EnumValue name="WMI_TOF_SESSION_START_FLAG_LCR_REQ" publishFW="True" publishLinux="True" publishWin="True" value="0x8"/>
+		</Enum>
+		<Struct comment="\nWMI_TOF_SESSION_START_CMDID\n" name="wmi_ftm_dest_info" publishFW="True" publishLinux="True" publishWin="True" type="reg">
+			<Member isArray="False" name="channel" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="flags" comment="wmi_tof_session_start_flags_e" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="initial_token" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="num_of_ftm_per_burst" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="num_of_bursts_exp" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="burst_duration" comment="wmi_tof_burst_duration_e" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member comment="Burst Period indicate interval between two consecutive burst instances, in units of 100 ms" isArray="False" name="burst_period" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member isArray="True" name="dst_mac" publishFW="True" publishLinux="True" publishWin="True" size="WMI_MAC_LEN" type="U08"/>
+			<Member isArray="False" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+		</Struct>
+		<Struct comment="\nWMI_TOF_SESSION_START_CMDID\n" name="TOF_SESSION_START" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member isArray="False" name="session_id" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="num_of_aoa_measures" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="aoa_type" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="num_of_dest" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member isArray="True" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="4" type="U08"/>
+			<Member isArray="True" name="ftm_dest_info" publishFW="True" publishLinux="True" publishWin="True" size="0" type="wmi_ftm_dest_info"/>
+		</Struct>
+		<Enum name="wmi_tof_channel_info_report_type" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_TOF_CHANNEL_INFO_TYPE_CIR" publishFW="True" publishLinux="True" publishWin="True" value="0x1"/>
+			<EnumValue name="WMI_TOF_CHANNEL_INFO_TYPE_RSSI" publishFW="True" publishLinux="True" publishWin="True" value="0x2"/>
+			<EnumValue name="WMI_TOF_CHANNEL_INFO_TYPE_SNR" publishFW="True" publishLinux="True" publishWin="True" value="0x4"/>
+			<EnumValue name="WMI_TOF_CHANNEL_INFO_TYPE_DEBUG_DATA" publishFW="True" publishLinux="True" publishWin="True" value="0x8"/>
+			<EnumValue name="WMI_TOF_CHANNEL_INFO_TYPE_VENDOR_SPECIFIC" publishFW="True" publishLinux="True" publishWin="True" value="0x10"/>
+		</Enum>
+		<Struct comment="\nWMI_TOF_CHANNEL_INFO_CMDID\n" name="TOF_CHANNEL_INFO" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member isArray="False" name="channel_info_report_request" comment="wmi_tof_channel_info_report_type_e" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+		</Struct>
+		<Enum comment="\nWMI Events\nList of Events (target to host)\n" name="WMI_EVENT_ID" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_READY_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1001"/>
+			<EnumValue name="WMI_CONNECT_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1002"/>
+			<EnumValue name="WMI_DISCONNECT_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1003"/>
+			<EnumValue name="WMI_SCAN_COMPLETE_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x100A"/>
+			<EnumValue name="WMI_REPORT_STATISTICS_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x100B"/>
+			<EnumValue name="WMI_RD_MEM_RSP_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1800"/>
+			<EnumValue name="WMI_FW_READY_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1801"/>
+			<EnumValue name="WMI_EXIT_FAST_MEM_ACC_MODE_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x200"/>
+			<EnumValue name="WMI_ECHO_RSP_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1803"/>
+			<EnumValue name="WMI_FS_TUNE_DONE_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x180A"/>
+			<EnumValue name="WMI_CORR_MEASURE_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x180B"/>
+			<EnumValue name="WMI_READ_RSSI_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x180C"/>
+			<EnumValue name="WMI_TEMP_SENSE_DONE_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x180E"/>
+			<EnumValue name="WMI_DC_CALIB_DONE_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x180F"/>
+			<EnumValue name="WMI_IQ_TX_CALIB_DONE_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1811"/>
+			<EnumValue name="WMI_IQ_RX_CALIB_DONE_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1812"/>
+			<EnumValue name="WMI_SET_WORK_MODE_DONE_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1815"/>
+			<EnumValue name="WMI_LO_LEAKAGE_CALIB_DONE_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1816"/>
+			<EnumValue name="WMI_MARLON_R_READ_DONE_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1818"/>
+			<EnumValue name="WMI_MARLON_R_WRITE_DONE_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1819"/>
+			<EnumValue name="WMI_MARLON_R_TXRX_SEL_DONE_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x181A"/>
+			<EnumValue name="WMI_SILENT_RSSI_CALIB_DONE_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x181D"/>
+			<EnumValue name="WMI_RF_RX_TEST_DONE_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x181E"/>
+			<EnumValue name="WMI_CFG_RX_CHAIN_DONE_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1820"/>
+			<EnumValue name="WMI_VRING_CFG_DONE_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1821"/>
+			<EnumValue name="WMI_BA_STATUS_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1823"/>
+			<EnumValue name="WMI_RCP_ADDBA_REQ_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1824"/>
+			<EnumValue name="WMI_RCP_ADDBA_RESP_SENT_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1825"/>
+			<EnumValue name="WMI_DELBA_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1826"/>
+			<EnumValue name="WMI_GET_SSID_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1828"/>
+			<EnumValue name="WMI_GET_PCP_CHANNEL_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x182A"/>
+			<EnumValue name="WMI_SW_TX_COMPLETE_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x182B"/>
+			<EnumValue name="WMI_READ_MAC_RXQ_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1830"/>
+			<EnumValue name="WMI_READ_MAC_TXQ_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1831"/>
+			<EnumValue name="WMI_WRITE_MAC_RXQ_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1832"/>
+			<EnumValue name="WMI_WRITE_MAC_TXQ_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1833"/>
+			<EnumValue name="WMI_WRITE_MAC_XQ_FIELD_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1834"/>
+			<EnumValue name="WMI_BEAMFORMING_MGMT_DONE_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1836"/>
+			<EnumValue name="WMI_BF_TXSS_MGMT_DONE_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1837"/>
+			<EnumValue name="WMI_BF_RXSS_MGMT_DONE_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1839"/>
+			<EnumValue name="WMI_RS_MGMT_DONE_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1852"/>
+			<EnumValue name="WMI_RF_MGMT_STATUS_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1853"/>
+			<EnumValue name="WMI_THERMAL_THROTTLING_STATUS_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1855"/>
+			<EnumValue name="WMI_BF_SM_MGMT_DONE_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1838"/>
+			<EnumValue name="WMI_RX_MGMT_PACKET_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1840"/>
+			<EnumValue name="WMI_TX_MGMT_PACKET_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1841"/>
+			<EnumValue name="WMI_LINK_MAINTAIN_CFG_WRITE_DONE_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1842"/>
+			<EnumValue name="WMI_LINK_MAINTAIN_CFG_READ_DONE_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1843"/>
+			<EnumValue name="WMI_OTP_READ_RESULT_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1856"/>
+			<EnumValue name="WMI_LED_CFG_DONE_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1858"/>
+			<EnumValue comment="Performance monitoring events" name="WMI_DATA_PORT_OPEN_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1860"/>
+			<EnumValue name="WMI_WBE_LINK_DOWN_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1861"/>
+			<EnumValue name="WMI_BF_CTRL_DONE_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1862"/>
+			<EnumValue name="WMI_NOTIFY_REQ_DONE_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1863"/>
+			<EnumValue name="WMI_GET_STATUS_DONE_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1864"/>
+			<EnumValue name="WMI_VRING_EN_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1865"/>
+			<EnumValue name="WMI_GET_RF_STATUS_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1866"/>
+			<EnumValue name="WMI_GET_BASEBAND_TYPE_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1867"/>
+			<EnumValue name="WMI_UNIT_TEST_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1900"/>
+			<EnumValue name="WMI_FLASH_READ_DONE_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1902"/>
+			<EnumValue name="WMI_FLASH_WRITE_DONE_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1903"/>
+			<EnumValue comment="Power management" name="WMI_TRAFFIC_DEFERRAL_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1904"/>
+			<EnumValue name="WMI_TRAFFIC_RESUME_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1905"/>
+			<EnumValue comment="P2P" name="WMI_P2P_CFG_DONE_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1910"/>
+			<EnumValue name="WMI_PORT_ALLOCATED_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1911"/>
+			<EnumValue name="WMI_PORT_DELETED_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1912"/>
+			<EnumValue name="WMI_LISTEN_STARTED_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1914"/>
+			<EnumValue name="WMI_SEARCH_STARTED_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1915"/>
+			<EnumValue name="WMI_DISCOVERY_STARTED_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1916"/>
+			<EnumValue name="WMI_DISCOVERY_STOPPED_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1917"/>
+			<EnumValue name="WMI_PCP_STARTED_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1918"/>
+			<EnumValue name="WMI_PCP_STOPPED_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1919"/>
+			<EnumValue name="WMI_PCP_FACTOR_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x191A"/>
+			<EnumValue name="WMI_PS_DEV_PROFILE_CFG_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x191C" comment="Power Save Configuration Events"/>
+			<EnumValue name="WMI_PS_DEV_CFG_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x191D" comment="Not supported yet"/>
+			<EnumValue name="WMI_PS_DEV_CFG_READ_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x191E" comment="Not supported yet"/>
+			<EnumValue name="WMI_PS_MID_CFG_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x191F" comment="Not supported yet"/>
+			<EnumValue name="WMI_PS_MID_CFG_READ_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1920" comment="Not supported yet"/>
+			<EnumValue name="WMI_RS_CFG_DONE_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1921"/>
+			<EnumValue name="WMI_GET_DETAILED_RS_RES_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1922"/>
+			<EnumValue name="WMI_AOA_MEAS_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1923"/>
+			<EnumValue name="WMI_SET_MGMT_RETRY_LIMIT_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1930"/>
+			<EnumValue name="WMI_GET_MGMT_RETRY_LIMIT_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1931"/>
+			<EnumValue name="WMI_TOF_SESSION_END_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1991"/>
+			<EnumValue name="WMI_TOF_GET_CAPABILITIES_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1992"/>
+			<EnumValue name="WMI_TOF_SET_LCR_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1993"/>
+			<EnumValue name="WMI_TOF_SET_LCI_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1994"/>
+			<EnumValue name="WMI_TOF_FTM_PER_DEST_RES_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1995"/>
+			<EnumValue name="WMI_TOF_CHANNEL_INFO_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x1996"/>
+			<EnumValue name="WMI_GET_RF_SECTOR_PARAMS_DONE_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x19A0"/>
+			<EnumValue name="WMI_SET_RF_SECTOR_PARAMS_DONE_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x19A1"/>
+			<EnumValue name="WMI_GET_SELECTED_RF_SECTOR_INDEX_DONE_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x19A2"/>
+			<EnumValue name="WMI_SET_SELECTED_RF_SECTOR_INDEX_DONE_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x19A3"/>
+			<EnumValue name="WMI_SET_RF_SECTOR_ON_DONE_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x19A4"/>
+			<EnumValue name="WMI_SET_CHANNEL_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x9000"/>
+			<EnumValue name="WMI_ASSOC_REQ_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x9001"/>
+			<EnumValue name="WMI_EAPOL_RX_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x9002"/>
+			<EnumValue name="WMI_MAC_ADDR_RESP_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x9003"/>
+			<EnumValue name="WMI_FW_VER_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x9004"/>
+			<EnumValue name="WMI_ACS_PASSIVE_SCAN_COMPLETE_EVENTID" publishFW="True" publishLinux="True" publishWin="True" value="0x9005"/>
+		</Enum>
+		<Enum comment="\nEvents data structures\n" name="wmi_fw_status" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_FW_STATUS_SUCCESS" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="WMI_FW_STATUS_FAILURE" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+		</Enum>
+		<Enum comment="\nWMI_RF_MGMT_STATUS_EVENTID\n" name="wmi_rf_status" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_RF_ENABLED" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="WMI_RF_DISABLED_HW" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+			<EnumValue name="WMI_RF_DISABLED_SW" publishFW="True" publishLinux="True" publishWin="True" value="0x02"/>
+			<EnumValue name="WMI_RF_DISABLED_HW_SW" publishFW="True" publishLinux="True" publishWin="True" value="0x03"/>
+		</Enum>
+		<Struct comment="\nWMI_RF_MGMT_STATUS_EVENTID\n" name="RF_MGMT_STATUS" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member isArray="False" name="rf_status" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+		</Struct>
+		<Struct comment="\nWMI_THERMAL_THROTTLING_STATUS_EVENTID\n" name="THERMAL_THROTTLING_STATUS" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member isArray="False" name="time_on_usec" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="time_off_usec" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="max_txop_length_usec" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+		</Struct>
+		<Struct comment="\nWMI_GET_STATUS_DONE_EVENTID\n" name="GET_STATUS_DONE" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member isArray="False" name="is_associated" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="cid" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="True" name="reserved0" publishFW="True" publishLinux="True" publishWin="True" size="3" type="U08"/>
+			<Member isArray="True" name="bssid" publishFW="True" publishLinux="True" publishWin="True" size="WMI_MAC_LEN" type="U08"/>
+			<Member isArray="False" name="channel" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="reserved1" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="network_type" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="True" name="reserved2" publishFW="True" publishLinux="True" publishWin="True" size="3" type="U08"/>
+			<Member isArray="False" name="ssid_len" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="True" name="ssid" publishFW="True" publishLinux="True" publishWin="True" size="WMI_MAX_SSID_LEN" type="U08"/>
+			<Member isArray="False" name="rf_status" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="is_secured" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+		</Struct>
+		<Struct comment="\nWMI_FW_VER_EVENTID\n" name="FW_VER" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member comment="FW image version" isArray="False" name="fw_major" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="fw_minor" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="fw_subminor" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="fw_build" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member comment="FW image build time stamp" isArray="False" name="hour" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="minute" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="second" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="day" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="month" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="year" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member comment="Boot Loader image version" isArray="False" name="bl_major" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="bl_minor" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="bl_subminor" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="bl_build" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member comment="The number of entries in the FW capabilies array" isArray="False" name="fw_capabilities_len" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="True" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="3" type="U08"/>
+			<Member comment="FW capabilities info\nMust be the last member of the struct" isArray="True" name="fw_capabilities" publishFW="True" publishLinux="True" publishWin="False" size="0" type="U32"/>
+			<Member comment="FW capabilities info\nMust be the last member of the struct" isArray="True" name="fw_capabilities" publishFW="False" publishLinux="False" publishWin="True" size="WMI_EMPTY_ARRAY_SIZE" type="U32"/>
+		</Struct>
+		<Enum comment="\nWMI_GET_RF_STATUS_EVENTID\n" name="rf_type" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="RF_UNKNOWN" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="RF_MARLON" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+			<EnumValue name="RF_SPARROW" publishFW="True" publishLinux="True" publishWin="True" value="0x02"/>
+		</Enum>
+		<Enum comment="\nWMI_GET_RF_STATUS_EVENTID\n" name="board_file_rf_type" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="BF_RF_MARLON" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="BF_RF_SPARROW" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+		</Enum>
+		<Enum comment="\nWMI_GET_RF_STATUS_EVENTID\n" name="rf_status" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="RF_OK" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="RF_NO_COMM" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+			<EnumValue name="RF_WRONG_BOARD_FILE" publishFW="True" publishLinux="True" publishWin="True" value="0x02"/>
+		</Enum>
+		<Struct comment="\nWMI_GET_RF_STATUS_EVENTID\n" name="GET_RF_STATUS" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member comment="enum rf_type" isArray="False" name="rf_type" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member comment="attached RFs bit vector" isArray="False" name="attached_rf_vector" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member comment="enabled RFs bit vector" isArray="False" name="enabled_rf_vector" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member comment="enum rf_status, refers to enabled RFs" isArray="True" name="rf_status" publishFW="True" publishLinux="True" publishWin="True" size="32" type="U08"/>
+			<Member comment="enum board file RF type" isArray="False" name="board_file_rf_type" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member comment="board file platform type" isArray="False" name="board_file_platform_type" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member comment="board file version" isArray="False" name="board_file_version" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="True" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="2" type="U32"/>
+		</Struct>
+		<Enum comment="\nWMI_GET_BASEBAND_TYPE_EVENTID\n" name="baseband_type" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="BASEBAND_UNKNOWN" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="BASEBAND_SPARROW_M_A0" publishFW="True" publishLinux="True" publishWin="True" value="0x03"/>
+			<EnumValue name="BASEBAND_SPARROW_M_A1" publishFW="True" publishLinux="True" publishWin="True" value="0x04"/>
+			<EnumValue name="BASEBAND_SPARROW_M_B0" publishFW="True" publishLinux="True" publishWin="True" value="0x05"/>
+			<EnumValue name="BASEBAND_SPARROW_M_C0" publishFW="True" publishLinux="True" publishWin="True" value="0x06"/>
+			<EnumValue name="BASEBAND_SPARROW_M_D0" publishFW="True" publishLinux="True" publishWin="True" value="0x07"/>
+		</Enum>
+		<Struct comment="\nWMI_GET_BASEBAND_TYPE_EVENTID\n" name="GET_BASEBAND_TYPE" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member comment="enum baseband_type" isArray="False" name="baseband_type" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+		</Struct>
+		<Struct comment="\nWMI_MAC_ADDR_RESP_EVENTID\n" name="MAC_ADDR_RESP" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member isArray="True" name="mac" publishFW="True" publishLinux="True" publishWin="True" size="WMI_MAC_LEN" type="U08"/>
+			<Member isArray="False" name="auth_mode" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="crypt_mode" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="offload_mode" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+		</Struct>
+		<Struct comment="\nWMI_EAPOL_RX_EVENTID\n" name="EAPOL_RX" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member isArray="True" name="src_mac" publishFW="True" publishLinux="True" publishWin="True" size="WMI_MAC_LEN" type="U08"/>
+			<Member isArray="False" name="eapol_len" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member isArray="True" name="eapol" publishFW="True" publishLinux="True" publishWin="False" size="0" type="U08"/>
+			<Member isArray="True" name="eapol" publishFW="False" publishLinux="False" publishWin="True" size="WMI_EMPTY_ARRAY_SIZE" type="U08"/>
+		</Struct>
+		<Enum comment="\nWMI_READY_EVENTID\n" name="wmi_phy_capability" publishFW="False" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_11A_CAPABILITY" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+			<EnumValue name="WMI_11G_CAPABILITY" publishFW="True" publishLinux="True" publishWin="True" value="0x02"/>
+			<EnumValue name="WMI_11AG_CAPABILITY" publishFW="True" publishLinux="True" publishWin="True" value="0x03"/>
+			<EnumValue name="WMI_11NA_CAPABILITY" publishFW="True" publishLinux="True" publishWin="True" value="0x04"/>
+			<EnumValue name="WMI_11NG_CAPABILITY" publishFW="True" publishLinux="True" publishWin="True" value="0x05"/>
+			<EnumValue name="WMI_11NAG_CAPABILITY" publishFW="True" publishLinux="True" publishWin="True" value="0x06"/>
+			<EnumValue name="WMI_11AD_CAPABILITY" publishFW="True" publishLinux="True" publishWin="True" value="0x07"/>
+			<EnumValue name="WMI_11N_CAPABILITY_OFFSET" publishFW="True" publishLinux="True" publishWin="True" value="0x03"/>
+		</Enum>
+		<Struct name="READY" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member isArray="False" name="sw_version" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="abi_version" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="True" name="mac" publishFW="True" publishLinux="True" publishWin="True" size="WMI_MAC_LEN" type="U08"/>
+			<Member comment="enum wmi_phy_capability" isArray="False" name="phy_capability" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="numof_additional_mids" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+		</Struct>
+		<Struct comment="\nWMI_NOTIFY_REQ_DONE_EVENTID\n" name="NOTIFY_REQ_DONE" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member comment="beamforming status, 0: fail; 1: OK; 2: retrying" isArray="False" name="status" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="tsf_low" publishFW="True" publishLinux="False" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="tsf_high" publishFW="True" publishLinux="False" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="tsf" publishFW="False" publishLinux="True" publishWin="False" size="1" type="U64"/>
+			<Member isArray="False" name="snr_val" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="tx_tpt" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="tx_goodput" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="rx_goodput" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="bf_mcs" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member isArray="False" name="my_rx_sector" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member isArray="False" name="my_tx_sector" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member isArray="False" name="other_rx_sector" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member isArray="False" name="other_tx_sector" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member isArray="False" name="range" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member isArray="False" name="sqi" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="True" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="3" type="U08"/>
+		</Struct>
+		<Struct comment="\nWMI_CONNECT_EVENTID\n" name="CONNECT" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member isArray="False" name="channel" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="reserved0" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="True" name="bssid" publishFW="True" publishLinux="True" publishWin="True" size="WMI_MAC_LEN" type="U08"/>
+			<Member isArray="False" name="listen_interval" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member isArray="False" name="beacon_interval" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member isArray="False" name="network_type" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="True" name="reserved1" publishFW="True" publishLinux="True" publishWin="True" size="3" type="U08"/>
+			<Member isArray="False" name="beacon_ie_len" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="assoc_req_len" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="assoc_resp_len" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="cid" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="True" name="reserved2" publishFW="True" publishLinux="True" publishWin="True" size="3" type="U08"/>
+			<Member comment="not in use" isArray="True" name="assoc_info" publishFW="True" publishLinux="True" publishWin="False" size="0" type="U08"/>
+			<Member comment="not in use" isArray="True" name="assoc_info" publishFW="False" publishLinux="False" publishWin="True" size="WMI_EMPTY_ARRAY_SIZE" type="U08"/>
+		</Struct>
+		<Enum comment="\nWMI_DISCONNECT_EVENTID\n" name="wmi_disconnect_reason" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_DIS_REASON_NO_NETWORK_AVAIL" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+			<EnumValue comment="bmiss" name="WMI_DIS_REASON_LOST_LINK" publishFW="True" publishLinux="True" publishWin="True" value="0x02"/>
+			<EnumValue name="WMI_DIS_REASON_DISCONNECT_CMD" publishFW="True" publishLinux="True" publishWin="True" value="0x03"/>
+			<EnumValue name="WMI_DIS_REASON_BSS_DISCONNECTED" publishFW="True" publishLinux="True" publishWin="True" value="0x04"/>
+			<EnumValue name="WMI_DIS_REASON_AUTH_FAILED" publishFW="True" publishLinux="True" publishWin="True" value="0x05"/>
+			<EnumValue name="WMI_DIS_REASON_ASSOC_FAILED" publishFW="True" publishLinux="True" publishWin="True" value="0x06"/>
+			<EnumValue name="WMI_DIS_REASON_NO_RESOURCES_AVAIL" publishFW="True" publishLinux="True" publishWin="True" value="0x07"/>
+			<EnumValue name="WMI_DIS_REASON_CSERV_DISCONNECT" publishFW="True" publishLinux="True" publishWin="True" value="0x08"/>
+			<EnumValue name="WMI_DIS_REASON_INVALID_PROFILE" publishFW="True" publishLinux="True" publishWin="True" value="0x0A"/>
+			<EnumValue name="WMI_DIS_REASON_DOT11H_CHANNEL_SWITCH" publishFW="True" publishLinux="True" publishWin="True" value="0x0B"/>
+			<EnumValue name="WMI_DIS_REASON_PROFILE_MISMATCH" publishFW="True" publishLinux="True" publishWin="True" value="0x0C"/>
+			<EnumValue name="WMI_DIS_REASON_CONNECTION_EVICTED" publishFW="True" publishLinux="True" publishWin="True" value="0x0D"/>
+			<EnumValue name="WMI_DIS_REASON_IBSS_MERGE" publishFW="True" publishLinux="True" publishWin="True" value="0x0E"/>
+		</Enum>
+		<Struct name="DISCONNECT" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member comment="reason code, see 802.11 spec." isArray="False" name="protocol_reason_status" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member comment="set if known" isArray="True" name="bssid" publishFW="True" publishLinux="True" publishWin="True" size="WMI_MAC_LEN" type="U08"/>
+			<Member comment="see enum wmi_disconnect_reason" isArray="False" name="disconnect_reason" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member comment="last assoc req may passed to host - not in used" isArray="False" name="assoc_resp_len" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member comment="last assoc req may passed to host - not in used" isArray="True" name="assoc_info" publishFW="True" publishLinux="True" publishWin="False" size="0" type="U08"/>
+			<Member comment="last assoc req may passed to host - not in used" isArray="True" name="assoc_info" publishFW="False" publishLinux="False" publishWin="True" size="WMI_EMPTY_ARRAY_SIZE" type="U08"/>
+		</Struct>
+		<Enum comment="\nWMI_SCAN_COMPLETE_EVENTID\n" name="scan_status" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_SCAN_SUCCESS" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="WMI_SCAN_FAILED" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+			<EnumValue name="WMI_SCAN_ABORTED" publishFW="True" publishLinux="True" publishWin="True" value="0x02"/>
+			<EnumValue name="WMI_SCAN_REJECTED" publishFW="True" publishLinux="True" publishWin="True" value="0x03"/>
+			<EnumValue name="WMI_SCAN_ABORT_REJECTED" publishFW="True" publishLinux="True" publishWin="True" value="0x04"/>
+		</Enum>
+		<Struct name="SCAN_COMPLETE" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member comment="enum scan_status" isArray="False" name="status" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+		</Struct>
+		<Enum comment="\nWMI_ACS_PASSIVE_SCAN_COMPLETE_EVENT\n" name="wmi_acs_info_bitmask" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_ACS_INFO_BITMASK_BEACON_FOUND" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+			<EnumValue name="WMI_ACS_INFO_BITMASK_BUSY_TIME" publishFW="True" publishLinux="True" publishWin="True" value="0x02"/>
+			<EnumValue name="WMI_ACS_INFO_BITMASK_TX_TIME" publishFW="True" publishLinux="True" publishWin="True" value="0x04"/>
+			<EnumValue name="WMI_ACS_INFO_BITMASK_RX_TIME" publishFW="True" publishLinux="True" publishWin="True" value="0x08"/>
+			<EnumValue name="WMI_ACS_INFO_BITMASK_NOISE" publishFW="True" publishLinux="True" publishWin="True" value="0x10"/>
+		</Enum>
+		<Struct name="scan_acs_info" publishFW="True" publishLinux="True" publishWin="True" type="reg">
+			<Member isArray="False" name="channel" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="beacon_found" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member comment="msec" isArray="False" name="busy_time" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member isArray="False" name="tx_time" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member isArray="False" name="rx_time" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member isArray="False" name="noise" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="True" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="3" type="U08"/>
+		</Struct>
+		<Struct name="ACS_PASSIVE_SCAN_COMPLETE" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member isArray="False" name="dwell_time" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member comment="enum wmi_acs_info_bitmask" isArray="False" name="info_bitmask" publishFW="True" publishLinux="False" publishWin="True" size="1" type="U16"/>
+			<Member comment="valid fields within channel info according to\ntheir appearance in struct order\n" isArray="False" name="filled" publishFW="False" publishLinux="True" publishWin="False" size="1" type="U16"/>
+			<Member isArray="False" name="num_scan_channels" publishFW="True" publishLinux="False" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="num_scanned_channels" publishFW="False" publishLinux="True" publishWin="False" size="1" type="U08"/>
+			<Member comment="enum scan_status" isArray="False" name="status" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="True" name="scan_info_list" publishFW="True" publishLinux="True" publishWin="False" size="0" type="scan_acs_info"/>
+			<Member isArray="True" name="scan_info_list" publishFW="False" publishLinux="False" publishWin="True" size="WMI_EMPTY_ARRAY_SIZE" type="scan_acs_info"/>
+		</Struct>
+		<Enum comment="\nWMI_BA_STATUS_EVENTID\n" name="wmi_vring_ba_status" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_BA_AGREED" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="WMI_BA_NON_AGREED" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+			<EnumValue comment="BA_EN in middle of teardown flow" name="WMI_BA_TD_WIP" publishFW="True" publishLinux="True" publishWin="True" value="0x02"/>
+			<EnumValue comment="BA_DIS or BA_EN in middle of BA SETUP flow" name="WMI_BA_SETUP_WIP" publishFW="True" publishLinux="True" publishWin="True" value="0x03"/>
+			<EnumValue comment="BA_EN when the BA session is already active" name="WMI_BA_SESSION_ACTIVE" publishFW="True" publishLinux="True" publishWin="True" value="0x04"/>
+			<EnumValue comment="BA_DIS when the BA session is not active" name="WMI_BA_SESSION_NOT_ACTIVE" publishFW="True" publishLinux="True" publishWin="True" value="0x05"/>
+		</Enum>
+		<Struct name="BA_STATUS" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member comment="enum wmi_vring_ba_status" isArray="False" name="status" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member isArray="True" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="2" type="U08"/>
+			<Member isArray="False" name="ringid" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="agg_wsize" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="ba_timeout" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member isArray="False" name="amsdu" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+		</Struct>
+		<Struct comment="\nWMI_DELBA_EVENTID\n" name="DELBA" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member isArray="False" name="cidxtid" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="from_initiator" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="reason" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+		</Struct>
+		<Struct comment="\nWMI_VRING_CFG_DONE_EVENTID\n" name="VRING_CFG_DONE" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member isArray="False" name="ringid" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="status" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="True" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="2" type="U08"/>
+			<Member isArray="False" name="tx_vring_tail_ptr" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+		</Struct>
+		<Struct comment="\nWMI_RCP_ADDBA_RESP_SENT_EVENTID\n" name="RCP_ADDBA_RESP_SENT" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member isArray="False" name="cidxtid" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="status" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+		</Struct>
+		<Struct comment="\nWMI_RCP_ADDBA_REQ_EVENTID\n" name="RCP_ADDBA_REQ" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member isArray="False" name="cidxtid" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="dialog_token" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member comment="ieee80211_ba_parameterset as it received" isArray="False" name="ba_param_set" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member isArray="False" name="ba_timeout" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member comment="ieee80211_ba_seqstrl field as it received" isArray="False" name="ba_seq_ctrl" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+		</Struct>
+		<Enum comment="\nWMI_CFG_RX_CHAIN_DONE_EVENTID\n" name="wmi_cfg_rx_chain_done_event_status" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_CFG_RX_CHAIN_SUCCESS" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+		</Enum>
+		<Struct name="CFG_RX_CHAIN_DONE" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member comment="V-Ring Tail pointer" isArray="False" name="rx_ring_tail_ptr" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="status" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+		</Struct>
+		<Enum comment="\nWMI_WBE_LINK_DOWN_EVENTID\n" name="wmi_wbe_link_down_event_reason" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_WBE_REASON_USER_REQUEST" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="WMI_WBE_REASON_RX_DISASSOC" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+			<EnumValue name="WMI_WBE_REASON_BAD_PHY_LINK" publishFW="True" publishLinux="True" publishWin="True" value="0x02"/>
+		</Enum>
+		<Struct comment="\nWMI_WBE_LINK_DOWN_EVENTID\n" name="WBE_LINK_DOWN" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member isArray="False" name="cid" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="True" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="3" type="U08"/>
+			<Member isArray="False" name="reason" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+		</Struct>
+		<Struct comment="\nWMI_DATA_PORT_OPEN_EVENTID\n" name="DATA_PORT_OPEN" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member isArray="False" name="cid" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="True" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="3" type="U08"/>
+		</Struct>
+		<Struct comment="\nWMI_VRING_EN_EVENTID\n" name="VRING_EN" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member isArray="False" name="vring_index" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="True" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="3" type="U08"/>
+		</Struct>
+		<Struct comment="\nWMI_GET_PCP_CHANNEL_EVENTID\n" name="GET_PCP_CHANNEL" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member isArray="False" name="channel" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="True" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="3" type="U08"/>
+		</Struct>
+		<Struct comment="\nWMI_P2P_CFG_DONE_EVENTID\n" name="P2P_CFG_DONE" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member comment="wmi_fw_status" isArray="False" name="status" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="True" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="3" type="U08"/>
+		</Struct>
+		<Struct comment="\nWMI_PORT_ALLOCATED_EVENTID\n" name="PORT_ALLOCATED" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member comment="wmi_fw_status" isArray="False" name="status" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="True" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="3" type="U08"/>
+		</Struct>
+		<Struct comment="\nWMI_PORT_DELETED_EVENTID\n" name="PORT_DELETED" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member comment="wmi_fw_status" isArray="False" name="status" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="True" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="3" type="U08"/>
+		</Struct>
+		<Struct comment="\nWMI_LISTEN_STARTED_EVENTID\n" name="LISTEN_STARTED" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member comment="wmi_fw_status" isArray="False" name="status" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="True" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="3" type="U08"/>
+		</Struct>
+		<Struct comment="\nWMI_SEARCH_STARTED_EVENTID\n" name="SEARCH_STARTED" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member comment="wmi_fw_status" isArray="False" name="status" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="True" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="3" type="U08"/>
+		</Struct>
+		<Struct comment="\nWMI_PCP_STARTED_EVENTID\n" name="PCP_STARTED" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member comment="wmi_fw_status" isArray="False" name="status" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="True" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="3" type="U08"/>
+		</Struct>
+		<Struct comment="\nWMI_PCP_FACTOR_EVENTID\n" name="PCP_FACTOR" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member isArray="False" name="pcp_factor" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+		</Struct>
+		<Enum name="wmi_sw_tx_status" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_TX_SW_STATUS_SUCCESS" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="WMI_TX_SW_STATUS_FAILED_NO_RESOURCES" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+			<EnumValue name="WMI_TX_SW_STATUS_FAILED_TX" publishFW="True" publishLinux="True" publishWin="True" value="0x02"/>
+		</Enum>
+		<Struct comment="\nWMI_SW_TX_COMPLETE_EVENTID\n" name="SW_TX_COMPLETE" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member comment="enum wmi_sw_tx_status" isArray="False" name="status" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="True" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="3" type="U08"/>
+		</Struct>
+		<Struct comment="\nWMI_CORR_MEASURE_EVENTID\n" name="CORR_MEASURE" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member comment = "signed" isArray="False" name="i" publishFW="True" publishLinux="True" publishWin="True" size="1" type="S32"/>
+			<Member comment = "signed" isArray="False" name="q" publishFW="True" publishLinux="True" publishWin="True" size="1" type="S32"/>
+			<Member comment = "signed" isArray="False" name="image_i" publishFW="True" publishLinux="True" publishWin="True" size="1" type="S32"/>
+			<Member comment = "signed" isArray="False" name="image_q" publishFW="True" publishLinux="True" publishWin="True" size="1" type="S32"/>
+		</Struct>
+		<Struct comment="\nWMI_READ_RSSI_EVENTID\n" name="READ_RSSI" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member isArray="False" name="ina_rssi_adc_dbm" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+		</Struct>
+		<Struct comment="\nWMI_GET_SSID_EVENTID\n" name="GET_SSID" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member isArray="False" name="ssid_len" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="True" name="ssid" publishFW="True" publishLinux="True" publishWin="True" size="WMI_MAX_SSID_LEN" type="U08"/>
+		</Struct>
+		<Struct comment="\nwmi_rx_mgmt_info\n" name="wmi_rx_mgmt_info" publishFW="True" publishLinux="True" publishWin="True" type="reg">
+			<Member isArray="False" name="mcs" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="snr" publishFW="True" publishLinux="True" publishWin="True" size="1" type="S08"/>
+			<Member isArray="False" name="range" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="sqi" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="stype" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member isArray="False" name="status" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member isArray="False" name="len" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member comment="Not resolved when == 0xFFFFFFFF  ==&gt; Broadcast to all MIDS" isArray="False" name="qid" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member comment="Not resolved when == 0xFFFFFFFF  ==&gt; Broadcast to all MIDS" isArray="False" name="mid" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="cid" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member comment="From Radio MNGR" isArray="False" name="channel" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+		</Struct>
+		<Struct comment="\nwmi_otp_read_write_cmd\n" name="wmi_otp_read_write_cmd" publishFW="True" publishLinux="True" publishWin="True" type="reg">
+			<Member isArray="False" name="addr" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="size" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="True" name="values" publishFW="True" publishLinux="True" publishWin="False" size="0" type="U08"/>
+			<Member isArray="True" name="values" publishFW="False" publishLinux="False" publishWin="True" size="WMI_EMPTY_ARRAY_SIZE" type="U08"/>
+		</Struct>
+		<Struct comment="\nWMI_OTP_READ_RESULT_EVENTID\n" name="OTP_READ_RESULT" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member isArray="True" name="payload" publishFW="True" publishLinux="True" publishWin="False" size="0" type="U08"/>
+			<Member isArray="True" name="payload" publishFW="False" publishLinux="False" publishWin="True" size="WMI_EMPTY_ARRAY_SIZE" type="U08"/>
+		</Struct>
+		<Struct comment="\nWMI_TX_MGMT_PACKET_EVENTID\n" name="TX_MGMT_PACKET" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member isArray="True" name="payload" publishFW="True" publishLinux="True" publishWin="False" size="0" type="U08"/>
+			<Member isArray="True" name="payload" publishFW="False" publishLinux="False" publishWin="True" size="WMI_EMPTY_ARRAY_SIZE" type="U08"/>
+		</Struct>
+		<Struct comment="\nWMI_RX_MGMT_PACKET_EVENTID\n" name="RX_MGMT_PACKET" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member isArray="False" name="info" publishFW="True" publishLinux="True" publishWin="True" size="1" type="wmi_rx_mgmt_info"/>
+			<Member isArray="True" name="payload" publishFW="True" publishLinux="True" publishWin="False" size="0" type="U08"/>
+			<Member isArray="True" name="payload" publishFW="False" publishLinux="False" publishWin="True" size="WMI_EMPTY_ARRAY_SIZE" type="U08"/>
+		</Struct>
+		<Struct comment="\nWMI_ECHO_RSP_EVENTID\n" name="ECHO_RSP" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member isArray="False" name="echoed_value" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+		</Struct>
+		<Struct comment="\nWMI_TEMP_SENSE_DONE_EVENTID\n\nMeasure MAC and radio temperatures\n" name="TEMP_SENSE_DONE" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member comment="Temperature times 1000 (actual temperature will be achieved by dividing the value by 1000)\n" isArray="False" name="baseband_t1000" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member comment="Temperature times 1000 (actual temperature will be achieved by dividing the value by 1000)\n" isArray="False" name="rf_t1000" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+		</Struct>
+		<Define name="WMI_SCAN_DWELL_TIME_MS" publishFW="False" publishLinux="True" publishWin="False" value="(100)"/>
+		<Define name="WMI_SURVEY_TIMEOUT_MS" publishFW="False" publishLinux="True" publishWin="False" value="(10000)"/>
+		<Enum name="wmi_hidden_ssid" publishFW="False" publishLinux="True" publishWin="False">
+			<EnumValue name="WMI_HIDDEN_SSID_DISABLED" publishFW="False" publishLinux="True" publishWin="False" value="0x00"/>
+			<EnumValue name="WMI_HIDDEN_SSID_SEND_EMPTY" publishFW="False" publishLinux="True" publishWin="False" value="0x10"/>
+			<EnumValue name="WMI_HIDDEN_SSID_CLEAR" publishFW="False" publishLinux="True" publishWin="False" value="0xFE"/>
+		</Enum>
+		<Enum comment="\nWMI_LED_CFG_CMDID\n\nConfigure LED On\Off\Blinking operation\n\nReturned events:\n- WMI_LED_CFG_DONE_EVENTID\n" name="led_mode" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="LED_DISABLE" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="LED_ENABLE" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+		</Enum>
+		<Enum comment="\nThe names of the led as\ndescribed on HW schemes.\n" name="wmi_led_id" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_LED_WLAN" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="WMI_LED_WPAN" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+			<EnumValue name="WMI_LED_WWAN" publishFW="True" publishLinux="True" publishWin="True" value="0x02"/>
+		</Enum>
+		<Enum comment="\nLed polarity mode.\n" name="wmi_led_polarity" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="LED_POLARITY_HIGH_ACTIVE" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="LED_POLARITY_LOW_ACTIVE" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+		</Enum>
+		<Struct comment="\nCombination of on and off\ncreates the blinking period\n" name="wmi_led_blink_mode" publishFW="True" publishLinux="True" publishWin="True" type="reg">
+			<Member isArray="False" name="blink_on" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="blink_off" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+		</Struct>
+		<Struct comment="\nWMI_LED_CFG_CMDID\n" name="LED_CFG" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member comment="enum led_mode_e" isArray="False" name="led_mode" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member comment="enum wmi_led_id_e" isArray="False" name="id" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member comment="slow speed blinking combination" isArray="False" name="slow_blink_cfg" publishFW="True" publishLinux="True" publishWin="True" size="1" type="wmi_led_blink_mode"/>
+			<Member comment="medium speed blinking combination" isArray="False" name="medium_blink_cfg" publishFW="True" publishLinux="True" publishWin="True" size="1" type="wmi_led_blink_mode"/>
+			<Member comment="high speed blinking combination" isArray="False" name="fast_blink_cfg" publishFW="True" publishLinux="True" publishWin="True" size="1" type="wmi_led_blink_mode"/>
+			<Member comment="polarity of the led" isArray="False" name="led_polarity" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member comment="reserved" isArray="False" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+		</Struct>
+		<Struct comment="\nWMI_LED_CFG_DONE_EVENTID\n" name="LED_CFG_DONE" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member comment="led config status" isArray="False" name="status" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+		</Struct>
+		<Define name="WMI_NUM_MCS" publishFW="True" publishLinux="True" publishWin="True" value="(13)"/>
+		<Struct comment="\nRate search parameters configuration per connection\n" name="wmi_rs_cfg" publishFW="True" publishLinux="True" publishWin="True" type="reg">
+			<Member comment="The maximal allowed PER for each MCS\nMCS will be considered as failed if PER during RS is higher" isArray="True" name="per_threshold" publishFW="True" publishLinux="True" publishWin="True" size="WMI_NUM_MCS" type="U08"/>
+			<Member comment="Number of MPDUs for each MCS\nthis is the minimal statistic required to make an educated decision" isArray="True" name="min_frame_cnt" publishFW="True" publishLinux="True" publishWin="True" size="WMI_NUM_MCS" type="U08"/>
+			<Member comment="stop threshold [0-100]" isArray="False" name="stop_th" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member comment="MCS1 stop threshold [0-100]" isArray="False" name="mcs1_fail_th" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="max_back_failure_th" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member comment="Debug feature for disabling internal RS trigger (which is currently triggered by BF Done)" isArray="False" name="dbg_disable_internal_trigger" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="back_failure_mask" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member isArray="False" name="mcs_en_vec" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+		</Struct>
+		<Struct comment="\nWMI_RS_CFG_CMDID\n" name="RS_CFG" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member comment="connection id" isArray="False" name="cid" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member comment="enable or disable rate search" isArray="False" name="rs_enable" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member comment="rate search configuration" isArray="False" name="rs_cfg" publishFW="True" publishLinux="True" publishWin="True" size="1" type="wmi_rs_cfg"/>
+		</Struct>
+		<Struct comment="\nWMI_RS_CFG_DONE_EVENTID\n" name="RS_CFG_DONE" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member isArray="False" name="cid" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member comment="enum wmi_fw_status" isArray="False" name="status" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="True" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="2" type="U08"/>
+		</Struct>
+		<Struct comment="\nWMI_GET_DETAILED_RS_RES_CMDID\n" name="GET_DETAILED_RS_RES" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member comment="connection id" isArray="False" name="cid" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="True" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="3" type="U08"/>
+		</Struct>
+		<Enum comment="\nRS results status\n" name="wmi_rs_results_status" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_RS_RES_VALID" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="WMI_RS_RES_INVALID" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+		</Enum>
+		<Struct comment="\nRate search results\n" name="wmi_rs_results" publishFW="True" publishLinux="True" publishWin="True" type="reg">
+			<Member comment="number of sent MPDUs" isArray="True" name="num_of_tx_pkt" publishFW="True" publishLinux="True" publishWin="True" size="WMI_NUM_MCS" type="U08"/>
+			<Member comment="number of non-acked MPDUs" isArray="True" name="num_of_non_acked_pkt" publishFW="True" publishLinux="True" publishWin="True" size="WMI_NUM_MCS" type="U08"/>
+			<Member comment="RS timestamp" isArray="False" name="tsf" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member comment="RS selected MCS" isArray="False" name="mcs" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+		</Struct>
+		<Struct comment="\nWMI_GET_DETAILED_RS_RES_EVENTID\n" name="GET_DETAILED_RS_RES" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member isArray="False" name="cid" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member comment="enum wmi_rs_results_status" isArray="False" name="status" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member comment="detailed rs results" isArray="False" name="rs_results" publishFW="True" publishLinux="True" publishWin="True" size="1" type="wmi_rs_results"/>
+			<Member isArray="True" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="3" type="U08"/>
+		</Struct>
+		<Define comment="broadcast connection ID" name="WMI_LINK_MAINTAIN_CFG_CID_BROADCAST" publishFW="True" publishLinux="True" publishWin="True" value="(0xFFFFFFFF)"/>
+		<Enum comment="\nTypes wmi_link_maintain_cfg presets for WMI_LINK_MAINTAIN_CFG_WRITE_CMD\n" name="wmi_link_maintain_cfg_type" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_LINK_MAINTAIN_CFG_TYPE_DEFAULT_NORMAL_AP" publishFW="True" publishLinux="True" publishWin="True" value="0x00" comment = "AP/PCP default normal (non-FST) configuration settings" />
+			<EnumValue name="WMI_LINK_MAINTAIN_CFG_TYPE_DEFAULT_FST_AP" publishFW="True" publishLinux="True" publishWin="True" value="0x01" comment = "AP/PCP  default FST configuration settings" />
+			<EnumValue name="WMI_LINK_MAINTAIN_CFG_TYPE_DEFAULT_NORMAL_STA" publishFW="True" publishLinux="True" publishWin="True" value="0x02" comment = "STA default normal (non-FST) configuration settings" />
+			<EnumValue name="WMI_LINK_MAINTAIN_CFG_TYPE_DEFAULT_FST_STA" publishFW="True" publishLinux="True" publishWin="True" value="0x03" comment = "STA default FST configuration settings"/>
+			<EnumValue name="WMI_LINK_MAINTAIN_CFG_TYPE_CUSTOM" publishFW="True" publishLinux="True" publishWin="True" value="0x04" comment = "custom configuration settings"/>
+			<EnumValue name="WMI_LINK_MAINTAIN_CFG_TYPES_NUM" publishFW="True" publishLinux="True" publishWin="True" value="0x05" comment = "number of defined configuration types"/>
+		</Enum>
+
+		<Enum comment="\nResponse status codes for WMI_LINK_MAINTAIN_CFG_WRITE/READ commands \n" name="wmi_link_maintain_cfg_response_status" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_LINK_MAINTAIN_CFG_RESPONSE_STATUS_OK" publishFW="True" publishLinux="True" publishWin="True" value="0x00" comment = "WMI_LINK_MAINTAIN_CFG_WRITE/READ command successfully accomplished" />
+			<EnumValue name="WMI_LINK_MAINTAIN_CFG_RESPONSE_STATUS_BAD_ARGUMENT" publishFW="True" publishLinux="True" publishWin="True" value="0x01" comment = "ERROR due to bad argument in WMI_LINK_MAINTAIN_CFG_WRITE/READ command request" />
+		</Enum>
+
+		<Struct comment="Link Loss and Keep Alive configuration" name="wmi_link_maintain_cfg" publishFW="True" publishLinux="True" publishWin="True" type="reg">
+			<Member comment = "link_loss_enable_detectors_vec" isArray="False" name="link_loss_enable_detectors_vec" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member comment = "detectors check period usec" isArray="False" name="check_link_loss_period_usec" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member comment = "max allowed tx ageing" isArray="False" name="tx_ageing_threshold_usec" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member comment = "keep alive period for high SNR" isArray="False" name="keep_alive_period_usec_high_snr" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member comment = "keep alive period for low SNR" isArray="False" name="keep_alive_period_usec_low_snr" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member comment = "lower snr limit for keep alive period update" isArray="False" name="keep_alive_snr_threshold_low_db" publishFW="True" publishLinux="True" publishWin="True" size="1" type="S32"/>
+			<Member comment = "upper snr limit for keep alive period update" isArray="False" name="keep_alive_snr_threshold_high_db" publishFW="True" publishLinux="True" publishWin="True" size="1" type="S32"/>
+			<Member comment="num of successive bad bcons causing link-loss" isArray="False" name="bad_beacons_num_threshold" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member comment="SNR limit for bad_beacons_detector" isArray="False" name="bad_beacons_snr_threshold_db" publishFW="True" publishLinux="True" publishWin="True" size="1" type="S32"/>
+		</Struct>
+
+		<Struct comment="\nWMI_LINK_MAINTAIN_CFG_WRITE_CMDID\n" name="LINK_MAINTAIN_CFG_WRITE" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member isArray="False" name="cfg_type" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32" comment="enum wmi_link_maintain_cfg_type_e - type of requested default configuration to be applied" />
+			<Member isArray="False" name="cid" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32" comment="requested connection ID or WMI_LINK_MAINTAIN_CFG_CID_BROADCAST" />
+			<Member isArray="False" name="lm_cfg" publishFW="True" publishLinux="True" publishWin="True" size="1" type="wmi_link_maintain_cfg" comment="custom configuration settings to be applied (relevant only if cfg_type==WMI_LINK_MAINTAIN_CFG_TYPE_CUSTOM)" />
+		</Struct>
+
+		<Struct comment="\nWMI_LINK_MAINTAIN_CFG_READ_CMDID\n" name="LINK_MAINTAIN_CFG_READ" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member comment="connection ID which configuration settings are requested" isArray="False" name="cid" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+		</Struct>
+
+		<Struct comment="\nWMI_LINK_MAINTAIN_CFG_WRITE_DONE_EVENTID\n" name="LINK_MAINTAIN_CFG_WRITE_DONE" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member comment="requested connection ID" isArray="False" name="cid" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member comment="wmi_link_maintain_cfg_response_status_e - write status" isArray="False" name="status" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+		</Struct>
+
+		<Struct comment="\WMI_LINK_MAINTAIN_CFG_READ_DONE_EVENT\n" name="LINK_MAINTAIN_CFG_READ_DONE" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member comment="requested connection ID" isArray="False" name="cid" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member comment="wmi_link_maintain_cfg_response_status_e - read status" isArray="False" name="status" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member comment="Retrieved configuration settings" isArray="False" name="lm_cfg" publishFW="True" publishLinux="True" publishWin="True" size="1" type="wmi_link_maintain_cfg"/>
+		</Struct>
+
+		<Enum name="wmi_traffic_deferral_status" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_TRAFFIC_DEFERRAL_APPROVED" publishFW="True" publishLinux="True" publishWin="True" value="0x0"/>
+			<EnumValue name="WMI_TRAFFIC_DEFERRAL_REJECTED" publishFW="True" publishLinux="True" publishWin="True" value="0x1"/>
+		</Enum>
+
+		<Struct comment="\nWMI_TRAFFIC_DEFERRAL_EVENTID\n" name="TRAFFIC_DEFERRAL" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member comment="enum wmi_traffic_deferral_status_e" isArray="False" name="status" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+		</Struct>
+
+		<Enum name="wmi_traffic_resume_status" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_TRAFFIC_RESUME_SUCCESS" publishFW="True" publishLinux="True" publishWin="True" value="0x0"/>
+			<EnumValue name="WMI_TRAFFIC_RESUME_FAILED" publishFW="True" publishLinux="True" publishWin="True" value="0x1"/>
+		</Enum>
+
+		<Struct comment="\nWMI_TRAFFIC_RESUME_EVENTID\n" name="TRAFFIC_RESUME" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member comment="enum wmi_traffic_resume_status_e" isArray="False" name="status" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+		</Struct>
+
+		<Enum comment="\nPower Save command completion status codes\n"
+			     name="wmi_ps_cfg_cmd_status" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_PS_CFG_CMD_STATUS_SUCCESS" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="WMI_PS_CFG_CMD_STATUS_BAD_PARAM" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+			<EnumValue name="WMI_PS_CFG_CMD_STATUS_ERROR" publishFW="True" publishLinux="True" publishWin="True" value="0x02" comment="other error"/>
+		</Enum>
+		<Enum comment="\nDevice Power Save Profiles\n" name="wmi_ps_profile_type" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_PS_PROFILE_TYPE_DEFAULT" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="WMI_PS_PROFILE_TYPE_PS_DISABLED" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+			<EnumValue name="WMI_PS_PROFILE_TYPE_MAX_PS" publishFW="True" publishLinux="True" publishWin="True" value="0x02"/>
+			<EnumValue name="WMI_PS_PROFILE_TYPE_LOW_LATENCY_PS" publishFW="True" publishLinux="True" publishWin="True" value="0x03"/>
+		</Enum>
+		<Struct comment="\nWMI_PS_DEV_PROFILE_CFG_CMDID\n\nPower save profile to be used by the device\n\nReturned event:\n- WMI_PS_DEV_PROFILE_CFG_EVENTID\n"
+				name="PS_DEV_PROFILE_CFG" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member name="ps_profile" comment="wmi_ps_profile_type_e" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08" />
+			<Member name="reserved" isArray="True" publishFW="True" publishLinux="True" publishWin="True" size="3" type="U08" />
+		</Struct>
+		<Struct comment="\nWMI_PS_DEV_PROFILE_CFG_EVENTID\n" name="PS_DEV_PROFILE_CFG" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member name="status" comment="wmi_ps_cfg_cmd_status_e"  isArray="False"  publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+		</Struct>
+
+		<Enum name="wmi_ps_level" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_PS_LEVEL_DEEP_SLEEP" publishFW="True" publishLinux="True" publishWin="True" value="0x00" />
+			<EnumValue name="WMI_PS_LEVEL_SHALLOW_SLEEP" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+			<EnumValue name="WMI_PS_LEVEL_AWAKE" publishFW="True" publishLinux="True" publishWin="True" value="0x02" comment="awake = all PS mechanisms are disabled"/>
+		</Enum>
+		<Enum name="wmi_ps_deep_sleep_clk_level" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_PS_DEEP_SLEEP_CLK_LEVEL_RTC" publishFW="True" publishLinux="True" publishWin="True" value="0x00" comment="33k"/>
+			<EnumValue name="WMI_PS_DEEP_SLEEP_CLK_LEVEL_OSC" publishFW="True" publishLinux="True" publishWin="True" value="0x01" comment="10k"/>
+			<EnumValue name="WMI_PS_DEEP_SLEEP_CLK_LEVEL_RTC_LT" publishFW="True" publishLinux="True" publishWin="True" value="0x02" comment="@RTC Low latency"/>
+			<EnumValue name="WMI_PS_DEEP_SLEEP_CLK_LEVEL_XTAL" publishFW="True" publishLinux="True" publishWin="True" value="0x03"/>
+			<EnumValue name="WMI_PS_DEEP_SLEEP_CLK_LEVEL_SYSCLK" publishFW="True" publishLinux="True" publishWin="True" value="0x04"/>
+			<EnumValue name="WMI_PS_DEEP_SLEEP_CLK_LEVEL_N_A" publishFW="True" publishLinux="True" publishWin="True" value="0xFF" comment="Not Applicable"/>
+		</Enum>
+		<Enum name="wmi_ps_d3_resp_policy" publishFW="True" publishLinux="True" publishWin="True" comment="Response by the FW to a D3 entry request" >
+			<EnumValue name="WMI_PS_D3_RESP_POLICY_DEFAULT" publishFW="True" publishLinux="True" publishWin="True" value="0x00" />
+			<EnumValue name="WMI_PS_D3_RESP_POLICY_DENIED" publishFW="True" publishLinux="True" publishWin="True" value="0x01" comment="debug -D3 req is always denied"/>
+			<EnumValue name="WMI_PS_D3_RESP_POLICY_APPROVED" publishFW="True" publishLinux="True" publishWin="True" value="0x02" comment="debug -D3 req is always approved"/>
+		</Enum>
+
+		<Struct comment="\nDevice common power save configurations\n" name="wmi_ps_dev_cfg" publishFW="True" publishLinux="True" publishWin="True" type="reg">
+			<Member name="ps_unassoc_min_level" comment="lowest level of PS allowed while unassociated, enum wmi_ps_level_e" type="U08" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1"/>
+			<Member name="ps_unassoc_deep_sleep_min_level" comment="lowest deep sleep clock level while nonassoc, enum wmi_ps_deep_sleep_clk_level_e" type="U08" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1"/>
+			<Member name="ps_assoc_min_level" comment="lowest level of PS allowed while associated, enum wmi_ps_level_e" type="U08" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1"/>
+			<Member name="ps_assoc_deep_sleep_min_level" comment="lowest deep sleep clock level while assoc, enum wmi_ps_deep_sleep_clk_level_e" type="U08" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1"/>
+			<Member name="ps_assoc_low_latency_ds_min_level" comment="enum wmi_ps_deep_sleep_clk_level_e" type="U08" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1"/>
+			<Member name="ps_D3_response_policy" comment="enum wmi_ps_d3_resp_policy_e" type="U08" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1"/>
+			<Member name="ps_D3_pm_pme_enabled" comment="BOOL" type="U08" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1"/>
+			<Member name="ps_halp_enable" comment="BOOL" type="U08" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1"/>
+			<Member name="ps_deep_sleep_enter_thresh_msec" type="U08" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1"/>
+			<Member name="ps_voltage_scaling_en" comment="BOOL" type="U08" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1"/>
+		</Struct>
+		<Struct comment="\nWMI_PS_DEV_CFG_CMDID\n\nConfigure common Power Save parameters of the device and all MIDs.\n\nReturned event:\n- WMI_PS_DEV_CFG_EVENTID\n"
+				name="PS_DEV_CFG" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member name="ps_dev_cfg"  comment="Device Power Save configuration to be applied" type="wmi_ps_dev_cfg" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1"/>
+			<Member name="reserved" comment="alignment to 32b" type="U08" isArray="True" publishFW="True" publishLinux="True" publishWin="True" size="2"/>
+		</Struct>
+		<Struct comment="\nWMI_PS_DEV_CFG_EVENTID\n" name="PS_DEV_CFG" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member name="status" comment="wmi_ps_cfg_cmd_status_e"  isArray="False"  publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+		</Struct>
+
+		<Struct comment="\nWMI_PS_DEV_CFG_READ_CMDID\n\nrequest to retrieve  device Power Save configuration\n(WMI_PS_DEV_CFG_CMD params)\n\nReturned event:\n- WMI_PS_DEV_CFG_READ_EVENTID\n"
+				name="PS_DEV_CFG_READ" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member name="reserved"  isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32" />
+		</Struct>
+		<Struct comment="\nWMI_PS_DEV_CFG_READ_EVENTID\n" name="PS_DEV_CFG_READ" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member name="status" comment="wmi_ps_cfg_cmd_status_e"  isArray="False"  publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member name="dev_ps_cfg" comment="Retrieved device Power Save configuration (WMI_PS_DEV_CFG_CMD params)"  isArray="False"  publishFW="True" publishLinux="True" publishWin="True" size="1" type="wmi_ps_dev_cfg"/>
+			<Member name="reserved" comment="alignment to 32b" isArray="True" publishFW="True" publishLinux="True" publishWin="True" size="2" type="U08" />
+		</Struct>
+
+		<Struct comment="\nPer Mac Power Save configurations\n" name="wmi_ps_mid_cfg" publishFW="True" publishLinux="True" publishWin="True" type="reg">
+			<Member name="beacon_lprx_enable" comment="Low power RX in BTI is enabled, BOOL" type="U08" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1"/>
+			<Member name="beacon_sync_to_sectorId_enable" comment="Sync to sector ID enabled, BOOL" type="U08" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1"/>
+			<Member name="frame_exchange_lprx_enable" comment="Low power RX in DTI is enabled, BOOL " type="U08" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1"/>
+			<Member name="scheduled_sleep_cycle_pow2" comment="Sleep Cycle while in scheduled PS, 1-31" type="U08" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1"/>
+			<Member name="scheduled_num_of_awake_bis" comment="Stay Awake for k BIs every (sleep_cycle - k) BIs, 1-31" type="U08" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1"/>
+			<Member name="am_to_traffic_load_thresh_mbp" type="U08" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1"/>
+			<Member name="traffic_to_am_load_thresh_mbps" type="U08" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1"/>
+			<Member name="traffic_to_am_num_of_no_traffic_bis" type="U08" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1"/>
+			<Member name="continuous_traffic_psm" comment="BOOL" type="U08" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1"/>
+			<Member name="no_traffic_to_min_usec"  type="U16" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1"/>
+			<Member name="no_traffic_to_max_usec" type="U16" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1"/>
+			<Member name="snoozing_sleep_interval_milisec" type="U16" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1"/>
+			<Member name="max_no_data_awake_events" type="U08" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1"/>
+			<Member name="num_of_failed_beacons_rx_to_trigger_web" comment="Trigger WEB after k failed beacons" type="U08" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1"/>
+			<Member name="num_of_failed_beacons_rx_to_trigger_bf" comment="Trigger BF after k failed beacons" type="U08" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1"/>
+			<Member name="num_of_successful_beacons_rx_to_trigger_sob" comment="Trigger SOB after k successful beacons" type="U08" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1"/>
+		</Struct>
+		<Struct comment="\nWMI_PS_MID_CFG_CMDID\n\nConfigure Power Save parameters of a specific MID.\nThese parameters are relevant for the specific BSS this MID belongs to.\n\nReturned event:\n- WMI_PS_MID_CFG_EVENTID\n"
+				name="PS_MID_CFG" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member name="mid"  comment="MAC ID" type="U08" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1"/>
+			<Member name="ps_mid_cfg" comment="mid PS configuration to be applied" type="wmi_ps_mid_cfg" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1"/>
+		</Struct>
+		<Struct comment="\nWMI_PS_MID_CFG_EVENTID\n" name="PS_MID_CFG" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member name="mid"  comment="MAC ID" type="U08" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1"/>
+			<Member name="reserved" comment="alignment to 32b"  isArray="True"  publishFW="True" publishLinux="True" publishWin="True" size="3" type="U08"/>
+			<Member name="status" comment="wmi_ps_cfg_cmd_status_e"  isArray="False"  publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+		</Struct>
+		<Struct comment="\nWMI_PS_MID_CFG_READ_CMDID\n\nrequest to retrieve Power Save configuration of mid\n(WMI_PS_MID_CFG_CMD params)\n\nReturned event:\n- WMI_PS_MID_CFG_READ_EVENTID\n"
+				name="PS_MID_CFG_READ" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member name="mid"  comment="MAC ID" type="U08" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1"/>
+			<Member name="reserved"  comment="alignment to 32b" isArray="True" publishFW="True" publishLinux="True" publishWin="True" size="3" type="U08" />
+		</Struct>
+		<Struct comment="\nWMI_PS_MID_CFG_READ_EVENTID\n" name="PS_MID_CFG_READ" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member name="mid"  comment="MAC ID" type="U08" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1"/>
+			<Member name="mid_ps_cfg" comment="Retrieved MID Power Save configuration(WMI_PS_MID_CFG_CMD params)"  isArray="False"  publishFW="True" publishLinux="True" publishWin="True" size="1" type="wmi_ps_mid_cfg"/>
+			<Member name="status" comment="wmi_ps_cfg_cmd_status_e"  isArray="False"  publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+		</Struct>
+		<Define name="WMI_AOA_MAX_DATA_SIZE" publishFW="True" publishLinux="True" publishWin="True" value="(128)"/>
+		<Enum name="wmi_aoa_meas_status" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_AOA_MEAS_SUCCESS" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="WMI_AOA_MEAS_PEER_INCAPABLE" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+			<EnumValue name="WMI_AOA_MEAS_FAILURE" publishFW="True" publishLinux="True" publishWin="True" value="0x02"/>
+		</Enum>
+		<Struct comment="\nWMI_AOA_MEAS_EVENTID\n" name="AOA_MEAS" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member isArray="True" name="mac_addr" publishFW="True" publishLinux="True" publishWin="True" size="WMI_MAC_LEN" type="U08"/>
+			<Member comment="channels IDs:\n0 - 58320 MHz\n1 - 60480 MHz\n2 - 62640 MHz\n" isArray="False" name="channel" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member comment="enum wmi_aoa_meas_type" isArray="False" name="aoa_meas_type" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="meas_rf_mask" comment="Measurments are from RFs, defined by the mask" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member comment="enum wmi_aoa_meas_status" isArray="False" name="meas_status" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member isArray="False" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member comment="Length of meas_data in bytes" isArray="False" name="length" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member isArray="True" name="meas_data" publishFW="True" publishLinux="True" publishWin="True" size="WMI_AOA_MAX_DATA_SIZE" type="U08"/>
+		</Struct>
+		<Struct comment="\nWMI_SET_MGMT_RETRY_LIMIT_EVENTID\n" name="SET_MGMT_RETRY_LIMIT" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member comment="enum wmi_fw_status" isArray="False" name="status" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member comment="alignment to 32b" isArray="True" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="3" type="U08"/>
+		</Struct>
+		<Struct comment="\nWMI_GET_MGMT_RETRY_LIMIT_EVENTID\n" name="GET_MGMT_RETRY_LIMIT" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member comment="MAC retransmit limit for mgmt frames" isArray="False" name="mgmt_retry_limit" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member comment="alignment to 32b" isArray="True" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="3" type="U08"/>
+		</Struct>
+		<Struct comment="\nWMI_TOF_GET_CAPABILITIES_EVENTID\n" name="TOF_GET_CAPABILITIES" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member name="ftm_capability" type="U08" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1"/>
+			<Member name="max_num_of_dest" comment="maximum supported number of destination to start TOF" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member name="max_num_of_meas_per_burst" comment="maximum supported number of measurements per burst" isArray="False"  publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member name="reserved" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member name="max_multi_bursts_sessions" comment="maximum supported multi bursts" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member name="max_ftm_burst_duration" comment="maximum supported FTM burst duration , wmi_tof_burst_duration_e" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member name="aoa_supported_types" comment="AOA supported types" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+		</Struct>
+		<Enum name="wmi_tof_session_end_status" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_TOF_SESSION_END_NO_ERROR" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="WMI_TOF_SESSION_END_FAIL" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+			<EnumValue name="WMI_TOF_SESSION_END_PARAMS_ERROR" publishFW="True" publishLinux="True" publishWin="True" value="0x02"/>
+			<EnumValue name="WMI_TOF_SESSION_END_ABORTED" publishFW="True" publishLinux="True" publishWin="True" value="0x03"/>
+		</Enum>
+		<Struct comment="\nWMI_TOF_SESSION_END_EVENTID\n" name="TOF_SESSION_END" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member name="session_id" comment="FTM session ID" type="U32" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1"/>
+			<Member name="status" comment="wmi_tof_session_end_status_e" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member name="reserved" isArray="True" publishFW="True" publishLinux="True" publishWin="True" size="3" type="U08"/>
+		</Struct>
+		<Struct comment="\nResponder FTM Results\n" name="wmi_responder_ftm_res" publishFW="True" publishLinux="True" publishWin="True" type="reg">
+			<Member name="t1" type="U08" isArray="True" publishFW="True" publishLinux="True" publishWin="True" size="6"/>
+			<Member name="t2" isArray="True" publishFW="True" publishLinux="True" publishWin="True" size="6" type="U08"/>
+			<Member name="t3" isArray="True" publishFW="True" publishLinux="True" publishWin="True" size="6" type="U08"/>
+			<Member name="t4" isArray="True" publishFW="True" publishLinux="True" publishWin="True" size="6" type="U08"/>
+			<Member name="tod_err" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member name="toa_err" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member name="tod_err_initiator" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member name="toa_err_initiator" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+		</Struct>
+		<Enum name="wmi_tof_ftm_per_dest_res_status" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_PER_DEST_RES_NO_ERROR" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="WMI_PER_DEST_RES_TX_RX_FAIL" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+			<EnumValue name="WMI_PER_DEST_RES_PARAM_DONT_MATCH" publishFW="True" publishLinux="True" publishWin="True" value="0x02"/>
+		</Enum>
+		<Enum name="wmi_tof_ftm_per_dest_res_flags" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_PER_DEST_RES_REQ_START" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+			<EnumValue name="WMI_PER_DEST_RES_BURST_REPORT_END" publishFW="True" publishLinux="True" publishWin="True" value="0x02"/>
+			<EnumValue name="WMI_PER_DEST_RES_REQ_END" publishFW="True" publishLinux="True" publishWin="True" value="0x04"/>
+			<EnumValue name="WMI_PER_DEST_RES_PARAM_UPDATE" publishFW="True" publishLinux="True" publishWin="True" value="0x08"/>
+		</Enum>
+		<Struct comment="\nWMI_TOF_FTM_PER_DEST_RES_EVENTID\n" name="TOF_FTM_PER_DEST_RES" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member name="session_id" comment="FTM session ID" type="U32" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1"/>
+			<Member name="dst_mac" comment="destination MAC address" isArray="True" publishFW="True" publishLinux="True" publishWin="True" size="WMI_MAC_LEN" type="U08"/>
+			<Member name="flags" comment="wmi_tof_ftm_per_dest_res_flags_e" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member name="status" comment="wmi_tof_ftm_per_dest_res_status_e" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member name="responder_asap" comment="responder ASAP" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member name="responder_num_ftm_per_burst" comment="responder number of FTM per burst" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member name="responder_num_ftm_bursts_exp" comment="responder number of FTM burst exponent" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member name="responder_burst_duration" comment="responder burst duration ,wmi_tof_burst_duration_e" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member name="responder_burst_period" comment="responder burst period, indicate interval between two consecutive burst instances, in units of 100 ms" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member name="bursts_cnt" comment="receive burst counter" isArray="False"  publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16"/>
+			<Member name="tsf_sync" comment="tsf of responder start burst" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member name="actual_ftm_per_burst" comment="actual received ftm per burst" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member name="reserved0" isArray="True" publishFW="True" publishLinux="True" publishWin="True" size="7" type="U08"/>
+			<Member name="responder_ftm_res" isArray="True" publishFW="True" publishLinux="True" publishWin="True" size="0" type="wmi_responder_ftm_res"/>
+		</Struct>
+		<Enum name="wmi_tof_channel_info_type" publishFW="True" publishLinux="True" publishWin="True">
+			<EnumValue name="WMI_TOF_CHANNEL_INFO_AOA" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="WMI_TOF_CHANNEL_INFO_LCI" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+			<EnumValue name="WMI_TOF_CHANNEL_INFO_LCR" publishFW="True" publishLinux="True" publishWin="True" value="0x02"/>
+			<EnumValue name="WMI_TOF_CHANNEL_INFO_VENDOR_SPECIFIC" publishFW="True" publishLinux="True" publishWin="True" value="0x03"/>
+			<EnumValue name="WMI_TOF_CHANNEL_INFO_CIR" publishFW="True" publishLinux="True" publishWin="True" value="0x04"/>
+			<EnumValue name="WMI_TOF_CHANNEL_INFO_RSSI" publishFW="True" publishLinux="True" publishWin="True" value="0x05"/>
+			<EnumValue name="WMI_TOF_CHANNEL_INFO_SNR" publishFW="True" publishLinux="True" publishWin="True" value="0x06"/>
+			<EnumValue name="WMI_TOF_CHANNEL_INFO_DEBUG" publishFW="True" publishLinux="True" publishWin="True" value="0x07"/>
+		</Enum>
+		<Struct comment="\nWMI_TOF_CHANNEL_INFO_EVENTID\n" name="TOF_CHANNEL_INFO" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member name="session_id" comment="FTM session ID" type="U32" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1"/>
+			<Member name="dst_mac" comment="destination MAC address"  isArray="True" publishFW="True" publishLinux="True" publishWin="True" size="WMI_MAC_LEN" type="U08"/>
+			<Member name="type" comment="wmi_tof_channel_info_type_e" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member name="len" comment="data report length" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08"/>
+			<Member name="report" comment="data report payload " isArray="True" publishFW="True" publishLinux="True" publishWin="True" size="0" type="U08"/>
+		</Struct>
+		<Enum name="wmi_rf_sector_status" publishFW="True" publishLinux="True" publishWin="True" comment="Result status codes for WMI commands" >
+			<EnumValue name="WMI_RF_SECTOR_STATUS_SUCCESS" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="WMI_RF_SECTOR_STATUS_BAD_PARAMETERS_ERROR" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+			<EnumValue name="WMI_RF_SECTOR_STATUS_BUSY_ERROR" publishFW="True" publishLinux="True" publishWin="True" value="0x02"/>
+			<EnumValue name="WMI_RF_SECTOR_STATUS_NOT_SUPPORTED_ERROR" publishFW="True" publishLinux="True" publishWin="True" value="0x03"/>
+		</Enum>
+		<Enum name="wmi_rf_sector_type" publishFW="True" publishLinux="True" publishWin="True" comment="Types of the RF sector (TX,RX)">
+			<EnumValue name="WMI_RF_SECTOR_TYPE_RX" publishFW="True" publishLinux="True" publishWin="True" value="0x00"/>
+			<EnumValue name="WMI_RF_SECTOR_TYPE_TX" publishFW="True" publishLinux="True" publishWin="True" value="0x01"/>
+		</Enum>
+		<Struct name="wmi_rf_sector_info" publishFW="True" publishLinux="True" publishWin="True" type="reg" comment="Content of RF Sector (six 32-bits registers)" >
+			<Member name="psh_hi" comment = "Phase values for RF Chains[15-0] (2bits per RF chain)" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member name="psh_lo" comment = "Phase values for RF Chains[31-16] (2bits per RF chain)" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member name="etype0" comment = "ETYPE Bit0 for all RF chains[31-0] - bit0 of Edge amplifier gain index" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member name="etype1" comment = "ETYPE Bit1 for all RF chains[31-0] - bit1 of Edge amplifier gain index" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member name="etype2" comment = "ETYPE Bit2 for all RF chains[31-0] - bit2 of Edge amplifier gain index" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+			<Member name="dtype_swch_off" comment = "D-Type values (3bits each) for 8 Distribution amplifiers + X16 switch bits " isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U32"/>
+		</Struct>
+		<Define name="WMI_INVALID_RF_SECTOR_INDEX" publishFW="True" publishLinux="True" publishWin="True" value="(0xFFFF)"/>
+		<Define name="WMI_MAX_RF_MODULES_NUM" publishFW="True" publishLinux="True" publishWin="True" value="(8)"/>
+		<Struct comment="\nWMI_GET_RF_SECTOR_PARAMS_CMD\n" name="GET_RF_SECTOR_PARAMS" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member isArray="False" name="sector_idx" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16" comment="Sector number to be retrieved" />
+			<Member isArray="False" name="sector_type" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08" comment="enum wmi_rf_sector_type - type of requested RF sector" />
+			<Member isArray="False" name="rf_modules_vec" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08" comment="bitmask vector specifying destination RF modules" />
+		</Struct>
+		<Struct comment="\WMI_GET_RF_SECTOR_PARAMS_DONE_EVENT\n" name="GET_RF_SECTOR_PARAMS_DONE" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member isArray="False" name="status" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08" comment="result status of WMI_GET_RF_SECTOR_PARAMS_CMD (enum wmi_rf_sector_status)" />
+			<Member isArray="True" name="reserved" publishFW="True" publishLinux="True" publishWin="True" size="7" type="U08" comment="align next field to U64 boundary" />
+			<Member isArray="False" name="tsf" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U64" comment="TSF timestamp when RF sectors where retrieved" />
+			<Member isArray="True" name="sectors_info" publishFW="True" publishLinux="True" publishWin="True" size="WMI_MAX_RF_MODULES_NUM" type="wmi_rf_sector_info" comment="Content of RF sector retrieved from each RF module" />
+		</Struct>
+		<Struct comment="\nWMI_SET_RF_SECTOR_PARAMS_CMD\n" name="SET_RF_SECTOR_PARAMS" publishFW="True" publishLinux="True" publishWin="True" type="cmd">
+			<Member isArray="False" name="sector_idx" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16" comment="Sector number to be retrieved" />
+			<Member isArray="False" name="sector_type" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08" comment="enum wmi_rf_sector_type - type of requested RF sector" />
+			<Member isArray="False" name="rf_modules_vec" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08" comment="bitmask vector specifying destination RF modules" />
+			<Member isArray="True" name="sectors_info" publishFW="True" publishLinux="True" publishWin="True" size="WMI_MAX_RF_MODULES_NUM" type="wmi_rf_sector_info" comment="Content of RF sector to be written to each RF module" />
+		</Struct>
+		<Struct comment="\WMI_SET_RF_SECTOR_PARAMS_DONE_EVENT\n" name="SET_RF_SECTOR_PARAMS_DONE" publishFW="True" publishLinux="True" publishWin="True" type="event">
+			<Member isArray="False" name="status" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08" comment="result status of WMI_SET_RF_SECTOR_PARAMS_CMD (enum wmi_rf_sector_status)" />
+		</Struct>
+		<Struct name="GET_SELECTED_RF_SECTOR_INDEX" publishFW="True" publishLinux="True" publishWin="True" type="cmd" comment="\nWMI_GET_SELECTED_RF_SECTOR_INDEX_CMD - Get RF sector index selected by TXSS/BRP for communication with specified CID\n" >
+			<Member name="cid" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08" comment="Connection/Station ID in [0:7] range" />
+			<Member name="sector_type" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08" comment="type of requested RF sector (enum wmi_rf_sector_type)" />
+			<Member name="reserved" isArray="True" publishFW="True" publishLinux="True" publishWin="True" size="2" type="U08" comment="align to U32 boundary" />
+		</Struct>
+		<Struct name="GET_SELECTED_RF_SECTOR_INDEX_DONE" publishFW="True" publishLinux="True" publishWin="True" type="event" comment="\WMI_GET_SELECTED_RF_SECTOR_INDEX_DONE_EVENT - Returns retrieved RF sector index selected by TXSS/BRP for communication with specified CID\n" >
+			<Member name="sector_idx" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16" comment="Retrieved sector index selected in TXSS (for TX sector request) or BRP (for RX sector request)" />
+			<Member name="status" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08" comment="result status of WMI_GET_SELECTED_RF_SECTOR_INDEX_CMD (enum wmi_rf_sector_status)" />
+			<Member name="reserved" isArray="True" publishFW="True" publishLinux="True" publishWin="True" size="5" type="U08" comment="align next field to U64 boundary" />
+			<Member name="tsf" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U64" comment="TSF timestamp when result was retrieved" />
+		</Struct>
+		<Struct name="SET_SELECTED_RF_SECTOR_INDEX" publishFW="True" publishLinux="True" publishWin="True" type="cmd" comment="\nWMI_SET_SELECTED_RF_SECTOR_INDEX_CMD - Force RF sector index for communication with specified CID. Assumes that TXSS/BRP is disabled by other command\n" >
+			<Member name="cid" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08" comment="Connection/Station ID in [0:7] range" />
+			<Member name="sector_type" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08" comment="type of requested RF sector (enum wmi_rf_sector_type)" />
+			<Member name="sector_idx" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16" comment="Forced sector index" />
+		</Struct>
+		<Struct name="SET_SELECTED_RF_SECTOR_INDEX_DONE" publishFW="True" publishLinux="True" publishWin="True" type="event" comment="\WMI_SET_SELECTED_RF_SECTOR_INDEX_DONE_EVENT - Success/Fail status for WMI_SET_SELECTED_RF_SECTOR_INDEX_CMD\n" >
+			<Member name="status" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08" comment="result status of WMI_SET_SELECTED_RF_SECTOR_INDEX_CMD (enum wmi_rf_sector_status)" />
+			<Member name="reserved" isArray="True" publishFW="True" publishLinux="True" publishWin="True" size="3" type="U08" comment="align to U32 boundary" />
+		</Struct>
+		<Struct name="SET_RF_SECTOR_ON" publishFW="True" publishLinux="True" publishWin="True" type="cmd" comment="\nWMI_SET_RF_SECTOR_ON_CMD - Activates specified sector for specified rf modules\n" >
+			<Member name="sector_idx" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U16" comment="Sector index to be activated" />
+			<Member name="sector_type" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08" comment="type of requested RF sector (enum wmi_rf_sector_type)" />
+			<Member name="rf_modules_vec" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08" comment="bitmask vector specifying destination RF modules" />
+		</Struct>
+		<Struct name="SET_RF_SECTOR_ON_DONE" publishFW="True" publishLinux="True" publishWin="True" type="event" comment="\WMI_SET_RF_SECTOR_ON_DONE_EVENT - Success/Fail status for WMI_SET_RF_SECTOR_ON_CMD\n" >
+			<Member name="status" isArray="False" publishFW="True" publishLinux="True" publishWin="True" size="1" type="U08" comment="result status of WMI_SET_RF_SECTOR_ON_CMD (enum wmi_rf_sector_status)" />
+			<Member name="reserved" isArray="True" publishFW="True" publishLinux="True" publishWin="True" size="3" type="U08" comment="align to U32 boundary" />
+		</Struct>
+	</WMI_DATA>
+	<TypeConversions>
+		<Type fwType="U08" linuxType="u8" winType="U08"/>
+		<Type fwType="S08" linuxType="s8" winType="S08"/>
+		<Type fwType="U16" linuxType="__le16" winType="U16"/>
+		<Type fwType="S16" linuxType="s16" winType="S16"/>
+		<Type fwType="U32" linuxType="__le32" winType="U32"/>
+		<Type fwType="S32" linuxType="__le32" winType="S32"/>
+		<Type fwType="U64" linuxType="__le64" winType="U64"/>
+		<Type fwType="U64_u" linuxType="__le64" winType="U64"/>
+		<Type fwType="S64" linuxType="s64" winType="S64"/>
+	</TypeConversions>
+</WMI_XML>

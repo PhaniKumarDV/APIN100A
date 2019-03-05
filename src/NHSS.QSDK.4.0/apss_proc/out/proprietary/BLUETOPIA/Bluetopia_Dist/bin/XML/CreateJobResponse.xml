@@ -1,0 +1,4 @@
+<CreateJobResponse>
+    <JobId>12345</JobId>
+    <OperationStatus>0x0001</OperationStatus>
+</CreateJobResponse>

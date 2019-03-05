@@ -1,0 +1,7 @@
+<GetPrinterAttributesRequest>
+    <RequestedPrinterAttributes>
+        <PrinterAttribute>PrinterName </PrinterAttribute>
+        <PrinterAttribute>PrinterState </PrinterAttribute>
+        <PrinterAttribute>PrinterStateReasons </PrinterAttribute>
+    </RequestedPrinterAttributes>
+</GetPrinterAttributesRequest>    

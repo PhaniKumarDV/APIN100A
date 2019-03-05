@@ -1,0 +1,604 @@
+<?xml version="1.0" ?>
+<contents>
+  <product_info>
+    <product_name>IPQ4019.ILQ.4.0</product_name>
+    <hlos_type>ILQ</hlos_type>
+    <chipid>ipq4019</chipid>
+  </product_info>
+  <builds_flat>
+    <build>
+      <name>common</name>
+      <role>common</role>
+      <chipset>ipq4019</chipset>
+      <build_id>IPQ4019.ILQ.4.0.r2-00083-P-1</build_id>
+      <windows_root_path>..\IPQ4019.ILQ.4.0</windows_root_path>
+      <linux_root_path>../IPQ4019.ILQ.4.0</linux_root_path>
+      <image_dir>common</image_dir>
+      <release_path/>
+      <file_ref tftp="true">
+        <file_name>*ipq40xx*-single.img</file_name>
+        <file_path>common/build/bin</file_path>
+      </file_ref>
+    </build>
+    <build>
+      <name>boot</name>
+      <role>boot</role>
+      <chipset>ipq4019</chipset>
+      <build_id>BOOT.BF.3.1.1-00110-QCA961xAAAAANAAB-1</build_id>
+      <windows_root_path>..\BOOT.BF.3.1.1</windows_root_path>
+      <linux_root_path>../BOOT.BF.3.1.1</linux_root_path>
+      <image_dir>boot_images</image_dir>
+      <release_path/>
+      <file_ref flash_file="true" cmn_file_var="sbl1_emmc_mbn">
+        <file_name>sbl1_emmc.mbn</file_name>
+        <file_path>boot_images/build/ms/bin/40xx/emmc/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="MPRG40xx_mbn">
+        <file_name>MPRG40xx.mbn</file_name>
+        <file_path>boot_images/build/ms/bin/40xx/emmc/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="sbl1_nand_mbn">
+        <file_name>sbl1_nand.mbn</file_name>
+        <file_path>boot_images/build/ms/bin/40xx/nand/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="ENANDPRG40xx_mbn">
+        <file_name>ENANDPRG40xx.mbn</file_name>
+        <file_path>boot_images/build/ms/bin/40xx/nand/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>*.mbn</file_name>
+        <file_path>boot_images/build/ms/bin/40xx/nand/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="sbl1_nor_mbn">
+        <file_name>sbl1_nor.mbn</file_name>
+        <file_path>boot_images/build/ms/bin/40xx/nor/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="ENORPRG40xx_mbn">
+        <file_name>ENORPRG40xx.mbn</file_name>
+        <file_path>boot_images/build/ms/bin/40xx/nor/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>*.mbn</file_name>
+        <file_path>boot_images/build/ms/bin/40xx/nor/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="gpt_backup01_bin">
+        <file_name>gpt_backup0.bin</file_name>
+        <file_path>boot_images/build/ms/bin/40xx/emmc/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="gpt_both0_bin">
+        <file_name>gpt_both0.bin</file_name>
+        <file_path>boot_images/build/ms/bin/40xx/emmc/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="gpt_main0_bin">
+        <file_name>gpt_main0.bin</file_name>
+        <file_path>boot_images/build/ms/bin/40xx/emmc/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="zeros_1sector_bin">
+        <file_name>zeros_1sector.bin</file_name>
+        <file_path>boot_images/build/ms/bin/40xx/emmc/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="zeros_33sectors_bin">
+        <file_name>zeros_33sectors.bin</file_name>
+        <file_path>boot_images/build/ms/bin/40xx/emmc/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="gpt_main1_bin">
+        <file_name>gpt_main1.bin</file_name>
+        <file_path>boot_images/build/ms/bin/40xx/emmc/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="gpt_backup1_bin">
+        <file_name>gpt_backup1.bin</file_name>
+        <file_path>boot_images/build/ms/bin/40xx/emmc/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>*.bin</file_name>
+        <file_path>boot_images/build/ms/bin/40xx/nand/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>*.bin</file_name>
+        <file_path>boot_images/build/ms/bin/40xx/nor/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>*.bin</file_name>
+        <file_path>boot_images/build/ms/bin/40xx/nor-plus-emmc/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>*.bin</file_name>
+        <file_path>boot_images/build/ms/bin/40xx/misc/cdt/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="SBL1_emmc_elf">
+        <file_name>SBL1_emmc.elf</file_name>
+        <file_path>boot_images/core/boot/secboot3/hw/ipq40xx/sbl1/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="SBL1_nand_elf">
+        <file_name>SBL1_nand.elf</file_name>
+        <file_path>boot_images/core/boot/secboot3/hw/ipq40xx/sbl1/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="SBL1_nor_elf">
+        <file_name>SBL1_nor.elf</file_name>
+        <file_path>boot_images/core/boot/secboot3/hw/ipq40xx/sbl1/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>*.bin</file_name>
+        <file_path>boot_images/build/ms/bin/40xx/nor-plus-nand/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>*.bin</file_name>
+        <file_path>boot_images/build/ms/bin/40xx/misc/smem/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>*.bin</file_name>
+        <file_path>boot_images/build/ms/bin/40xx/misc/bootconfig/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="boardconfig_premium">
+        <file_name>boardconfig_premium</file_name>
+        <file_path>tools/genimage/config/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="appsboardconfig_premium">
+        <file_name>appsboardconfig_premium</file_name>
+        <file_path>tools/genimage/config/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="boardconfig_standard">
+        <file_name>boardconfig_standard</file_name>
+        <file_path>tools/genimage/config/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="appsboardconfig_standard">
+        <file_name>appsboardconfig_standard</file_name>
+        <file_path>tools/genimage/config/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="appsboardconfig">
+        <file_name>appsboardconfig</file_name>
+        <file_path>tools/genimage/config/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>*.xml</file_name>
+        <file_path>tools/genimage/config/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>*.xml</file_name>
+        <file_path>boot_images/build/ms/bin/40xx/emmc</file_path>
+      </file_ref>
+      <file_ref QPST_file="true">
+        <file_name>*.xml</file_name>
+        <file_path>tools/genimage/</file_path>
+      </file_ref>
+      <file_ref flash_file_debug="true">
+        <file_name>*.mbn</file_name>
+        <file_path>boot_images/build/ms/bin/40xx/emmc/</file_path>
+      </file_ref>
+      <file_ref flash_file_debug="true">
+        <file_name>*.mbn</file_name>
+        <file_path>boot_images/build/ms/bin/40xx/nand/</file_path>
+      </file_ref>
+      <file_ref flash_file_debug="true">
+        <file_name>*.mbn</file_name>
+        <file_path>boot_images/build/ms/bin/40xx/nor/</file_path>
+      </file_ref>
+      <file_ref flash_file_debug="true">
+        <file_name>*.bin</file_name>
+        <file_path>boot_images/build/ms/bin/40xx/emmc/</file_path>
+      </file_ref>
+      <file_ref flash_file_debug="true">
+        <file_name>*.bin</file_name>
+        <file_path>boot_images/build/ms/bin/40xx/nand/</file_path>
+      </file_ref>
+      <file_ref flash_file_debug="true">
+        <file_name>*.bin</file_name>
+        <file_path>boot_images/build/ms/bin/40xx/nor/</file_path>
+      </file_ref>
+      <file_ref flash_file_debug="true">
+        <file_name>*.bin</file_name>
+        <file_path>boot_images/build/ms/bin/40xx/nor-plus-emmc/</file_path>
+      </file_ref>
+      <file_ref flash_file_debug="true">
+        <file_name>*.bin</file_name>
+        <file_path>boot_images/build/ms/bin/40xx/misc/cdt/</file_path>
+      </file_ref>
+      <file_ref flash_file_debug="true">
+        <file_name>*.elf</file_name>
+        <file_path>boot_images/core/boot/secboot3/hw/ipq40xx/sbl1/</file_path>
+      </file_ref>
+      <file_ref flash_file_debug="true">
+        <file_name>*.bin</file_name>
+        <file_path>boot_images/build/ms/bin/40xx/nor-plus-nand/</file_path>
+      </file_ref>
+      <file_ref flash_file_debug="true">
+        <file_name>*.bin</file_name>
+        <file_path>boot_images/build/ms/bin/40xx/misc/smem/</file_path>
+      </file_ref>
+      <file_ref flash_file_debug="true">
+        <file_name>boardconfig_premium</file_name>
+        <file_path>tools/genimage/config/</file_path>
+      </file_ref>
+      <file_ref flash_file_debug="true">
+        <file_name>appsboardconfig_premium</file_name>
+        <file_path>tools/genimage/config/</file_path>
+      </file_ref>
+      <file_ref flash_file_debug="true">
+        <file_name>boardconfig_standard</file_name>
+        <file_path>tools/genimage/config/</file_path>
+      </file_ref>
+      <file_ref flash_file_debug="true">
+        <file_name>appsboardconfig_standard</file_name>
+        <file_path>tools/genimage/config/</file_path>
+      </file_ref>
+      <file_ref flash_file_debug="true">
+        <file_name>appsboardconfig</file_name>
+        <file_path>tools/genimage/config/</file_path>
+      </file_ref>
+      <file_ref flash_file_debug="true">
+        <file_name>*.xml</file_name>
+        <file_path>tools/genimage/config/</file_path>
+      </file_ref>
+      <file_ref flash_file_debug="true">
+        <file_name>*.xml</file_name>
+        <file_path>boot_images/build/ms/bin/40xx/emmc</file_path>
+      </file_ref>
+      <file_ref flash_file_debug="true">
+        <file_name>*.bin</file_name>
+        <file_path>boot_images/build/ms/bin/40xx/misc/bootconfig/</file_path>
+      </file_ref>
+      <buildfile_path>boot_images/build/ms/</buildfile_path>
+      <build_command>build.sh TARGET_FAMILY=40xx --prod USES_FLAGS=USES_NO_STRIP_NO_ODM</build_command>
+    </build>
+    <build>
+      <name>apps</name>
+      <role>apps</role>
+      <chipset>ipq4019</chipset>
+      <build_id>NHSS.QSDK.4.0.r2-00245-P-1</build_id>
+      <windows_root_path>..\NHSS.QSDK.4.0</windows_root_path>
+      <linux_root_path>../NHSS.QSDK.4.0</linux_root_path>
+      <image_dir>apss_proc</image_dir>
+      <release_path>HY11_CompileTest</release_path>
+      <file_ref flash_file="true" cmn_file_var="openwrt-ipq806x-qcom-ipq40xx-ap.dkxx-fit-uImage_itb">
+        <file_name>openwrt-ipq806x-qcom-ipq40xx-ap.dkxx-fit-uImage.itb</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="openwrt-ipq806x-qcom-ipq40xx-ap.dk01.1-c1-fit-uImage">
+        <file_name>openwrt-ipq806x-qcom-ipq40xx-ap.dk01.1-c1-fit-uImage.itb</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="openwrt-ipq806x-qcom-ipq40xx-ap.dk01.1-c1-fit-uImage-initramfs">
+        <file_name>openwrt-ipq806x-qcom-ipq40xx-ap.dk01.1-c1-fit-uImage-initramfs.itb</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="openwrt-ipq806x-qcom-ipq40xx-ap.dk01.1-c2-fit-uImage">
+        <file_name>openwrt-ipq806x-qcom-ipq40xx-ap.dk01.1-c2-fit-uImage.itb</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="openwrt-ipq806x-qcom-ipq40xx-ap.dk01.1-c2-fit-uImage-initramfs">
+        <file_name>openwrt-ipq806x-qcom-ipq40xx-ap.dk01.1-c2-fit-uImage-initramfs.itb</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="openwrt-ipq806x-qcom-ipq40xx-ap.dk04.1-c1-fit-uImage">
+        <file_name>openwrt-ipq806x-qcom-ipq40xx-ap.dk04.1-c1-fit-uImage.itb</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="openwrt-ipq806x-qcom-ipq40xx-ap.dk04.1-c1-fit-uImage-initramfs">
+        <file_name>openwrt-ipq806x-qcom-ipq40xx-ap.dk04.1-c1-fit-uImage-initramfs.itb</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="openwrt-ipq806x-qcom-ipq40xx-ap.dk04.1-c2-fit-uImage">
+        <file_name>openwrt-ipq806x-qcom-ipq40xx-ap.dk04.1-c2-fit-uImage.itb</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="openwrt-ipq806x-qcom-ipq40xx-ap.dk04.1-c2-fit-uImage-initramfs">
+        <file_name>openwrt-ipq806x-qcom-ipq40xx-ap.dk04.1-c2-fit-uImage-initramfs.itb</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="openwrt-ipq806x-qcom-ipq40xx-ap.dk04.1-c3-fit-uImage">
+        <file_name>openwrt-ipq806x-qcom-ipq40xx-ap.dk04.1-c3-fit-uImage.itb</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="openwrt-ipq806x-qcom-ipq40xx-ap.dk04.1-c3-fit-uImage-initramfs">
+        <file_name>openwrt-ipq806x-qcom-ipq40xx-ap.dk04.1-c3-fit-uImage-initramfs.itb</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="openwrt-ipq806x-qcom-ipq40xx-fit-uImage">
+        <file_name>openwrt-ipq806x-qcom-ipq40xx-fit-uImage.itb</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="openwrt-ipq806x-qcom-ipq40xx-r3pc-fit-uImage">
+        <file_name>openwrt-ipq806x-qcom-ipq40xx-r3pc-fit-uImage.itb</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="openwrt-ipq806x-qcom-ipq40xx-r3pc-fit-uImage-initramfs">
+        <file_name>openwrt-ipq806x-qcom-ipq40xx-r3pc-fit-uImage-initramfs.itb</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="openwrt-ipq806x-qcom-ipq40xx-r3pc-wifi-fit-uImage">
+        <file_name>openwrt-ipq806x-qcom-ipq40xx-r3pc-wifi-fit-uImage.itb</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="openwrt-ipq806x-qcom-ipq40xx-r3pc-wifi-fit-uImage-initramfs">
+        <file_name>openwrt-ipq806x-qcom-ipq40xx-r3pc-wifi-fit-uImage-initramfs.itb</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="openwrt-ipq806x-ipq40xx-ubi-root">
+        <file_name>openwrt-ipq806x-ipq40xx-ubi-root.img</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="openwrt-ipq806x-qcom-ipq40xx-ap.dk05.1-c1-fit-uImage-initramfs">
+        <file_name>openwrt-ipq806x-qcom-ipq40xx-ap.dk05.1-c1-fit-uImage-initramfs.itb</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="openwrt-ipq806x-qcom-ipq40xx-ap.dk05.1-c1-fit-uImage">
+        <file_name>openwrt-ipq806x-qcom-ipq40xx-ap.dk05.1-c1-fit-uImage.itb</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="openwrt-ipq806x-qcom-ipq40xx-ap.dk06.1-c1-fit-uImage-initramfs">
+        <file_name>openwrt-ipq806x-qcom-ipq40xx-ap.dk06.1-c1-fit-uImage-initramfs.itb</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="openwrt-ipq806x-qcom-ipq40xx-ap.dk06.1-c1-fit-uImage">
+        <file_name>openwrt-ipq806x-qcom-ipq40xx-ap.dk06.1-c1-fit-uImage.itb</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="openwrt-ipq806x-qcom-ipq40xx-ap.dk07.1-c1-fit-uImage-initramfs">
+        <file_name>openwrt-ipq806x-qcom-ipq40xx-ap.dk07.1-c1-fit-uImage-initramfs.itb</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="openwrt-ipq806x-qcom-ipq40xx-ap.dk07.1-c1-fit-uImage">
+        <file_name>openwrt-ipq806x-qcom-ipq40xx-ap.dk07.1-c1-fit-uImage.itb</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="openwrt-ipq806x-ipq40xx-ubi-root-512MB_img">
+        <file_name>openwrt-ipq806x-ipq40xx-ubi-root-512MB.img</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="openwrt-ipq806x-qcom-ipq40xx-ap.dk07.1-c2-fit-uImage-initramfs">
+        <file_name>openwrt-ipq806x-qcom-ipq40xx-ap.dk07.1-c2-fit-uImage-initramfs.itb</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="openwrt-ipq806x-squashfs-root">
+        <file_name>openwrt-ipq806x-squashfs-root.img</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="openwrt-ipq806x-u-boot_elf">
+        <file_name>openwrt-ipq806x-u-boot.elf</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="openwrt-ipq806x-u-boot_img">
+        <file_name>openwrt-ipq806x-u-boot.img</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="openwrt-ipq806x-u-boot_mbn">
+        <file_name>openwrt-ipq806x-u-boot.mbn</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="openwrt-ipq806x-u-boot_mbn">
+        <file_name>openwrt-ipq40xx-lkboot.mbn</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="openwrt-ipq40xx-u-boot_elf">
+        <file_name>openwrt-ipq40xx-u-boot.elf</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="openwrt-ipq40xx-u-boot-stripped_elf">
+        <file_name>openwrt-ipq40xx-u-boot-stripped.elf</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="openwrt-ipq806x-vmlinux_bin">
+        <file_name>openwrt-ipq806x-vmlinux.bin</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="openwrt-ipq806x-vmlinux_elf">
+        <file_name>openwrt-ipq806x-vmlinux.elf</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="openwrt-ipq806x-vmlinux-initramfs_bin">
+        <file_name>openwrt-ipq806x-vmlinux-initramfs.bin</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <file_ref cmn_file_var="emmc-flash" flash_premium_conf_file="true">
+        <file_name>emmc-flash.conf</file_name>
+        <file_path>apss_proc/out/meta-scripts/ipq40xx_premium/</file_path>
+      </file_ref>
+      <file_ref cmn_file_var="emmc-flash" flash_premium_conf_file="true">
+        <file_name>emmc-flash.conf</file_name>
+        <file_path>apss_proc/out/meta-scripts/ipq40xx_premium/</file_path>
+      </file_ref>
+      <file_ref cmn_file_var="norplusemmc-flash" flash_premium_conf_file="true">
+        <file_name>norplusemmc-flash.conf</file_name>
+        <file_path>apss_proc/out/meta-scripts/ipq40xx_premium/</file_path>
+      </file_ref>
+      <file_ref cmn_file_var="nand-flash" flash_premium_conf_file="true">
+        <file_name>nand-flash.conf</file_name>
+        <file_path>apss_proc/out/meta-scripts/ipq40xx_premium/</file_path>
+      </file_ref>
+      <file_ref cmn_file_var="norplusnand-flash" flash_premium_conf_file="true">
+        <file_name>norplusnand-flash.conf</file_name>
+        <file_path>apss_proc/out/meta-scripts/ipq40xx_premium/</file_path>
+      </file_ref>
+      <file_ref cmn_file_var="nor-flash-premium" flash_premium_conf_file="true">
+        <file_name>nor-flash.conf</file_name>
+        <file_path>apss_proc/out/meta-scripts/ipq40xx_premium/</file_path>
+      </file_ref>
+      <file_ref flash_standard_conf_file="true" cmn_file_var="nor-flash-standard">
+        <file_name>nor-flash.conf</file_name>
+        <file_path>apss_proc/out/meta-scripts/ipq40xx_standard/</file_path>
+      </file_ref>
+      <file_ref cmn_file_var="emmc-flash" flash_premium_conf_file="true">
+        <file_name>emmc-apps-flash.conf</file_name>
+        <file_path>apss_proc/out/meta-scripts/ipq40xx_premium/</file_path>
+      </file_ref>
+      <file_ref cmn_file_var="emmc-flash" flash_premium_conf_file="true">
+        <file_name>emmc-apps-flash.conf</file_name>
+        <file_path>apss_proc/out/meta-scripts/ipq40xx_premium/</file_path>
+      </file_ref>
+      <file_ref cmn_file_var="norplusemmc-flash" flash_premium_conf_file="true">
+        <file_name>norplusemmc-apps-flash.conf</file_name>
+        <file_path>apss_proc/out/meta-scripts/ipq40xx_premium/</file_path>
+      </file_ref>
+      <file_ref cmn_file_var="nand-flash" flash_premium_conf_file="true">
+        <file_name>nand-apps-flash.conf</file_name>
+        <file_path>apss_proc/out/meta-scripts/ipq40xx_premium/</file_path>
+      </file_ref>
+      <file_ref cmn_file_var="norplusnand-flash" flash_premium_conf_file="true">
+        <file_name>norplusnand-apps-flash.conf</file_name>
+        <file_path>apss_proc/out/meta-scripts/ipq40xx_premium/</file_path>
+      </file_ref>
+      <file_ref cmn_file_var="nor-flash-premium" flash_premium_conf_file="true">
+        <file_name>nor-apps-flash.conf</file_name>
+        <file_path>apss_proc/out/meta-scripts/ipq40xx_premium/</file_path>
+      </file_ref>
+      <file_ref flash_standard_conf_file="true" cmn_file_var="nor-flash-standard">
+        <file_name>nor-apps-flash.conf</file_name>
+        <file_path>apss_proc/out/meta-scripts/ipq40xx_standard/</file_path>
+      </file_ref>
+      <file_ref flash_file_p_debug="true">
+        <file_name>*.itb</file_name>
+        <file_path>apss_proc/out/ipq806x_premium_debug/</file_path>
+      </file_ref>
+      <file_ref flash_file_p_debug="true">
+        <file_name>*.img</file_name>
+        <file_path>apss_proc/out/ipq806x_premium_debug/</file_path>
+      </file_ref>
+      <file_ref flash_file_p_debug="true">
+        <file_name>*.elf</file_name>
+        <file_path>apss_proc/out/ipq806x_premium_debug/</file_path>
+      </file_ref>
+      <file_ref flash_file_p_debug="true">
+        <file_name>*.bin</file_name>
+        <file_path>apss_proc/out/ipq806x_premium_debug/</file_path>
+      </file_ref>
+      <file_ref flash_file_p_gcc="true">
+        <file_name>*.itb</file_name>
+        <file_path>apss_proc/out/ipq806x_premium_gcc5/</file_path>
+      </file_ref>
+      <file_ref flash_file_p_gcc="true">
+        <file_name>*.img</file_name>
+        <file_path>apss_proc/out/ipq806x_premium_gcc5/</file_path>
+      </file_ref>
+      <file_ref flash_file_p_gcc="true">
+        <file_name>*.elf</file_name>
+        <file_path>apss_proc/out/ipq806x_premium_gcc5/</file_path>
+      </file_ref>
+      <file_ref flash_file_p_gcc="true">
+        <file_name>*.bin</file_name>
+        <file_path>apss_proc/out/ipq806x_premium_gcc5/</file_path>
+      </file_ref>
+      <file_ref flash_file_p_gcc="true">
+        <file_name>*.mbn</file_name>
+        <file_path>apss_proc/out/ipq806x_premium_gcc5/</file_path>
+      </file_ref>
+      <file_ref flash_file_s_debug="true">
+        <file_name>*.itb</file_name>
+        <file_path>apss_proc/out/ipq806x_standard_debug/</file_path>
+      </file_ref>
+      <file_ref flash_file_s_debug="true">
+        <file_name>*.img</file_name>
+        <file_path>apss_proc/out/ipq806x_standard_debug/</file_path>
+      </file_ref>
+      <file_ref flash_file_s_debug="true">
+        <file_name>*.elf</file_name>
+        <file_path>apss_proc/out/ipq806x_standard_debug/</file_path>
+      </file_ref>
+      <file_ref flash_file_s_debug="true">
+        <file_name>*.bin</file_name>
+        <file_path>apss_proc/out/ipq806x_standard_debug/</file_path>
+      </file_ref>
+      <file_ref flash_premium_conf_debug_file="true">
+        <file_name>*flash.conf</file_name>
+        <file_path>apss_proc/out/meta-scripts/ipq40xx_premium/</file_path>
+      </file_ref>
+      <file_ref flash_standard_conf_debug_file="true">
+        <file_name>nor-flash.conf</file_name>
+        <file_path>apss_proc/out/meta-scripts/ipq40xx_standard/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>*.pl</file_name>
+        <file_path>apss_proc/out/meta-scripts/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>*.py</file_name>
+        <file_path>apss_proc/out/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>*.xml</file_name>
+        <file_path>apss_proc/out/meta-scripts/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>pack.sh</file_name>
+        <file_path>apss_proc/out/meta-scripts/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>*.pm</file_name>
+        <file_path>apss_proc/out/meta-scripts/Parser</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>*.img</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>*.itb</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <buildfile_path>./</buildfile_path>
+      <build_command>create_BuildProducts ./create_BuildProducts</build_command>
+    </build>
+    <build>
+      <name>tz</name>
+      <role>tz</role>
+      <chipset>qca9619</chipset>
+      <build_id>TZ.BF.2.7-00082-QCA961xMAZAANAZT-1</build_id>
+      <windows_root_path>..\TZ.BF.2.7</windows_root_path>
+      <linux_root_path>../TZ.BF.2.7</linux_root_path>
+      <image_dir>HK11</image_dir>
+      <release_path/>
+      <file_ref flash_file="true" cmn_file_var="tzbsp_no_xpu">
+        <file_name>tzbsp_no_xpu.mbn</file_name>
+        <file_path>HK11/trustzone_images/build/ms/bin/MAZAANAA</file_path>
+      </file_ref>
+      <file_ref flash_file="true" cmn_file_var="tz_plain">
+        <file_name>tz.mbn</file_name>
+        <file_path>HK11/trustzone_images/build/ms/bin/MAZAANAA</file_path>
+      </file_ref>
+      <file_ref flash_file_debug="true">
+        <file_name>*.mbn</file_name>
+        <file_path>HK11/trustzone_images/build/ms/bin/MAZAANAA</file_path>
+      </file_ref>
+      <buildfile_path>trustzone_images/build/ms/</buildfile_path>
+      <build_command>cleanpack_40xx.sh trustzone_images/build/ms/cleanpack_40xx.sh</build_command>
+    </build>
+    <build>
+      <name>wlan</name>
+      <role>wlan</role>
+      <chipset>ipq4019</chipset>
+      <build_id>WLAN.BL.3.4-00071-S-1</build_id>
+      <windows_root_path>..\WLAN.BL.3.4</windows_root_path>
+      <linux_root_path>../WLAN.BL.3.4</linux_root_path>
+      <image_dir>cnss_proc</image_dir>
+      <buildfile_path>bash/</buildfile_path>
+      <build_command>bash ./cnss_proc/build/support/makesdk --crm-build-id ${CRM_BUILDID} --parallel --static-analysis first --tar --trace --clobber --configs QCA9984-hw-v1 AR900B-hw-v2 IPQ4019-hw-v1 QCA9888-hw-v2</build_command>
+    </build>
+    <build>
+      <name>cnss_sw_ps</name>
+      <role>cnss_sw_ps</role>
+      <chipset>ipq4019</chipset>
+      <build_id>CNSS.PS.2.4-00011-S-1</build_id>
+      <windows_root_path>..\CNSS.PS.2.4</windows_root_path>
+      <linux_root_path>../CNSS.PS.2.4</linux_root_path>
+      <image_dir>cnss_proc_ps</image_dir>
+      <buildfile_path>bash/</buildfile_path>
+      <build_command>bash ./cnss_proc_ps/build/build_crm.sh</build_command>
+    </build>
+  </builds_flat>
+  <build_tools>
+    <tool>
+      <name>create_FIT_image</name>
+      <build>apps</build>
+      <path>apss_proc/out/pack.py</path>
+    </tool>
+    <tool>
+      <name>exported_tools</name>
+      <build>boot</build>
+      <path>boot_images/build/ms/bin/40xx/misc/tools</path>
+    </tool>
+  </build_tools>
+  <external_tools>
+    
+  </external_tools>
+  <builds_nested>
+    
+  </builds_nested>
+</contents>

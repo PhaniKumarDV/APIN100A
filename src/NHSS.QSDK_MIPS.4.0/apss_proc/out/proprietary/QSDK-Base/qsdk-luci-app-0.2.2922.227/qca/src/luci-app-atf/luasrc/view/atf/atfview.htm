@@ -1,0 +1,528 @@
+<!--
+ * Copyright (c) 2016 Qualcomm Atheros, Inc.
+ *
+ * All Rights Reserved.
+ * Qualcomm Atheros Confidential and Proprietary
+-->
+<!-- luci theme header -->
+<%+header%>
+
+<head>
+        <meta http-equiv="X-UA-Compatible" content="IE=9">
+        <title>Darmok Network View</title>
+
+        <!-- include the prerequisite libraries for the flux kit-->
+        <script src="/js/jquery-2.1.4.js" type="text/javascript"></script>
+
+        <!-- include the prerequisite libraries for the flux kit-->
+        <script src="/js/Chart.min.js" type="text/javascript"></script>
+
+        <!-- include darmok itself-->
+        <script language="javascript" type="text/javascript" src="/js/darmok.js"></script>
+        <script language="javascript" type="text/javascript" src="/js/spin.js"></script>
+
+        <!-- customize styles to make this page draw correctly (unique to this page only) -->
+        <style>
+
+            /* change our tables for our ATF chart */
+            table, caption, tbody, tfoot, thead, tr, th, td {
+                margin: 0;
+                padding: 0;
+                border: 0;
+                outline: 0;
+                font-size: 100%;
+                vertical-align: center;
+                background: transparent;
+                border-top:0px;
+                -webkit-touch-callout: none; /* iOS Safari */
+                -webkit-user-select: none;   /* Chrome/Safari/Opera */
+                -khtml-user-select: none;    /* Konqueror */
+                -moz-user-select: none;      /* Firefox */
+                -ms-user-select: none;       /* IE/Edge */
+                user-select: none;           /* non-prefixed version, currently
+                not supported by any browser */
+                border-collapse: separate;
+            }
+
+            /*ATF Chart row item*/
+            table td {
+                vertical-align: middle;
+                border-top: 0px solid #ddd;
+                text-align: center;
+            }
+
+            /*set atf row item space correctly*/
+            tr:first-child td:first-child { border-top-left-radius: 10px; }
+            tr:first-child td:last-child { border-top-right-radius: 10px; }
+            tr:last-child td:first-child { border-bottom-left-radius: 10px; }
+            tr:last-child td:last-child { border-bottom-right-radius: 10px; }
+
+            /*the style for a ssid row entry*/
+            .ssid {
+                border-radius: 10px;
+                background-color: #81868c;
+                color:white;
+            }
+            .ssid:hover {
+                border-radius: 10px;
+                background-color: #ccc;
+                /*rgb(255,180,0);*/
+                color:black;
+            }
+
+            /*style for a device entry*/
+            .mac {
+                background-color: transparent;
+                border-radius: 0px 0px 10px 10px;
+            }
+            .mac:hover {
+                background-color: #ccc;
+                color:black;
+                border-radius: 0px 0px 10px 10px;
+            }
+
+            /*various page setup details*/
+            #maincontent {
+                width: auto;
+                height: 100%;
+                min-width: 50%;
+                max-width: 100%;
+            }
+            #Page {
+                min-width: 800px;
+                width: 100%;
+            }
+            label {
+              color: none;
+            }
+
+            /* on/off switch for enable/disable atf*/
+            .onoffswitch {
+                position: relative;
+                width: auto;
+                -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+            }
+            .onoffswitch-checkbox {
+                display: none;
+            }
+            .onoffswitch-label {
+                display: block; overflow: hidden; cursor: pointer;
+                border: 2px solid #999999; border-radius: 20px;
+                padding:0px;
+                width:auto;/*90px;*/
+                color:none;
+            }
+            .onoffswitch-inner {
+                display: block; width: 200%; margin-left: -100%;
+                transition: margin 0.3s ease-in 0s;
+            }
+            .onoffswitch-inner:before, .onoffswitch-inner:after {
+                display: block; float: left; width: 50%; height: 30px; padding: 0; line-height: 30px;
+                font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+                box-sizing: border-box;
+            }
+            .onoffswitch-inner:before {
+                content: "ON";
+                padding-left: 10px;
+                background-color: #3D8DA1; color: #FFFFFF;
+            }
+            .onoffswitch-inner:after {
+                content: "OFF";
+                padding-right: 10px;
+                background-color: #EEEEEE; color: #999999;
+                text-align: right;
+            }
+            .onoffswitch-switch {
+                display: block; width: 11px; margin: 9.5px;
+                background: #FFFFFF;
+                position: absolute; top: 0; bottom: 0;
+                right: 56px;
+                border: 2px solid #999999; border-radius: 20px;
+                transition: all 0.3s ease-in 0s;
+                height: 11px;
+                top: auto;
+            }
+            .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+                margin-left: 0;
+            }
+            .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+                right: 0px;
+            }
+
+
+            /* strict/fair switch for scheduling toggle*/
+            .strictswitch {
+                position: relative;
+                width: auto;
+                -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+            }
+            .strictswitch-checkbox {
+                display: none;
+            }
+            .strictswitch-label {
+                display: block; overflow: hidden; cursor: pointer;
+                border: 2px solid #999999; border-radius: 20px;
+                padding:0px;
+                width:auto;
+                color:none;
+            }
+            .strictswitch-inner {
+                display: block; width: 200%; margin-left: -100%;
+                transition: margin 0.3s ease-in 0s;
+            }
+            .strictswitch-inner:before, .strictswitch-inner:after {
+                display: block; float: left; width: 50%; height: 30px; padding: 0; line-height: 30px;
+                font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+                box-sizing: border-box;
+            }
+            .strictswitch-inner:before {
+                content: "STRICT";
+                padding-left: 10px;
+                background-color: #3D8DA1; color: #FFFFFF;
+            }
+            .strictswitch-inner:after {
+                content: "FAIR";
+                padding-right: 10px;
+                background-color: #EEEEEE; color: #999999;
+                text-align: right;
+            }
+            .strictswitch-switch {
+                display: block; width: 11px; margin: 9.5px;
+                background: #FFFFFF;
+                position: absolute; top: 0; bottom: 0;
+                right: 56px;
+                border: 2px solid #999999; border-radius: 20px;
+                transition: all 0.3s ease-in 0s;
+                height: 11px;
+                top: auto;
+            }
+            .strictswitch-checkbox:checked + .strictswitch-label .strictswitch-inner {
+                margin-left: 0;
+            }
+            .strictswitch-checkbox:checked + .strictswitch-label .strictswitch-switch {
+                right: 0px;
+            }
+        </style>
+
+        <script>
+
+        //adjustments for our theme
+        if($("#MainMenu").length != 0)
+        {
+            //append the darmok styles
+            $('head:first').append('<link rel="stylesheet" href="/css/darmok.css" type="text/css" media="screen" />');
+        }
+        else // other peoples themes
+        {
+            //create our non darmok styles
+            var style = "";
+
+            style += "<style type='text/css'>";
+            style += "table td { padding:5px; }";
+            style += "tr { height: 78px;border-radius: 10px; }";
+            style += "#onoffswitch {width:100px;}";
+            style += "#strictswitch{width:100px;}";
+            style += "#atflabel{color:black;}";
+            style += "</style>";
+
+            //append our custom non darmok styles
+            $('head:first').append(style);
+
+        }
+
+        /*
+            variable: atf
+
+            this class allow access to all the config
+            state of the Airtime Fairness functionality
+            in the router
+
+            see darmok.js for implementation
+        */
+        var atf = new dkATF("atfview");
+
+        //init the config class with the current page path
+        //for where to send the command to.
+        //because they need the coookie
+        atf.init(window.location.pathname);
+
+        /*
+            variable: atfview
+
+            this class is the functionality for drawing a
+            table designed to display atf config information
+
+            see darmok.js for implementation
+        */
+        var atfview = new dkATFView();
+
+        /*
+            variable: g_ssids
+
+            save info lookup table
+            this table is used to create the save data
+            after a change on the gui
+            it caches the gui parent/child ids
+            with the associated date necassary to
+            generate update state
+        */
+        var g_ssids = [];
+
+        /*
+            variable: ssid2id
+
+            ssid 2 id lookup table for drawing the table
+        */
+        var ssid2id = [];
+
+        /*
+            variable: uuid2id
+
+            ssid+mac 2 id lookup table for drawing the table
+            child items to see if they already exist
+        */
+        var uuid2id  = [];
+
+        /*
+            variable g_leases
+
+            name/lease information for each ip/mac
+        */
+        var g_leases = [];
+
+        /*
+            variable: g_nInterval
+
+            update interval for the table in milliseconds
+        */
+        var g_nInterval = 2000;
+
+        var g_nSSIDTotal = 0.0;
+        /*
+            function: getTable
+
+            call this to get the current and atfdata and add each
+            element to the atfviews table
+        */
+        function updateTable()
+        {
+            //get the ssid table data
+            atf.ssids().done(function(data)
+            {
+                //cache an original copy for save stuff later
+                g_ssids = clone(data);
+
+                atf.leases().done(function(leases)
+                {
+                    //cache an original copy for save stuff later
+                    g_leases = clone(leases);
+
+                    //update the graph with the global ssid total % frome the previous pass
+                    //since this is an async call
+                    atfview.updateChart(g_nSSIDTotal);
+
+                    //clear our next pass
+                    g_nSSIDTotal = 0.0;
+
+                    //walk each ssid
+                    for(var n in g_ssids)
+                    {
+                        //the current ssid element
+                        var e = g_ssids[n];
+
+                        if(typeof ssid2id[e["essid"]] == "undefined")
+                        {
+                            //add a table entry for this ssid
+                            var nID = atfview.addSSID(  e["essid"],
+                                                        e["frequency"],
+                                                        e["bit-rate"],
+                                                        0,
+                                                        0);
+
+                            //cache of this table id in a ssid lookuptable
+                            //so childred can look up the visual element by
+                            //ssid and know which to add to too
+                            ssid2id[e["essid"]] = nID;
+                        }
+
+                        //get the atf managed devices on this ssid
+                        atf.atftable(e["interface"],e["essid"]).then(function(data,wifi,ssid)
+                        {
+                            //walk the data
+                            for(var n in data)
+                            {
+                                //if we have a ssid entry
+                                if(typeof data[n]["ssid"] != 'undefined')
+                                {
+                                    //set ssid for table lookup
+                                    ssid = data[n]["ssid"];
+
+                                    //uncomment to do random data for testing
+                                    //data[n]["atf"]       = myRand(0.0,100.0);
+                                    //data[n]["configatf"] = myRand(0.0,100.0);
+
+                                    //update the ssid with the reserve from this guy
+                                    atfview.updateSSID( ssid2id[ssid],
+                                                        data[n]["atf"],
+                                                        data[n]["configatf"]);
+
+                                    g_ssids[ssid2id[ssid]]["atf"]       = data[n]["atf"];
+                                    g_ssids[ssid2id[ssid]]["configatf"] = data[n]["configatf"];
+
+                                    //update the total and parse as a float 0.0-100.0
+                                    g_nSSIDTotal += parseFloat(data[n]["atf"]);
+                                }
+                                else if(ssid!="") //if we have as ssid
+                                {
+                                    //if this isn't another ssid
+                                    if(typeof data[n]["ssid"] == 'undefined')
+                                    {
+                                        //make uuid for this child on this ssid
+                                        var uuid = ssid+data[n]["mac"];
+
+                                        //if this child doesn't exist
+                                        if(typeof uuid2id[uuid] == "undefined")
+                                        {
+                                            var strName = undefined;
+
+                                            for(var ls in g_leases)
+                                            {
+                                                if(g_leases[ls]["mac"] == data[n]["mac"])
+                                                {
+                                                    strName = g_leases[ls]["name"];
+                                                    break;
+                                                }
+                                            }
+
+                                            //add the device to our ssid in the table
+                                            uuid2id[uuid] = atfview.addMAC( ssid2id[ssid],
+                                                                            data[n]["mac"],
+                                                                            data[n]["atf"],
+                                                                            data[n]["configatf"],
+                                                                            strName);
+                                        }
+                                        else
+                                        {
+                                            //add the device to our ssid in the table
+                                            atfview.updateMAC(  ssid2id[ssid],
+                                                                uuid2id[uuid],
+                                                                data[n]["atf"],         //myRand(0.0,100.0),    //uncomment to do random data
+                                                                data[n]["configatf"]);  // myRand(0.0,100.0));  //uncomment to do random data
+                                        }
+
+                                        //if we don't have a spot for the device to go create it
+                                        if(typeof g_ssids[ssid2id[ssid]]["macs"] == "undefined")
+                                        {
+                                            g_ssids[ssid2id[ssid]]["macs"]  = [];
+                                        }
+
+                                        //add the device to its parent ssid child mac list
+                                        g_ssids[ssid2id[ssid]]["macs"][data[n]["mac"]] = clone(data[n]);
+                                    }
+                                }
+                            }
+
+                            //now add the non atf managed devices
+                            atf.liststa(wifi,ssid).done(function(data,wifi,ssid)
+                            {
+                                //walk the data
+                                for(var n in data)
+                                {
+                                    //this is the data structure we
+                                    //are going to add to our table
+                                    //for updates
+                                    var d = [];
+
+                                    //create the atf entry in case
+                                    //we have to add it
+                                    d["myssid"]        = ssid;
+                                    d["interface"]     = wifi;
+                                    d["mac"]           = data[n]["mac"];
+                                    d["atf"]           = 0;
+                                    d["configatf"]     = 0;
+                                    d["peerstatus"]    = 0;
+
+                                    //make uuid for this child on this ssid
+                                    var uuid = ssid+data[n]["mac"];
+
+                                    //if this child doesn't exist
+                                    if(typeof uuid2id[uuid] == "undefined")
+                                    {
+                                        var strName = undefined;
+
+                                        for(var ls in g_leases)
+                                        {
+                                            if(g_leases[ls]["mac"] == data[n]["mac"])
+                                            {
+                                                strName = g_leases[ls]["name"];
+                                                break;
+                                            }
+                                        }
+
+                                        //add the device to our ssid in the table
+                                        uuid2id[uuid] = atfview.addMAC( ssid2id[ssid],
+                                                                        d["mac"],
+                                                                        d["atf"],
+                                                                        d["configatf"],
+                                                                        strName);
+
+                                        //if we don't have a spot for the device to go create it
+                                        if(typeof g_ssids[ssid2id[ssid]]["macs"] == "undefined")
+                                        {
+                                            g_ssids[ssid2id[ssid]]["macs"]  = [];
+                                        }
+
+                                        //add the device to its parent ssid child mac list
+                                        g_ssids[ssid2id[ssid]]["macs"][d["mac"]] = clone(d);
+                                    }
+                                }
+                            })
+                            .fail(function(err)
+                            {
+                                //nothing to do on fail
+                            });
+                        })
+                        .fail(function(err)
+                        {
+                            //nothing to do on fail
+                        });
+                    }
+                })
+                .fail(function(err)
+                {
+                    //nothing to do on fail
+                });
+            })
+            .fail(function(err)
+            {
+                //nothing to do on fail
+            });
+
+            //setup the refresh timer
+            setTimeout(updateTable,g_nInterval);
+
+        } //end update table
+
+        //when the page is loaded
+        window.onload = function()
+        {
+            //make the table
+            atfview.init("atfcontent","My Router");
+
+            //begin the update table
+            //this function self arms a refresh timer
+            updateTable();
+        };
+
+        </script>
+    </head>
+
+    <!-- format this to fit the Darmok Theme layout without breaking the Standard OpenWRT themes -->
+    <div id="Page" class="Main">
+        <!--this is the location to draw our page in-->
+        <div id="atfcontent">
+        </div>
+    </div>
+
+<!-- luci theme footer -->
+<%+footer%>

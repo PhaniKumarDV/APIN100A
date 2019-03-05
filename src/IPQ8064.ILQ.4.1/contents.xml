@@ -1,0 +1,356 @@
+<?xml version="1.0" ?>
+<contents>
+  <product_info>
+    <product_name>IPQ8064.ILQ.4.1</product_name>
+    <hlos_type>ILQ</hlos_type>
+    <chipid>ipq8064</chipid>
+  </product_info>
+  <builds_flat>
+    <build>
+      <name>common</name>
+      <role>common</role>
+      <chipset>ipq8064</chipset>
+      <build_id>IPQ8064.ILQ.4.1.r2-000000033-D-1</build_id>
+      <windows_root_path>..\IPQ8064.ILQ.4.1</windows_root_path>
+      <linux_root_path>../IPQ8064.ILQ.4.1</linux_root_path>
+      <image_dir>common</image_dir>
+      <release_path/>
+      <file_ref tftp="true" imgaddr="0x42000000">
+        <file_name>*ipq806x-single.img</file_name>
+        <file_path>common/build/bin</file_path>
+      </file_ref>
+    </build>
+    <build>
+      <name>boot</name>
+      <role>boot</role>
+      <chipset>ipq8064</chipset>
+      <build_id>BOOT.AK.1.0-00234-C-1</build_id>
+      <windows_root_path>..\BOOT.AK.1.0</windows_root_path>
+      <linux_root_path>../BOOT.AK.1.0</linux_root_path>
+      <image_dir>boot_images</image_dir>
+      <release_path>HY11_CompileTest</release_path>
+      <file_ref flash_file="true">
+        <file_name>nand_sbl*.mbn</file_name>
+        <file_path>boot_images/build/ms/bin/AAAAANAZ/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>nor_sbl*.mbn</file_name>
+        <file_path>boot_images/build/ms/bin/AAABANAZ/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>sdcc_sbl*.mbn</file_name>
+        <file_path>boot_images/build/ms/bin/AAACANAZ/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>DB149-cdt.mbn</file_name>
+        <file_path>boot_images/build/ms/bin/AAAAANAA/DB149/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>DB149_1XX-cdt.mbn</file_name>
+        <file_path>boot_images/build/ms/bin/AAAAANAA/DB149_1XX/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>DB149_2XX-cdt.mbn</file_name>
+        <file_path>boot_images/build/ms/bin/AAAAANAA/DB149_2XX/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>DB147-cdt.mbn</file_name>
+        <file_path>boot_images/build/ms/bin/AAAAANAA/DB147/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>AP145-cdt.mbn</file_name>
+        <file_path>boot_images/build/ms/bin/AAAAANAA/AP145/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>AP145_1XX-cdt.mbn</file_name>
+        <file_path>boot_images/build/ms/bin/AAAAANAA/AP145_1XX/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>AP148-cdt.mbn</file_name>
+        <file_path>boot_images/build/ms/bin/AAAAANAA/AP148/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>AP148_1XX-cdt.mbn</file_name>
+        <file_path>boot_images/build/ms/bin/AAAAANAA/AP148_1XX/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>AP161-cdt.mbn</file_name>
+        <file_path>boot_images/build/ms/bin/AAAAANAA/AP161/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>AP160-cdt.mbn</file_name>
+        <file_path>boot_images/build/ms/bin/AAAAANAA/AP160/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>AP160_2XX-cdt.mbn</file_name>
+        <file_path>boot_images/build/ms/bin/AAAAANAA/AP160_2XX/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>AK01_1XX-cdt.mbn</file_name>
+        <file_path>boot_images/build/ms/bin/AAAAANAA/AK01_1XX/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>boardconfig</file_name>
+        <file_path>boot_images/build/ms/bin/AAAAANAA/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>appsboardconfig</file_name>
+        <file_path>boot_images/build/ms/bin/AAAAANAA/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>*system-partition.bin</file_name>
+        <file_path>boot_images/build/ms/bin/AAAAANAA/AP148/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>norplusnand-system-partition.bin</file_name>
+        <file_path>boot_images/build/ms/bin/AAAAANAA/AP148/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>nor-system-partition-v2.bin</file_name>
+        <file_path>boot_images/build/ms/bin/AAAAANAA/AP148/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>*system-partition.bin</file_name>
+        <file_path>boot_images/build/ms/bin/AAAAANAA/AP145_1XX/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>ssd.mbn</file_name>
+        <file_path>boot_images/build/ms/bin/AAAAANAA/AP148/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>smem.bin</file_name>
+        <file_path>boot_images/build/ms/bin/AAAAANAA/DB149/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>*.mbn</file_name>
+        <file_path>boot_images/build/ms/bin/AAACANAZ/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>gpt*.bin</file_name>
+        <file_path>boot_images/build/ms/bin/AAAAANAA/AP145_EMMC/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>nand_bootconfig.bin</file_name>
+        <file_path>boot_images/build/ms/bin/AAAAANAA/AP148/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>nand-system-partition.bin</file_name>
+        <file_path>boot_images/build/ms/bin/AAAAANAA/AP148/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>nor_bootconfig.bin</file_name>
+        <file_path>boot_images/build/ms/bin/AAAAANAA/AP148/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>smem-min-*.bin</file_name>
+        <file_path>boot_images/build/ms/bin/AAAAANAA/AP145/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>smem-min-*.bin</file_name>
+        <file_path>boot_images/build/ms/bin/AAAAANAA/AP145_1XX/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>smem-min-*.bin</file_name>
+        <file_path>boot_images/build/ms/bin/AAAAANAA/AP145_EMMC/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>smem-min-*.bin</file_name>
+        <file_path>boot_images/build/ms/bin/AAAAANAA/AP148/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>smem-min-*.bin</file_name>
+        <file_path>boot_images/build/ms/bin/AAAAANAA/AP148_1XX/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>smem-min-*.bin</file_name>
+        <file_path>boot_images/build/ms/bin/AAAAANAA/AP160/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>smem-min-*.bin</file_name>
+        <file_path>boot_images/build/ms/bin/AAAAANAA/AP161/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>smem-min-*.bin</file_name>
+        <file_path>boot_images/build/ms/bin/AAAAANAA/DB147/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>smem-min-*.bin</file_name>
+        <file_path>boot_images/build/ms/bin/AAAAANAA/DB149/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>smem-min-*.bin</file_name>
+        <file_path>boot_images/build/ms/bin/AAAAANAA/DB149_1XX/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>smem-min-*.bin</file_name>
+        <file_path>boot_images/build/ms/bin/AAAAANAA/DB149_2XX/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>smem-min-ap160_2xx.bin</file_name>
+        <file_path>boot_images/build/ms/bin/AAAAANAA/AP160_2XX/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>smem-min-*.bin</file_name>
+        <file_path>boot_images/build/ms/bin/AAAAANAA/AK01_1XX/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>nand_bootconfig1.bin</file_name>
+        <file_path>boot_images/build/ms/bin/AAAAANAA/AP148/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>nor_bootconfig1.bin</file_name>
+        <file_path>boot_images/build/ms/bin/AAAAANAA/AP148/</file_path>
+      </file_ref>
+      <buildfile_path>cd/</buildfile_path>
+      <build_command>cd ./boot_images/build/ms; ./build_all_ipq806x_pack.sh</build_command>
+    </build>
+    <build>
+      <name>rpm</name>
+      <role>rpm</role>
+      <chipset>ipq8064</chipset>
+      <build_id>RPM.AK.1.0-00159-C-1</build_id>
+      <windows_root_path>..\RPM.AK.1.0</windows_root_path>
+      <linux_root_path>../RPM.AK.1.0</linux_root_path>
+      <image_dir>rpm_proc</image_dir>
+      <release_path>HY11_CompileTest</release_path>
+      <file_ref flash_file="true">
+        <file_name>rpm.mbn</file_name>
+        <file_path>rpm_proc/build/ms/bin/AAAAANAAR/</file_path>
+      </file_ref>
+      <buildfile_path>./</buildfile_path>
+      <build_command>top.sh ./top.sh</build_command>
+    </build>
+    <build>
+      <name>apps</name>
+      <role>apps</role>
+      <chipset>ipq8064</chipset>
+      <build_id>NHSS.QSDK_Preview.4.0.r2-00030-D-1</build_id>
+      <windows_root_path>..\NHSS.QSDK_Preview.4.0</windows_root_path>
+      <linux_root_path>../NHSS.QSDK_Preview.4.0</linux_root_path>
+      <image_dir>apss_proc</image_dir>
+      <release_path>HY11_CompileTest</release_path>
+      <file_ref flash_file="true">
+        <file_name>qca_ipq806x_ap.akxx.its</file_name>
+        <file_path>apss_proc/out/meta-scripts/ipq806x_deluxe/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>openwrt-ipq806x-vmlinux.bin</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>qcom-ipq8064-ap148.dtb</file_name>
+        <file_path>apss_proc/out/ipq806x/dtbs/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>qcom-ipq8064-db149.dtb</file_name>
+        <file_path>apss_proc/out/ipq806x/dtbs/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>openwrt-ipq806x-qcom-ipq8064-ap148-fit-uImage.itb</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>*.dtb</file_name>
+        <file_path>apss_proc/out/ipq806x/dtbs/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>*.img</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>*.mbn</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>*.elf</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>*flash.conf</file_name>
+        <file_path>apss_proc/out/meta-scripts/ipq806x_deluxe/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>qca_ipq806x_ap.akxx.its</file_name>
+        <file_path>apss_proc/out/meta-scripts/ipq806x_deluxe/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>ubi-ipq806x-ap-akxx.cfg</file_name>
+        <file_path>apss_proc/out/meta-scripts/ipq806x_deluxe/</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>build_its.sh</file_name>
+        <file_path>apss_proc/out/meta-scripts/</file_path>
+      </file_ref>
+      <file_ref flash_file_packages="true">
+        <file_name>packages</file_name>
+        <file_path>apss_proc/out/ipq806x/</file_path>
+      </file_ref>
+      <buildfile_path>./</buildfile_path>
+      <build_command>create_BuildProducts ./create_BuildProducts</build_command>
+    </build>
+    <build>
+      <name>tz</name>
+      <role>tz</role>
+      <chipset>ipq8064</chipset>
+      <build_id>TZ.AK.1.0-00169-C-1</build_id>
+      <windows_root_path>..\TZ.AK.1.0</windows_root_path>
+      <linux_root_path>../TZ.AK.1.0</linux_root_path>
+      <image_dir>trustzone_images</image_dir>
+      <release_path>HY11_CompileTest</release_path>
+      <file_ref flash_file="true">
+        <file_name>tz.mbn</file_name>
+        <file_path>trustzone_images/build/ms/bin/AAAAANAZ</file_path>
+      </file_ref>
+      <file_ref flash_file="true">
+        <file_name>sampleapp.*</file_name>
+        <file_path>trustzone_images/build/ms/bin/PIL_IMAGES/SPLITBINS_AAAAANAZ/</file_path>
+      </file_ref>
+      <file_ref>
+        <file_name>tz.elf</file_name>
+        <file_path>trustzone_images/core/bsp/tzbsp/build/AAAAANAZ/</file_path>
+      </file_ref>
+      <buildfile_path>./trustzone_images/build/ms/</buildfile_path>
+      <build_command>build.sh CHIPSET=ipq806x BUILD_ID=AAAAANAZ tz sampleapp USES_FLAGS=USES_NO_STRIP_NO_ODM</build_command>
+    </build>
+    <build>
+      <name>wlan</name>
+      <role>wlan</role>
+      <chipset>ipq8064</chipset>
+      <build_id>WLAN.BL.3.4-00061-S-1</build_id>
+      <windows_root_path>..\WLAN.BL.3.4</windows_root_path>
+      <linux_root_path>../WLAN.BL.3.4</linux_root_path>
+      <image_dir>cnss_proc</image_dir>
+      <buildfile_path>bash/</buildfile_path>
+      <build_command>bash ./cnss_proc/build/support/makesdk --crm-build-id ${CRM_BUILDID} --parallel --static-analysis first --tar --trace --clobber --configs QCA9984-hw-v1 AR900B-hw-v2 IPQ4019-hw-v1 QCA9888-hw-v2</build_command>
+    </build>
+    <build>
+      <name>cnss_sw_ps</name>
+      <role>cnss_sw_ps</role>
+      <chipset>ipq8064</chipset>
+      <build_id>CNSS.PS.2.4-00003-S-1</build_id>
+      <windows_root_path>..\CNSS.PS.2.4</windows_root_path>
+      <linux_root_path>../CNSS.PS.2.4</linux_root_path>
+      <image_dir>cnss_sw_ps</image_dir>
+      <buildfile_path>bash/</buildfile_path>
+      <build_command>bash ./cnss_proc_ps/build/build_crm.sh</build_command>
+    </build>
+  </builds_flat>
+  <build_tools>
+    <tool>
+      <name>create_FIT_image</name>
+      <build>apps</build>
+      <path>apss_proc/out/meta-scripts/pack.py</path>
+    </tool>
+    <tool>
+      <name>exported_tools</name>
+      <build>boot</build>
+      <path>boot_images/build/ms/bin/AAAAANAA/tools</path>
+    </tool>
+  </build_tools>
+  <external_tools>
+    
+  </external_tools>
+  <builds_nested>
+    
+  </builds_nested>
+</contents>

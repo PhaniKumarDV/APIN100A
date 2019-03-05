@@ -1,0 +1,53 @@
+<smem>
+  <data type="SMEM_HW_SW_BUILD_ID">
+    <format>0x0</format>
+    <id>0x0</id>
+    <version>0x00010000</version>
+    <name length="32" type="string">BOOT.BF.3.1.1</name>
+    <rawid>0x0</rawid>
+    <rawversion>0x0</rawversion>
+    <hwplatform>0x8</hwplatform>
+    <platform_version>0x00010000</platform_version>
+    <accessory_chip>0x0</accessory_chip>
+    <platform_subtype>0x07</platform_subtype>
+    <partition type="array" length="3">
+      <entry><pmic_model>0x0</pmic_model><pmic_version>0x0</pmic_version></entry>
+      <entry><pmic_model>0x0</pmic_model><pmic_version>0x0</pmic_version></entry>
+      <entry><pmic_model>0x0</pmic_model><pmic_version>0x0</pmic_version></entry>
+    </partition>
+    <foundry_id>0x0</foundry_id>
+  </data>
+  <data type="SMEM_BOOT_FLASH_TYPE">
+    <flash_type>0x6</flash_type>
+  </data>
+  <data type="SMEM_BOOT_FLASH_INDEX">
+    <flash_index>0x5</flash_index>
+  </data>
+  <data type="SMEM_BOOT_FLASH_CHIP_SELECT">
+    <flash_chip_select>0x0</flash_chip_select>
+  </data>
+  <data type="SMEM_BOOT_FLASH_BLOCK_SIZE">
+    <flash_block_size>0x10000</flash_block_size>
+  </data>
+  <data type="SMEM_BOOT_FLASH_DENSITY">
+    <flash_block_size>0x1000000</flash_block_size>
+  </data>
+  <data type="SMEM_AARM_PARTITION_TABLE">
+    <magic>0x55ee73aa</magic>
+    <magic>0xe35ebddb</magic>
+    <version>0</version>
+    <len>15</len>
+    <partition type="array" length="16">
+      <entry><name length="16" type="string">0:SBL1</name><start>0x0</start><size>0x4</size><attr>0x0</attr></entry>
+      <entry><name length="16" type="string">0:MIBIB</name><start>0x4</start><size>0x2</size><attr>0x0</attr></entry>
+      <entry><name length="16" type="string">0:QSEE</name><start>0x6</start><size>0x6</size><attr>0x0</attr></entry>
+      <entry><name length="16" type="string">0:CDT</name><start>0x12</start><size>0x1</size><attr>0x0</attr></entry>
+      <entry><name length="16" type="string">0:DDRPARAMS</name><start>0x13</start><size>0x1</size><attr>0x0</attr></entry>
+      <entry><name length="16" type="string">0:APPSBLENV</name><start>0x14</start><size>0x1</size><attr>0x0</attr></entry>
+      <entry><name length="16" type="string">0:APPSBL</name><start>0x15</start><size>0x8</size><attr>0x0</attr></entry>
+      <entry><name length="16" type="string">0:ART</name><start>0x23</start><size>0x1</size><attr>0x0</attr></entry>
+      <entry><name length="16" type="string">0:DTB</name><start>0x24</start><size>0x1</size><attr>0x0</attr></entry>
+    </partition>
+  </data>
+</smem>
+

@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# Copyright (c) 2015 Qualcomm Atheros, Inc.
+#
+# All Rights Reserved.
+# Qualcomm Atheros Confidential and Proprietary
+
+[ -n "${IPKG_INSTROOT}" ] || {
+	( . /etc/uci-defaults/luci-app-atf ) &&	rm -f /etc/uci-defaults/luci-app-atf
+}

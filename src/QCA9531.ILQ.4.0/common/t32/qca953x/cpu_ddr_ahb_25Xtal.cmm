@@ -1,0 +1,443 @@
+; This file contains the initial configuration settings for the MIPS based QCA953x chipset
+; Features Supported : DDR1 or DDR2 identification internally. For DDR1 based chipsets , 
+; CPU/DDR/AHB frequency selection via dialog box is provided
+
+; Restart MIPS
+res
+sys.down
+sys.JtagClock 10MHz
+sys.cpu MIPS24K
+sys.up
+
+LOCAL &regAddr &regVal &flag_for_ddr &ddr1_mode
+&regAddr=0xB80600b0
+&regVal=Data.Long(D:&regAddr)
+if (((&regVal)&0x00000001)!=0)
+(
+    print "System uses DDR1"
+	&flag_for_ddr=1
+	print "DDR = &flag_for_ddr"
+	gosub ddr1_selection_options
+)
+ELSE
+(
+    print "System uses DDR2"
+	&flag_for_ddr=0
+	&ddr1_mode=0
+	print "DDR = &flag_for_ddr"
+)
+
+
+ print "Initialize CP0 registers in MIPS"
+
+ PER.S CP0:0x0c %LONG 0x10000004
+ PER.S CP0:0x0d %LONG 0             ; Clear Cause register
+ PER.S CP0:0x0e %LONG 0
+ PER.S CP0:0x10 %LONG 0x80248483    ; Config register - writeback cache mode
+
+ D.S 0xB806001c %LONG 0x38c0bbf8 ; DDR out of reset; CPU_COLD, CPU_NMI, Full Chip are 0; External reset is 1
+ D.S 0xB806001c %LONG 0x28c0bbf8 ; DDR out of reset; CPU_COLD, CPU_NMI, Full Chip are 0; External Reset is 0
+ D.S 0xB806001c %LONG 0x20c0bbf8 ; RTC brought out of reset; all other setting retained
+
+ ; PMU configurations
+
+ D.S 0xb8116c40 %LONG 0x633c8176    ; Internal Switcher
+ D.S 0xb8116c44 %LONG 0x10200000    ; Set PGM bit, Increase the DDR voltage
+
+ ; XTAL configurations
+
+ D.S 0xb81162c0 %LONG 0x4b97a100    ; XTAL
+ D.S 0xb81162c4 %LONG 0x480         ; XTAL2
+ D.S 0xb81162c8 %LONG 0x4000144     ; XTAL3
+
+; CPU and DDR PLL programming. Bringing CPU, DDR and AHB to desired frequencies
+
+ D.S 0xb81161c4 %LONG 0x2E406000     ; CPU PLL for REF_CLK 25MHz, Ki = 1, Kd = 7
+ D.S 0xb8116244 %LONG 0x54406000     ; DDR PLL for REF_CLK 25MHz, Ki = 2, Kd = 10
+
+IF &flag_for_ddr==1
+(
+        IF &ddr1_mode==1
+        (
+        ;CPU 550mhz ddr1 400mhz ahb 200mhz configuration
+		gosub ahb_config_200mhz
+		gosub cpu_config_550mhz_pll
+        )
+        ELSE
+        (
+        ;CPU 650mhz ddr1 400mhz ahb 216mhz configuration
+		gosub ahb_config_216mhz
+		gosub cpu_config_650mhz_pll
+        )
+)
+ELSE
+(
+	gosub ahb_config_216mhz
+	gosub cpu_config_650mhz_pll
+)
+
+if &flag_for_ddr==1
+(
+	gosub ddr1_400mhz_held
+
+)
+ELSE
+(
+	gosub ddr2_600mhz_pll_held 
+)
+ 
+ ; CPU PLL Dithering
+ ; CPU_PLL_DITHER
+ ; Dither Disabled
+ D.S 0xB8050048 %LONG 0x00000000
+
+ ; DDR PLL Dithering
+ ; DDR_PLL_DITHER
+ ; Dither Disabled
+ D.S 0xB8050044 %LONG 0x00000000
+
+IF &flag_for_ddr==1
+(
+		IF &ddr1_mode==1
+		(
+			;CPU 550mhz ddr1 400mhz ahb 216mhz configuration
+			gosub cpu_config_550mhz_rel
+			gosub ddr1_config_400mhz_rel
+		)
+		ELSE
+		(
+			;CPU 650mhz ddr1 400mhz ahb 200mhz configuration
+			gosub cpu_config_650mhz_rel
+			gosub ddr1_config_400mhz_rel
+		)	
+)
+ELSE 
+(
+	gosub cpu_config_650mhz_rel
+    gosub ddr2_config_600mhz_rel
+)
+
+ ; Remove AHB, DDR, CPU PLL from Bypass
+ D.S 0xB8050008 %LONG 0x00310000    ; AHBCLK_FROM_DDRPLL = 0, DDRCLK_FROM_DDRPLL = 1, CPUCLK_FROM_CPUPLL = 1, AHB_POST_DIV = 2, AHB_PLL_BYPASS = 0, DDR_PLL_BYPASS = 0, CPU_PLL_BYPASS = 0
+
+if &flag_for_ddr==1
+(
+	print "System uses DDR1"
+	gosub ddr1_controller_init
+)
+ELSE 
+(
+	print "System uses DDR2"
+	gosub ddr2_controller_init
+)
+
+; AHB Master timeout
+; 31:20 - Unused, 19:0 - Timeout values
+ D.S 0xB80000cc %LONG 0xfffff ; Set to max value
+
+print "Final stage GPIO programming"
+; GPIO programming
+; For Scorpion/Honeybee, debug UART TX is GPIO 10, RX is GPIO 9
+ D.S 0xB8040000 %LONG 0xff30b
+ D.S 0xB8040044 %LONG 0x908
+ D.S 0xB8040034 %LONG 0x160000
+;-------------------------------------------------------------------------------------------;
+enddo
+
+ddr2_controller_init:
+print " DDR Controller Initialization - Phase I "
+; DDR Controller Initialization - Phase I
+
+ D.S 0xB8000108 %LONG 0x401fc042 ; Note - CPU_DDR_SYNC is 0
+
+; DDR2_CONFIG
+ D.S 0xB80000b8 %LONG 0x00001e85    ; CAS = 5
+
+; DDR_CONFIG
+ D.S 0xB8000000 %LONG 0xe2a8f55e ; internal CAS = 12
+
+; DDR_CONFIG_3
+ D.S 0xB800015c %LONG 0x0000000b
+
+; DDR_CONFIG2
+
+ D.S 0xB8000004 %LONG 0xaab2d1a8 ; CAS = 5, GATE OPEN = 10
+
+; DDR_RD_DATA_THIS_CYCLE
+; 31:0 - VEC
+
+ D.S 0xB8000018 %LONG 0x0000ffff ; x16 mode
+
+; DDR_BURST
+
+ D.S 0xB80000c4 %LONG 0x74444444; Note - CPU_PRIORITY is 0
+
+; DDR_BURST2
+
+ D.S 0xB80000c8 %LONG 0x44444444
+
+; DDR_FSM_WAIT_CTRL
+
+ D.S 0xB80000e4 %LONG 0x00000a12
+
+; DDR2 Memory Initialization
+; Issue Precharge-all command
+ D.S 0xB8000010 %LONG 0x8
+
+; Program EMR2 register
+ D.S 0xB80000bc %LONG 0x0
+ D.S 0xB8000010 %LONG 0x10
+
+; Program EMR3 register
+ D.S 0xB80000c0 %LONG 0x0
+ D.S 0xB8000010 %LONG 0x20
+
+; Issue EMRS to enable DLL
+ D.S 0xB800000C %LONG 0x402 ; DLL enabled, Reduced Driver Impedance control, ODT Disabled, AL = 0,
+                            ; Data Strobes Complement disabled, o/p buffer enabled, OCD maintain setting
+ D.S 0xB8000010 %LONG 0x2   ; Write extended mode word
+
+; Issue MRS to reset DLL
+
+ D.S 0xB8000008 %LONG 0x953 ; BL = 3, BT = 0, CAS = 5, TM = 0, DLL = 1 (reset), WR = 5, PD = 0
+ D.S 0xB8000010 %LONG 0x1   ; write mode word
+
+; Issue precharge-all command
+ D.S 0xB8000010 %LONG 0x8
+
+; Issue 2 Auto-refresh commands
+ D.S 0xB8000010 %LONG 0x4
+ D.S 0xB8000010 %LONG 0x4
+
+; Issue MRS to remove DLL out-of-reset
+
+ D.S 0xB8000008 %LONG 0x853 ; BL = 3, BT = 0, CAS = 5, TM = 0, DLL = 0 (not in reset), WR = 5, PD = 0
+ D.S 0xB8000010 %LONG 0x1   ; write mode word
+
+; OCD calibration Default - EMRS
+ D.S 0xB800000C %LONG 0x782 ; DLL enabled, Reduced Driver Impedance control, ODT Disabled, AL = 0,
+                            ; Data Strobes Complement disabled, o/p buffer enabled, OCD calibration default
+ D.S 0xB8000010 %LONG 0x2   ; Write extended mode word
+ D.S 0xB800000C %LONG 0x402 ; DLL enabled, Reduced Driver Impedance control, ODT Disabled, AL = 0,
+                            ; Data Strobes Complement disabled, o/p buffer enabled, OCD calibration exit
+ D.S 0xB8000010 %LONG 0x2   ; Write extended mode word
+
+print " DDR Controller Initialization - Phase II "
+; DDR Controller Initialization - Phase II
+
+ D.S 0xB8000014 %LONG 0x40c3    ; REF_CLK=25MHz
+
+; Tap delay settings for all 4 DQS lanes
+; TAP [5:0] - 64 possible tap values.
+ D.S 0xB800001C %LONG 0x20  ; DQS 0 TAP
+ D.S 0xB8000020 %LONG 0x20  ; DQS 1 TAP
+ D.S 0xB8000024 %LONG 0x20  ; DQS 2 TAP
+ D.S 0xB8000028 %LONG 0x20  ; DQS 3 TAP
+
+return
+
+ddr1_selection_options:
+DIALOG
+(
+        HEADER "CPU/DDR/AHB Frequency"
+        POS 1. 1. 12. 5.
+        BOX "Options:"
+        POS 2. 2. 10. 1.
+        Option1: CHECKBOX "550/400/200Mhz" ""
+        Option2: CHECKBOX "650/400/216Mhz" ""
+        POS 20. 6. 5.
+        DEFBUTTON "OK" "CONTinue"
+)
+waitforok:
+STOP
+
+IF DIALOG.BOOLEAN(Option1)
+(
+	&Option1="set"
+	&ddr1_mode=1
+)
+IF DIALOG.BOOLEAN(Option2)
+(
+	&Option2="set"
+	&ddr1_mode=0
+)
+
+DIALOG.END
+return
+
+cpu_config_650mhz_rel:
+ ; Release PowerDown from CPU PLL
+ ; CPU 650MHz (REF_CLK 25MHz)
+ D.S 0xB8050000 %LONG 0x00001680
+return
+
+
+cpu_config_650mhz_pll:
+; CPU PLL (650 MHz)
+; CPU_PLL_CONFIG
+; CPU 650MHz (REF_CLK 25MHz)
+D.S 0xB8050000 %LONG 0x40001680
+return
+
+cpu_config_550mhz_pll:
+ ; CPU 550MHz (REF_CLK 25MHz)
+ D.S 0xB8050000 %LONG 0x40001580
+return
+
+cpu_config_550mhz_rel:
+ ; Release PowerDown from CPU PLL
+ ; CPU 550MHz (REF_CLK 25MHz)
+ D.S 0xB8050000 %LONG 0x00001580
+return
+
+ddr2_config_600mhz_rel:
+
+ ; Release PowerDown from DDR PLL
+ ; DDR 600MHz (REF_CLK 25MHz)
+ D.S 0xB8050004 %LONG 0x00016000
+return
+
+ahb_config_216mhz:
+ ; CPU-DDR Clock Control - AHB (216 MHz)
+ ; CPU_DDR_CLOCK_CONTROL
+
+ D.S 0xB8050008 %LONG 0x0031001C    ; AHBCLK_FROM_DDRPLL = 0, DDRCLK_FROM_DDRPLL = 1, CPUCLK_FROM_CPUPLL = 1, AHB_POST_DIV = 2, AHB_PLL_BYPASS = 1, DDR_PLL_BYPASS = 1, CPU_PLL_BYPASS = 1
+return
+
+ahb_config_200mhz:
+ ; CPU-DDR Clock Control - AHB (200 MHz)
+ D.S 0xB8050008 %LONG 0x0130801C    ; AHBCLK_FROM_DDRPLL = 1, DDRCLK_FROM_DDRPLL = 1, CPUCLK_FROM_CPUPLL = 1, AHB_POST_DIV = 1, AHB_PLL_BYPASS = 1, DDR_PLL_BYPASS = 1, CPU_PLL_BYPASS = 1
+return
+
+ddr2_600mhz_pll_held:
+ ; DDR 600MHz (REF_CLK 25MHz)
+ D.S 0xB8050004 %LONG 0x40016000
+return
+
+ddr1_400mhz_held:
+ ; DDR PLL (400 MHz)
+ ; DDR_PLL_CONFIG
+ ; DDR 400MHz (REF_CLK 25MHz) - OUTDIV 1
+ D.S 0xB8050004 %LONG 0x40818000
+return
+
+ddr1_config_400mhz_rel:
+ ; DDR 400MHz (REF_CLK 25MHz) - OUTDIV 1
+ D.S 0xB8050004 %LONG 0x00818000
+return
+
+ddr1_controller_init:
+; DDR Controller Initialization - Phase I
+ D.S 0xB8000108 %LONG 0x401fc002 ; Note - CPU_DDR_SYNC is 0
+
+; DDR2_CONFIG
+ D.S 0xB80000b8 %LONG 0x00000664    ; CAS = 3
+
+; DDR_CONFIG
+ D.S 0xB8000000 %LONG 0x7a90aef2 ; internal CAS = 7
+
+; DDR_CONFIG_3
+ D.S 0xB800015c %LONG 0x00000000
+
+; DDR_CONFIG2
+ D.S 0xB8000004 %LONG 0x99f2fea8 ; CAS = 3, GATE_OPEN = 6
+
+; DDR_RD_DATA_THIS_CYCLE
+; 31:0 - VEC
+
+ D.S 0xB8000018 %LONG 0x0000ffff ; x16 mode
+
+; DDR_BURST
+
+ D.S 0xB80000c4 %LONG 0x74444444; Note - CPU_PRIORITY is 0
+
+; DDR_BURST2
+; 31:12 - Unused, 11:8 - MISC_SRC2_MAX_BL, 7:4 - MISC_SRC1_MAX_BL, 3:0 - WMAC_MAX_BL
+
+ D.S 0xB80000c8 %LONG 0x44444444
+
+; DDR_FSM_WAIT_CTRL
+; 31:16 - Unused, 15:8 - OCP_WAIT_CNT, 7:0 - AHB_WAIT_CNT
+ D.S 0xB80000e4 %LONG 0x00000a24
+
+; DDR Memory Initialization
+; Issue Precharge-all command
+ D.S 0xB8000010 %LONG 0x8
+
+; Issue EMRS to enable DLL
+ D.S 0xB800000C %LONG 0x2   ; DLL enabled, Weak Driver Impedance control
+ D.S 0xB8000010 %LONG 0x2   ; Write extended mode word
+
+; Issue MRS to reset DLL
+ D.S 0xB8000008 %LONG 0x133 ; BL = 3, BT = 0, CAS = 3, DLL = 1 (reset)
+ D.S 0xB8000010 %LONG 0x1   ; write mode word
+
+; Issue precharge-all command
+ D.S 0xB8000010 %LONG 0x8
+
+; Issue 2 Auto-refresh commands
+ D.S 0xB8000010 %LONG 0x4
+ D.S 0xB8000010 %LONG 0x4
+
+; Issue MRS to remove DLL out-of-reset
+ D.S 0xB8000008 %LONG 0x33  ; BL = 3, BT = 0, CAS = 3, DLL = 0 (not in reset)
+ D.S 0xB8000010 %LONG 0x1   ; write mode word
+
+; DDR Controller Initialization - Phase II
+
+ D.S 0xB8000014 %LONG 0x4186    ; REF_CLK=25MHz
+ ;D.S 0xB8000014 %LONG 0x4270    ; REF_CLK=40MHz
+
+; TAP [5:0] - 64 possible tap values.
+ D.S 0xB800001C %LONG 0x20  ; DQS 0 TAP
+ D.S 0xB8000020 %LONG 0x20  ; DQS 1 TAP
+ D.S 0xB8000024 %LONG 0x20  ; DQS 2 TAP
+ D.S 0xB8000028 %LONG 0x20  ; DQS 3 TAP
+
+return
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

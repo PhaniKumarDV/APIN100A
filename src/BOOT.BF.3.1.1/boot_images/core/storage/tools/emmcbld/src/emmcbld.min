@@ -1,0 +1,115 @@
+#============================================================================
+#  Name:
+#    hostdl.min
+#
+#  Description:
+#    Include Makefile to build the NANDPRG/ENANDPRG software to 
+#    support software download through QPST
+#    
+#
+#  Included by hostdl.mak
+#
+#
+# Copyright (c) 2008-2011 Qualcomm Incorporated. 
+#  All Rights Reserved.
+#  Qualcomm Confidential and Proprietary
+#============================================================================
+
+#============================================================================
+#
+#                          EDIT HISTORY FOR MODULE
+#
+#  This section contains comments describing changes made to the module.
+#  Notice that changes are listed in reverse chronological order.
+#
+#  $Header: //components/rel/boot.bf/3.1.1/boot_images/core/storage/tools/emmcbld/src/emmcbld.min#1 $ $DateTime: 2014/09/09 14:47:07 $ $Author: pwbldsvc $
+#  
+# when       who     what, where, why
+# --------   ---     --------------------------------------------------------
+# 2011-01-11 vj      Change name from ENPRG to MPRG
+# 2010-01-12 vj      Added Support for 7x27 target
+# 06/19/09   bb      Fixes and cleanup for via option
+# 04/23/09   sv      Add Ehostdl support
+# 04/08/09   mh      Increase dal heap size
+# 02/27/09   jz      Cleaned up and fixed SRCROOT issue
+# 01/09/09   mm      Adapted to API Changes on SRoc
+# 10/29/08   mm      Created 
+# 
+#============================================================================
+
+#----------------------------------------------------------------------------
+#  DEFINES WHICH CHANGE WITH NAND BUILD TYPE
+#
+#  FINALNAME
+#	Name of target binary to build, specific to each MSM
+#       and type of flash
+#  S_ADDR
+#	Start record to be appended to the end of the combined 
+# 	ROM file by AP_GEN.EXE - must match start address in
+# 	scatterload file
+#  CUSTFILE
+#	Build specific customer file to include from DMSS
+#----------------------------------------------------------------------------
+#----------------------------------------------------------------------------
+# ASIC and ASIC_NUM Defaults if one is not defined at command-line
+#----------------------------------------------------------------------------
+SRCROOT = ../../../..
+
+FINALNAME=MPRG$(TARGET_ID)
+TARGETDIR = $(TARGET)
+
+#----------------------------------------------------------------------------
+# Use the value passed in from AMSS.
+#----------------------------------------------------------------------------
+  ifndef USES_HSU
+    USES_HSU=yes
+  endif
+
+#------------------------------------------------------------------------------
+#  HSU_BASIC Objects
+#------------------------------------------------------------------------------
+ifeq ($(USES_HSU),yes)
+  ifneq ($(TARGET),enandprg)
+    TARGETDIR = $(TARGET)
+    include $(HSU_DRIVER_SRC)/hsu_basic.min
+    USB_OBJS = $(HSU_OBJS)
+    HSU_FLAGS = -DFEATURE_HS_USB_BASIC -DASSERT
+  
+  #------------- HSU_BASIC Library ------------------------------------------
+  #  Build a library for 3rd part code. This code is not shipped to customers.
+  #  Only build a library if this is not a stripped build.
+  #--------------------------------------------------------------------------- 
+    HSU_LIBS = $(LIBDIR)/hsu_core_basic.lib
+
+    HSU_MIN_FILE = $(HSU_CORE_SRC)/lib_hsu_basic_core.min
+    MAKE_LIBS := $(shell if test -f $(HSU_CORE_SRC)/lib_hsu_basic_core.min; \
+                       then echo yes; \
+                       else echo no; \
+                       fi)
+  endif  
+endif
+
+#------------------------------------------------------------------------------
+#   Produce Transport OBJS
+#------------------------------------------------------------------------------
+TRANSPORT_OBJS=   $(TARGET)/hostdl_uart.o
+
+ifeq ($(USES_HSU), yes)
+   TRANSPORT_OBJS += $(USB_OBJS) $(TARGET)/mc_init.o
+endif
+
+#----------------------------------------------------------------------------
+#  Flags to define the MSM types needed, Used by NANDPRG HOSTDL make file
+#----------------------------------------------------------------------------
+MSM_EXTRA_DEFINES += -DIMAGE_MODEM_PROC
+
+#----------------------------------------------------------------------------
+# Do not expand immediately 
+#----------------------------------------------------------------------------
+CONFIG_TYPE_CFLAGS := -DCUST_H=\"$(CUSTFILE)\" $(MSM_EXTRA_DEFINES)\
+                   -DBIN_NAME=\"$(FINALNAME).HEX\"
+
+
+CONFIG_TYPE_AFLAGS = 
+
+vpath %.c $(SRCROOT)/services/utils

@@ -1,0 +1,11 @@
+; Use the prog_free.bin that comes along with QSDK package.
+; Program 192KB uboot into Serial Flash
+  DATA.LOAD.Binary u-boot.bin 0xa0001000
+  DATA.LOAD.Binary prog_free.bin 0xa0000100
+  D.S 0xa0000000 %LONG 0x0
+  D.S 0xa0000004 %LONG 0x30000
+  R.S pc 0xa0000100
+  B.S 0xa00008ac
+  go
+
+ 

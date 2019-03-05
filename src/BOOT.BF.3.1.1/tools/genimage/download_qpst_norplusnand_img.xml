@@ -1,0 +1,58 @@
+<?xml version="1.0" ?>
+<contents>
+  <product_info>
+    <product_name>IPQ40xx.ILQ.1.0</product_name>
+    <hlos_type>ILQ</hlos_type>
+    <chipid>ipq40xx</chipid>
+  </product_info>
+  <builds_flat>
+    <build>
+      <name>common</name>
+      <role>common</role>
+      <chipset>ipq40xx</chipset>
+      <windows_root_path>.\</windows_root_path>
+      <linux_root_path>./</linux_root_path>
+      <image_dir>ipq</image_dir>
+      <partition_file>
+        <file_name>nor-plus-nand-parition.xml</file_name>
+        <file_path>ipq/tools/config/</file_path>
+      </partition_file>
+    </build>
+	<build>
+      <name>boot</name>
+      <role>boot</role>
+      <chipset>ipq40xx</chipset>
+      <windows_root_path>.\</windows_root_path>
+      <linux_root_path>./</linux_root_path>
+      <image_dir>ipq</image_dir>
+      <flash_programmer get_binary="True" minimized="true">
+        <file_name>ENORPRG40xx.mbn</file_name>
+        <file_path>ipq/</file_path>
+      </flash_programmer>
+      <download_file ignore="true" get_binary="True" minimized="true">
+        <file_name>ENORPRG40xx.mbn</file_name>
+        <file_path>ipq/</file_path>
+      </download_file>
+      <download_file get_binary="True" minimized="true">
+        <file_name>norplusnand-user-partition-ipq40xx.bin</file_name>
+        <file_path>ipq/</file_path>
+      </download_file>
+	  <download_file cmm_file_var="BOOT_BINARY" get_binary="True" minimized="true">
+        <file_name>sbl1_nor.mbn</file_name>
+        <file_path>ipq/</file_path>
+      </download_file>
+	  <download_file  get_binary="True" minimized="true">
+        <file_name>tz.mbn</file_name>
+        <file_path>ipq/</file_path>
+      </download_file>
+	  <download_file  get_binary="True" minimized="true">
+        <file_name>cdt.bin</file_name>
+        <file_path>ipq/</file_path>
+      </download_file>
+	  <download_file get_binary="True" minimized="true">
+        <file_name>openwrt-ipq40xx-u-boot-stripped.elf</file_name>
+        <file_path>ipq/</file_path>
+      </download_file>
+    </build>
+  </builds_flat>
+</contents>

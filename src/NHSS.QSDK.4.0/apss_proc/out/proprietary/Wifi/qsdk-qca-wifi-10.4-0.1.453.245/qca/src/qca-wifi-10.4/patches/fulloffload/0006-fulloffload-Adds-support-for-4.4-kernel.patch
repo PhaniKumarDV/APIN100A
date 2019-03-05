@@ -1,0 +1,504 @@
+From 8a7b1c5d1f444faa452040cd6ec13f9d951a2de8 Mon Sep 17 00:00:00 2001
+From: Venkata krishna Sundararajan <vsundara@qti.qualcomm.com>
+Date: Fri, 16 Dec 2016 19:34:11 +0530
+Subject: [PATCH] [fulloffload] Adds support for 4.4 kernel.
+
+1. Adds supports for 4.4 kernel making sure its backward compatible
+with previous versions.
+2. Sigma-DUT fixes for fulloffload.
+3. Adds staging dir to CFLAGS in Makefile.
+4. Enabling lan bypass mode using module param lan_byp_tunnel.
+
+Change-Id: I07a204de0cedfe907ee733e74c0da11890271cbf
+Signed-off-by: Venkata krishna Sundararajan <vsundara@qti.qualcomm.com>
+---
+ host/build/linux/adf/Makefile                |  2 +-
+ host/build/linux/fw_loader/mdio/Makefile     |  2 +-
+ host/build/linux/fw_loader/pcie/Makefile     |  1 +
+ host/build/linux/hif/gmac/Makefile           |  1 +
+ host/build/linux/hif/pcie/Makefile           |  2 +-
+ host/build/linux/thin_driver/Makefile        | 13 +++--
+ host/hif/gmac/hif_gmac.c                     |  5 ++
+ host/thin_driver/atd/atd_byp.c               |  9 ++-
+ host/thin_driver/atd/atd_cfg.c               | 43 ++++++++++++++
+ host/thin_driver/atd/atd_dev.c               | 86 ++++++++++++++++++++++------
+ target/linux/build/wasp/thin_driver/Makefile | 12 ++--
+ target/linux/thin_driver/atd/atd_byp.c       | 10 +++-
+ target/linux/thin_driver/atd/atd_cfg.c       | 17 ++++++
+ target/linux/thin_driver/atd/atd_dev.c       |  2 +
+ 14 files changed, 171 insertions(+), 34 deletions(-)
+
+diff --git a/host/build/linux/adf/Makefile b/host/build/linux/adf/Makefile
+index 30c674b..0561193 100644
+--- a/host/build/linux/adf/Makefile
++++ b/host/build/linux/adf/Makefile
+@@ -21,7 +21,7 @@ EXTRA_CFLAGS    += -I$(PWD)/$(OFFLOAD_ADF_INC)/os/linux
+ EXTRA_CFLAGS	+= -I$(PWD)/$(ROOT_INC)/include
+ EXTRA_CFLAGS	+= -I$(WLAN_DRIVER_PATH)/include
+ EXTRA_CFLAGS	+= -I$(WLAN_DRIVER_PATH)/os/linux/include
+-
++EXTRA_CFLAGS    += -I$(STAGING_DIR)/usr/include
+ EXTRA_CFLAGS+=        -Wno-unused-function
+ 
+ #
+diff --git a/host/build/linux/fw_loader/mdio/Makefile b/host/build/linux/fw_loader/mdio/Makefile
+index 6d4a00a..12fcde6 100755
+--- a/host/build/linux/fw_loader/mdio/Makefile
++++ b/host/build/linux/fw_loader/mdio/Makefile
+@@ -23,7 +23,7 @@ EXTRA_CFLAGS    += -I$(PWD)/$(OFFLOAD_ADF_INC)/include/os
+ EXTRA_CFLAGS    += -I$(PWD)/$(OFFLOAD_ADF_INC)/nbuf/linux
+ EXTRA_CFLAGS    += -I$(PWD)/$(OFFLOAD_ADF_INC)/net/linux
+ EXTRA_CFLAGS    += -I$(PWD)/$(OFFLOAD_ADF_INC)/os/linux
+-
++EXTRA_CFLAGS    += -I$(STAGING_DIR)/usr/include
+ 
+ 
+ EXTRA_CFLAGS        += -I$(PWD)/$(OFFLOAD_THIN_INC)/wmi/
+diff --git a/host/build/linux/fw_loader/pcie/Makefile b/host/build/linux/fw_loader/pcie/Makefile
+index 9b58d49..6971633 100644
+--- a/host/build/linux/fw_loader/pcie/Makefile
++++ b/host/build/linux/fw_loader/pcie/Makefile
+@@ -27,6 +27,7 @@ EXTRA_CFLAGS    += -I$(PWD)/$(OFFLOAD_ADF_INC)/os/linux
+ EXTRA_CFLAGS        += -I$(PWD)/$(OFFLOAD_THIN_INC)/wmi/
+ EXTRA_CFLAGS        += -I$(PWD)/$(OFFLOAD_THIN_INC)/htc/
+ EXTRA_CFLAGS        += -I$(PWD)/$(OFFLOAD_THIN_INC)/atd/
++EXTRA_CFLAGS        += -I$(STAGING_DIR)/usr/include
+ 
+ #EXTRA_CFLAGS        += -I$(PWD)/$(OFFLOAD_HIF_INC)/linux
+ EXTRA_CFLAGS        += -I$(PWD)/$(OFFLOAD_HIF_INC)
+diff --git a/host/build/linux/hif/gmac/Makefile b/host/build/linux/hif/gmac/Makefile
+index a6517f5..4b4be22 100644
+--- a/host/build/linux/hif/gmac/Makefile
++++ b/host/build/linux/hif/gmac/Makefile
+@@ -17,6 +17,7 @@ EXTRA_CFLAGS    += -I$(PWD)/$(OFFLOAD_ADF_INC)/linux/net
+ EXTRA_CFLAGS    += -I$(PWD)/$(OFFLOAD_ADF_INC)/linux/nbuf
+ EXTRA_CFLAGS    += -I$(PWD)/$(OFFLOAD_GMAC_INC)
+ EXTRA_CFLAGS    += -I$(PWD)/$(OFFLOAD_GMAC_INC)/linux
++EXTRA_CFLAGS    += -I$(STAGING_DIR)/usr/include
+ EXTRA_CFLAGS    += -Werror
+ 
+ ifeq ($(strip $(GMAC_FRAGMENT_SUPPORT)),1)
+diff --git a/host/build/linux/hif/pcie/Makefile b/host/build/linux/hif/pcie/Makefile
+index 5c107e6..5c8d61a 100644
+--- a/host/build/linux/hif/pcie/Makefile
++++ b/host/build/linux/hif/pcie/Makefile
+@@ -21,7 +21,7 @@ EXTRA_CFLAGS    += -I$(PWD)/$(OFFLOAD_ADF_INC)/include/os
+ EXTRA_CFLAGS    += -I$(PWD)/$(OFFLOAD_ADF_INC)/nbuf/linux
+ EXTRA_CFLAGS    += -I$(PWD)/$(OFFLOAD_ADF_INC)/net/linux
+ EXTRA_CFLAGS    += -I$(PWD)/$(OFFLOAD_ADF_INC)/os/linux
+-
++EXTRA_CFLAGS    += -I$(STAGING_DIR)/usr/include
+ 
+ EXTRA_CFLAGS    += -I$(PWD)/$(OFFLOAD_PCIE_INC)
+ #EXTRA_CFLAGS    += -I$(PWD)/$(OFFLOAD_PCIE_INC)/linux
+diff --git a/host/build/linux/thin_driver/Makefile b/host/build/linux/thin_driver/Makefile
+index 8a77d49..166c389 100644
+--- a/host/build/linux/thin_driver/Makefile
++++ b/host/build/linux/thin_driver/Makefile
+@@ -41,6 +41,7 @@ EXTRA_CFLAGS        += -I$(PWD)/$(OFFLOAD_HIF_INC)
+ 
+ EXTRA_CFLAGS        += -I$(PWD)/../../../../wlan_modules/include
+ EXTRA_CFLAGS        += -I$(PWD)/../../../../wlan_modules/os/linux/include
++EXTRA_CFLAGS        += -I$(STAGING_DIR)/usr/include
+ 
+ ifneq ($(strip ${ATH_SUPPORT_TxBF}),0)
+ EXTRA_CFLAGS        += -DATH_SUPPORT_TxBF=1
+@@ -83,15 +84,15 @@ atd$(MOD_SUFFIX)-objs			+= $(OFFLOAD_THIN)/atd/atd_profile.o
+ atd$(MOD_SUFFIX)-objs			+= $(OFFLOAD_THIN)/atd/atd_dev.o
+ atd$(MOD_SUFFIX)-objs			+= $(OFFLOAD_THIN)/atd/atd_wsupp.o
+ 
+-ifeq ($(strip $(OFFLOAD_LAN_BYPASS)),1)
++#ifeq ($(strip $(OFFLOAD_LAN_BYPASS)),1)
+ EXTRA_CFLAGS    += -DOFFLOAD_LAN_BYPASS=1
+ atd$(MOD_SUFFIX)-objs        += $(OFFLOAD_THIN)/atd/atd_byp.o
+-else
+-EXTRA_CFLAGS    += -DOFFLOAD_LAN_BYPASS=0
+-endif
++#else
++#EXTRA_CFLAGS    += -DOFFLOAD_LAN_BYPASS=0
++#endif
+ 
+-ifeq ($(strip $(OFFLOAD_APPBR)),1)
++#ifeq ($(strip $(OFFLOAD_APPBR)),1)
+ EXTRA_CFLAGS    += -DOFFLOAD_APPBR=1
+ atd$(MOD_SUFFIX)-objs        += $(OFFLOAD_THIN)/atd/atd_appbr.o
+-endif
++#endif
+ 
+diff --git a/host/hif/gmac/hif_gmac.c b/host/hif/gmac/hif_gmac.c
+index 34595af..82a5980 100755
+--- a/host/hif/gmac/hif_gmac.c
++++ b/host/hif/gmac/hif_gmac.c
+@@ -1068,6 +1068,11 @@ void gmac_module_exit(void )
+     return; 
+ }
+ 
++int hif_sysfs_create_group(struct kobject *kobj, struct attribute_group *grp)
++{
++    return sysfs_create_group(kobj, grp);
++}
++EXPORT_SYMBOL(hif_sysfs_create_group);
+ EXPORT_SYMBOL(hif_init);
+ EXPORT_SYMBOL(hif_cleanup);
+ EXPORT_SYMBOL(hif_start);
+diff --git a/host/thin_driver/atd/atd_byp.c b/host/thin_driver/atd/atd_byp.c
+index f0b0281..2cf90dd 100644
+--- a/host/thin_driver/atd/atd_byp.c
++++ b/host/thin_driver/atd/atd_byp.c
+@@ -29,6 +29,8 @@
+ static adf_nbuf_t
+ atd_byp_filter_tunnel(void *ctx, struct atd_host_vap *vap, adf_nbuf_t skb);
+ 
++extern a_uint32_t lan_byp_tunnel;
++
+ /** 
+  * @brief 
+  * 
+@@ -78,7 +80,12 @@ atd_byp_init(void *atd_handle)
+     }
+ 
+     adf_os_mem_zero(addr_list, sizeof(struct host_br_addr_s));
+-    BYPSC_HSTADDR_TBL(byp_sc)  =   addr_list; 
++    BYPSC_HSTADDR_TBL(byp_sc)  =   addr_list;
++
++    if (lan_byp_tunnel) {
++      /* enable tunnel mode by default */
++      BYPSC_FILTER(byp_sc) =   atd_byp_filter_tunnel;
++    }
+ 
+     return (byp_sc);
+ }
+diff --git a/host/thin_driver/atd/atd_cfg.c b/host/thin_driver/atd/atd_cfg.c
+index 0f8eee5..c6db18f 100644
+--- a/host/thin_driver/atd/atd_cfg.c
++++ b/host/thin_driver/atd/atd_cfg.c
+@@ -169,6 +169,8 @@ static a_status_t atd_cfg_set_atf_sta(adf_drv_handle_t  hdl,
+ 
+ static a_status_t atd_cfg_set_country(adf_drv_handle_t  hdl, acfg_set_country_t *setcountry);
+ 
++extern a_uint32_t lan_byp_tunnel;
++
+ #define PROTO_WSUPP(name)                                         \
+     static a_status_t                                             \
+     atd_cfg_##name(adf_drv_handle_t hdl, acfg_wsupp_info_t *wsupp);
+@@ -470,6 +472,37 @@ fail:
+     return status;
+ }
+ 
++static ssize_t atd_parent_show(struct device *dev,
++                               struct device_attribute *attr, char *buf)
++{
++    struct net_device *netdev = to_net_dev(dev);
++    adf_net_handle_t parent = NULL;
++    __adf_softc_t     *sc     = netdev_to_softc(netdev);
++
++    parent = ((atd_host_vap_t*)sc->drv_hdl)->wifisc->netdev;
++    if(!parent)
++        return 0;
++
++    return sprintf(buf, "%s\n", adf_net_ifname(parent));
++}
++
++static DEVICE_ATTR(parent, S_IRUGO, atd_parent_show, NULL);
++static struct attribute *atd_device_attrs[] = {
++    &dev_attr_parent.attr,
++    NULL
++};
++
++static struct attribute_group atd_attr_group = {
++    .attrs  = atd_device_attrs,
++};
++
++int hif_sysfs_create_group(struct kobject *kobj, struct attribute_group *grp);
++void atd_create_group(adf_net_handle_t hdl) {
++
++    __adf_softc_t *sc = hdl_to_softc(hdl);
++    hif_sysfs_create_group(&sc->netdev->dev.kobj, &atd_attr_group);
++}
++
+ a_status_t
+ atd_cfg_create_vap(adf_drv_handle_t       hdl,
+                    a_uint8_t              icp_name[ACFG_MAX_IFNAME],
+@@ -563,6 +596,10 @@ atd_cfg_create_vap(adf_drv_handle_t       hdl,
+     vap->vap_index   = resp.vap_index ;
+     vap->vap_opmode  = icp_opmode;
+ 
++    if (lan_byp_tunnel) {
++        vap->lan_en     =   1;
++    }
++
+     /* Protect the VAP Array */
+     atd_spin_lock_bh(sc->dsc);      /* Lock */
+ 
+@@ -613,6 +650,8 @@ atd_cfg_create_vap(adf_drv_handle_t       hdl,
+     }
+     vap->sys_index   = ADF_VAP_GET_IFINDEX(vap->nethandle);
+ 
++    atd_create_group(vap->nethandle);
++
+     atd_trace(ATD_DEBUG_FUNCTRACE,("VAP created  _adf_net_ifname %s \n",
+                  adf_net_ifname(vap->nethandle)));
+ 
+@@ -5557,7 +5596,11 @@ atd_event_bsteer_send(atd_host_wifi_t *wifi,
+                 adf_os_ntohl(event->type),
+                 sizeof(struct ath_netlink_bsteering_event),
+                 0);
++#if LINUX_VERSION_CODE < KERNEL_VERSION(4,0,0)
+         NETLINK_CB(nbuf).pid = 0;        /* from kernel */
++#else
++        NETLINK_CB(nbuf).portid = 0;        /* from kernel */
++#endif
+         NETLINK_CB(nbuf).dst_group = 0;  /* unicast */
+         /* Its time todo ntoh conversion */
+         atd_convert_bsteer_event_ntoh(NLMSG_DATA(nlh), event, vap->sys_index);
+diff --git a/host/thin_driver/atd/atd_dev.c b/host/thin_driver/atd/atd_dev.c
+index 06267f60..a3e2980 100644
+--- a/host/thin_driver/atd/atd_dev.c
++++ b/host/thin_driver/atd/atd_dev.c
+@@ -199,7 +199,7 @@ atd_host_dev_t * atd_devices[ATD_MAXDEVICES];
+ 
+ a_uint32_t atd_target_devtype = WASP_TARGET;
+ a_uint32_t atd_tgt_pwrdown_support = 0;
+-
++a_uint32_t lan_byp_tunnel = 0;
+ 
+ static hif_status_t
+ atd_device_detect( hif_handle_t hif_handle)
+@@ -430,11 +430,35 @@ ath_device_htcready_worker(void *ctx)
+     }
+ 
+     if (atd_spectral_nl_sock == NULL) {
+-#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,31))
++
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,6,0)
++        extern struct net init_net;
++        struct netlink_kernel_cfg cfg = {
++            .groups = 1,
++            .input  = atd_spectral_nl_data_ready,
++        };
++#endif
++
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,7,0)
++        atd_spectral_nl_sock = (struct sock *)netlink_kernel_create(&init_net, NETLINK_ATHEROS, &cfg);
++#elif LINUX_VERSION_CODE >= KERNEL_VERSION(3,6,0)
++        atd_spectral_nl_sock = (struct sock *)netlink_kernel_create(&init_net, NETLINK_ATHEROS,
++                                                                THIS_MODULE, &cfg);
++#elif (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,31))
+         atd_spectral_nl_sock = (struct sock *)netlink_kernel_create(NETLINK_ATHEROS, 1,&atd_spectral_nl_data_ready, THIS_MODULE);
+ #else
++        extern struct net init_net;
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,10,0))
++        struct netlink_kernel_cfg cfg;
++        memset(&cfg, 0, sizeof(cfg));
++        cfg.groups = 1;
++        cfg.input = &spectral_nl_data_ready;
++        atd_spectral_nl_sock = (struct sock *)netlink_kernel_create(&init_net,NETLINK_ATHEROS, &cfg);
++#else
+         atd_spectral_nl_sock = (struct sock *)netlink_kernel_create(&init_net,NETLINK_ATHEROS, 1,&atd_spectral_nl_data_ready, NULL, THIS_MODULE);
+ #endif
++#endif
++
+         if (atd_spectral_nl_sock == NULL) {
+             printk("%s Netlink interface create FAILED : %d\n", __func__, NETLINK_ATHEROS);
+             status = A_STATUS_FAILED;
+@@ -444,19 +468,51 @@ ath_device_htcready_worker(void *ctx)
+     }
+ #define NETLINK_BAND_STEERING_EVENT 21
+     if(atd_bsteer_nl_sock == NULL) {
+-#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,31))
+-        atd_bsteer_nl_sock = (struct sock *)netlink_kernel_create(NETLINK_BAND_STEERING_EVENT,
+-                1,
+-                &atd_band_steering_netlink_receive,
+-                THIS_MODULE);
++
++#if LINUX_VERSION_CODE >= KERNEL_VERSION (3,10,0)
++        extern struct net init_net;
++        struct netlink_kernel_cfg cfg;
++        memset(&cfg, 0, sizeof(cfg));
++        cfg.groups = 1;
++        cfg.input = &atd_band_steering_netlink_receive;
++#elif LINUX_VERSION_CODE >= KERNEL_VERSION(3,6,0)
++        extern struct net init_net;
++
++        struct netlink_kernel_cfg cfg = {
++            .groups = 1,
++            .input  = atd_band_steering_netlink_receive,
++        };
++#endif
++
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,7,0)/* >= (3,10,0) */
++        atd_bsteer_nl_sock = (struct sock *)netlink_kernel_create(
++                                                                             &init_net,
++                                                                             NETLINK_BAND_STEERING_EVENT,
++                                                                             &cfg);
++#elif LINUX_VERSION_CODE >= KERNEL_VERSION(3,6,0)
++        atd_bsteer_nl_sock = (struct sock *)netlink_kernel_create(
++                                                                             &init_net,
++                                                                             NETLINK_BAND_STEERING_EVENT,
++                                                                             THIS_MODULE, &cfg);
++#elif LINUX_VERSION_CODE >= KERNEL_VERSION (2,6,24)
++        atd_bsteer_nl_sock = (struct sock *) netlink_kernel_create(
++                                                                              &init_net,
++                                                                              NETLINK_BAND_STEERING_EVENT, 1,
++                                                                              &atd_band_steering_netlink_receive,
++                                                                              NULL, THIS_MODULE);
++#elif LINUX_VERSION_CODE >= KERNEL_VERSION (2,6,22)
++        atd_bsteer_nl_sock = (struct sock *) netlink_kernel_create(
++                                                                              NETLINK_BAND_STEERING_EVENT, 1,
++                                                                              &atd_band_steering_netlink_receive,
++                                                                              NULL, THIS_MODULE);
++
+ #else
+-        atd_bsteer_nl_sock = (struct sock *)netlink_kernel_create(&init_net,
+-                NETLINK_BAND_STEERING_EVENT,
+-                1,
+-                &atd_band_steering_netlink_receive,
+-                NULL,
+-                THIS_MODULE);
++        atd_bsteer_nl_sock = (struct sock *)netlink_kernel_create(
++                                                                             NETLINK_BAND_STEERING_EVENT, 1,
++                                                                             &ath_band_steering_netlink_receive,
++                                                                             THIS_MODULE);
+ #endif
++
+         if (atd_bsteer_nl_sock == NULL) {
+             printk("%s Netlink interface create FAILED : %d\n",
+                     __func__,
+@@ -1478,13 +1534,11 @@ atd_event_device_state_change(adf_net_handle_t nethandle,
+     atd_trace(ATD_DEBUG_FUNCTRACE, (" .END "));
+ }
+ 
+-
+-adf_os_virt_module_name(thin_driver);
+-
+ adf_os_virt_module_init(atd_device_module_init);
+ adf_os_virt_module_exit(atd_device_module_exit);
+ adf_os_declare_param(atd_target_devtype , ADF_OS_PARAM_TYPE_INT32);
+ adf_os_declare_param(atd_tgt_pwrdown_support , ADF_OS_PARAM_TYPE_INT32);
++adf_os_declare_param(lan_byp_tunnel , ADF_OS_PARAM_TYPE_INT32);
+ 
+ #ifdef ATD_DEBUG_ENABLE
+ adf_os_declare_param(atd_dbg_mask, ADF_OS_PARAM_TYPE_INT32);
+diff --git a/target/linux/build/wasp/thin_driver/Makefile b/target/linux/build/wasp/thin_driver/Makefile
+index f73ac6d..9afe489 100644
+--- a/target/linux/build/wasp/thin_driver/Makefile
++++ b/target/linux/build/wasp/thin_driver/Makefile
+@@ -121,17 +121,17 @@ atd-objs    += $(OFFLOAD_THIN_DRV)/atd/atd_netlink.o
+ 
+ EXTRA_CFLAGS    += -DATH_SUPPORT_FLOWMAC_MODULE=0
+ 
+-ifeq ($(strip ${OFFLOAD_LAN_BYPASS}),1)
++#ifeq ($(strip ${OFFLOAD_LAN_BYPASS}),1)
+ EXTRA_CFLAGS    += -DOFFLOAD_LAN_BYPASS=1
+ atd-objs        += $(OFFLOAD_THIN_DRV)/atd/atd_byp.o
+-else
+-EXTRA_CFLAGS    += -DOFFLOAD_LAN_BYPASS=0
+-endif
++#else
++#EXTRA_CFLAGS    += -DOFFLOAD_LAN_BYPASS=0
++#endif
+ 
+-ifeq ($(strip ${OFFLOAD_APPBR}),1)
++#ifeq ($(strip ${OFFLOAD_APPBR}),1)
+ EXTRA_CFLAGS    += -DOFFLOAD_APPBR=1
+ atd-objs        += $(OFFLOAD_THIN_DRV)/atd/atd_appbr.o
+-endif
++#endif
+ 
+ ifeq ($(strip $(OFFLOAD_GMAC_8021Q)),1)
+ EXTRA_CFLAGS    += -DGMAC_8021Q_SUPPORT
+diff --git a/target/linux/thin_driver/atd/atd_byp.c b/target/linux/thin_driver/atd/atd_byp.c
+index 5208c49..c81a158 100644
+--- a/target/linux/thin_driver/atd/atd_byp.c
++++ b/target/linux/thin_driver/atd/atd_byp.c
+@@ -61,6 +61,8 @@ atd_byp_filter_tunnel(void *ctx, struct atd_tgt_vap *vap, struct sk_buff *skb);
+ 
+ static struct sk_buff *
+ atd_byp_filter_vlan(void *ctx, struct atd_tgt_vap *vap, struct sk_buff *skb);
++
++extern int lan_byp_tunnel;
+ /** 
+  * @brief 
+  * 
+@@ -97,7 +99,11 @@ atd_tgt_byp_init(void *atd_handle)
+     BYPSC_ATDHDL(byp_sc)  =   atd_handle;
+ 
+     BYPSC_BYPMODE(byp_sc)   =   ATD_LANBYP_DIS;
+-    BYPSC_FILTER(byp_sc)    =   NULL;
++
++    if (lan_byp_tunnel) {
++        /* enable tunnel mode by defautl */
++        BYPSC_FILTER(byp_sc)    =   atd_byp_filter_tunnel;
++    }
+ 
+     atd_tgt_appbr_register_cb(appbr_sc, cb, APPBR_BYP);
+ 
+@@ -387,7 +393,7 @@ atd_tgt_byp_seten(void *ctx, byp_stat_t *buf)
+  * 
+  * @return 
+  */
+-static a_status_t 
++a_status_t
+ atd_tgt_byp_addmac(void *ctx, byp_br_t *buf)
+ {
+ 
+diff --git a/target/linux/thin_driver/atd/atd_cfg.c b/target/linux/thin_driver/atd/atd_cfg.c
+index dd5a6e5..593e353 100644
+--- a/target/linux/thin_driver/atd/atd_cfg.c
++++ b/target/linux/thin_driver/atd/atd_cfg.c
+@@ -47,6 +47,9 @@
+ #endif
+ #include"ieee80211_external.h"
+ 
++extern int lan_byp_tunnel;
++a_status_t atd_tgt_byp_addmac(void *ctx, byp_br_t *buf);
++
+ static int
+ atd_tgt_acfg2ieee(a_uint16_t param)
+ {
+@@ -702,6 +705,13 @@ void atd_tgt_vap_create(void *ctx, a_uint16_t cmdid,
+ 
+     memcpy(&vap->mac_addr[0], &vap->vap_netdev->dev_addr[0], ACFG_MACADDR_LEN);
+ 
++    if (lan_byp_tunnel) {
++        byp_br_t buf;
++        vap->byp_flags =  BYP_VAPCTRL_BR_EN | BYP_VAPCTRL_LAN_EN;
++        memcpy(buf.br_addr, vap->mac_addr, ACFG_MACADDR_LEN);
++        atd_tgt_byp_addmac(atsc->byp_handle, &buf);
++    }
++
+     vaprsp.vap_index = vap->vap_index ;
+     memcpy(&vaprsp.vap_bssid[0], &vap->mac_addr[0], ACFG_MACADDR_LEN);
+     memcpy(&vaprsp.name, vap->vap_netdev->name, IFNAMSIZ);
+@@ -5360,6 +5370,13 @@ atd_tgt_create_vap(atd_tgt_vap_t  *vap, wmi_id_t  event)
+     strncpy(payload->if_name, vap->vap_netdev->name, ACFG_MAX_IFNAME);
+     memcpy(payload->mac_addr, vap->mac_addr, ACFG_MACADDR_LEN);
+ 
++    if (lan_byp_tunnel) {
++        byp_br_t buf;
++        vap->byp_flags =  BYP_VAPCTRL_BR_EN | BYP_VAPCTRL_LAN_EN;
++        memcpy(buf.br_addr, vap->mac_addr, ACFG_MACADDR_LEN);
++        atd_tgt_byp_addmac(dev_sc->byp_handle, &buf);
++    }
++
+     wmi_send_event(dev_sc->wmi_handle, skb, event);
+ done:
+     return;
+diff --git a/target/linux/thin_driver/atd/atd_dev.c b/target/linux/thin_driver/atd/atd_dev.c
+index 595edcd..12f7c75 100644
+--- a/target/linux/thin_driver/atd/atd_dev.c
++++ b/target/linux/thin_driver/atd/atd_dev.c
+@@ -47,8 +47,10 @@ module_param(atd_dbg_mask, int , 0600);
+ 
+ atd_tgt_dev_t *g_atd_dev ;
+ int  max_num_radio = 1;
++int lan_byp_tunnel = 0;
+ 
+ module_param(max_num_radio, int , 0600);
++module_param(lan_byp_tunnel, int, 0600);
+ 
+ MODULE_AUTHOR("Atheros Communications, Inc.");
+ MODULE_DESCRIPTION("Atheros Device Module");
+-- 
+1.9.1
+

@@ -1,0 +1,5 @@
+<CancelJobResponse>
+    <JobId>12345</JobId>
+    <OperationStatus>0x0406</OperationStatus>
+</CancelJobResponse>
+

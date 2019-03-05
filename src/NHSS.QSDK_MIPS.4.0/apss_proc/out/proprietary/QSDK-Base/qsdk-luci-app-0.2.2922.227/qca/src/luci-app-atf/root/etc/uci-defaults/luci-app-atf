@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# Copyright (c) 2016 Qualcomm Atheros, Inc.
+#
+# All Rights Reserved.
+# Qualcomm Atheros Confidential and Proprietary
+uci batch <<-EOF
+	set luci.main.mediaurlbase=/luci-static/atf
+	set luci.sauth.sessiontime=$((24*60*60))
+	commit luci
+EOF
+exit 0

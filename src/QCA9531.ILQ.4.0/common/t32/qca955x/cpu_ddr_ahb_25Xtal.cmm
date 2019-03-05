@@ -1,0 +1,143 @@
+;[INIT]
+; -----------------------------------------
+; Initialize all the CP0 registers in MIPS
+PER.S CP0:0xD 0x0                  ; Clear Cause register
+PER.S CP0:0xC 0x0
+PER.S CP0:0xE 0x0
+PER.S CP0:0x10 0x80248483           ; Config register - writeback cache mode
+
+; Remove interfaces from reset
+
+D.Set 0xB806001c %BE %LONG 0xfeceffff ; DDR out of reset; CPU_COLD, CPU_NMI, Full Chip are 0; External reset is 1
+D.Set 0xB806001c %BE %LONG 0xeeceffff ; DDR out of reset; CPU_COLD, CPU_NMI, Full Chip are 0; External Reset is 0
+D.Set 0xB806001c %BE %LONG 0xe6ceffff ; RTC brought out of reset; all other setting retained
+
+; RST_RESET2 -
+D.Set 0xB80600c4 %BE %LONG 0xffffffff ; All interfaces kept in reset
+
+; PMU configurations
+D.Set 0xb8116cc0 %BE %LONG 0x633c8176     ; Internal Switcher
+D.Set 0xb8116cc4 %BE %LONG 0x00380000     ; Set PGM bit, Increase the DDR voltage
+
+;CPU and DDR PLL programming. Bringing CPU, DDR and AHB to desired frequencies
+
+D.Set 0xb8116f04 %BE %LONG 0x13010f00     ; CPU PLL, Ki = 0x4, Kd = 0x60
+D.Set 0xb8116ec4 %BE %LONG 0x13010f00     ; DDR PLL, Ki = 0x4, Kd = 0x60
+
+; CPU PLL (660 MHz)
+; CPU_PLL_CONFIG
+D.Set 0xB8050008 %BE %LONG 0x0101001c     ; Remove AHB, DDR and CPU PLL Bypass
+D.Set 0xB8050000 %BE %LONG 0x40021480     ; 720 MHz, PLL PWD 1, NINT 13, Range 1, Frac 0, RefDiv 1, Outdiv 0
+
+ ; DDR PLL (660 MHz)
+ ; DDR_PLL_CONFIG
+ 
+ D.Set 0xB8050004 %BE %LONG 0x40214000     
+
+ ; CPU-DDR Clock Control - AHB (220MHz)
+ ; CPU_DDR_CLOCK_CONTROL
+
+ D.Set 0xB8050008 %BE %LONG 0x0101001c     
+
+ ; Release PowerDown from CPU and DDR PLL
+ D.Set 0xB8050000 %BE %LONG 0x00021480     ; 720 MHz, PLL PWD 1, NINT 13, Range 1, Frac 0, RefDiv 1, Outdiv 0
+ D.Set 0xB8050004 %BE %LONG 0x00214000     ; DDR PLL Power Down removed
+
+ ; Remove AHB, DDR, CPU PLL from Bypass
+ D.Set 0xB8050008 %BE %LONG 0x01010000     ; Remove AHB, DDR and CPU PLL Bypass
+
+ ; CPU PLL Dithering
+ ; CPU_PLL_DITHER
+ D.Set 0xB8050044 %BE %LONG 0x00000000     ; Dither Disabled
+
+ ; DDR PLL Dithering
+ D.Set 0xB8050040 %BE %LONG 0x00000000    ; Dither Disabled
+
+; DDR Controller Initialization - Phase I
+; DDR_CTL_CONFIG
+
+D.Set 0xB8000108 %BE %LONG 0x401fc040; Note - CPU_DDR_SYNC is 0
+
+; DDR2_CONFIG
+ D.Set 0xB80000b8 %BE %LONG 0x00001e7d ; CAS = 5
+
+
+; DDR_CONFIG 
+
+ D.Set 0xB8000000 %BE %LONG 0xe7aaf33b ; internal CAS = 12
+
+; DDR_CONFIG_3 
+
+D.Set 0xB800015c %BE %LONG 0x0000000a
+
+; DDR_CONFIG2
+
+D.Set 0xB8000004  %BE %LONG 0xeeb2e1a8 ; CAS = 5, GATE OPEN = 11
+
+; DDR_RD_DATA_THIS_CYCLE
+D.Set 0xB8000018 %BE %LONG 0x000000ff ; x32 mode
+
+; DDR_BURST 
+D.Set 0xB80000c4 %BE %LONG 0x74444444; Note - CPU_PRIORITY is 0
+
+; DDR_BURST2
+D.Set 0xB80000c8 %BE %LONG 0x44444444
+
+; DDR_FSM_WAIT_CTRL
+; D.Set 0xB80000e4 %BE %LONG 0x00000a12 ; Left at reset value
+
+; DDR2 Memory Initialization
+; Issue Precharge-all command
+D.Set 0xB8000010 %BE %LONG 0x8
+
+; Program EMR2 register
+;    Not needed; Hence, skipped
+
+; Program EMR3 register
+;    Not needed; Hence, skipped
+
+; Issue EMRS to enable DLL
+D.Set 0xB800000C %BE %LONG 0x402    
+D.Set 0xB8000010 %BE %LONG 0x2     
+
+; Issue MRS to reset DLL
+D.Set 0xB8000008 %BE %LONG 0x153  
+D.Set 0xB8000010 %BE %LONG 0x1    
+
+
+; Issue precharge-all command
+D.Set 0xB8000010 %BE %LONG 0x8
+
+; Issue 2 Auto-refresh commands
+D.Set 0xB8000010 %BE %LONG 0x4
+D.Set 0xB8000010 %BE %LONG 0x4
+
+; Issue MRS to remove DLL out-of-reset
+D.Set 0xB8000008 %BE %LONG 0x53  
+D.Set 0xB8000010 %BE %LONG 0x1
+
+; OCD calibration Default - EMRS
+D.Set 0xB800000C %BE %LONG 0x782   
+D.Set 0xB8000010 %BE %LONG 0x2   
+D.Set 0xB800000C %BE %LONG 0x402
+D.Set 0xB8000010 %BE %LONG 0x2    
+
+
+; DDR Controller Initialization - Phase II
+D.Set 0xB8000014 %BE %LONG 0x412c; REF_CLK=40MHz
+
+; Tap delay settings for all 4 DQS lanes
+D.Set 0xB800001C %BE %LONG 0x10 ; DQS 0 TAP
+D.Set 0xB8000020 %BE %LONG 0x10 ; DQS 1 TAP
+D.Set 0xB8000024 %BE %LONG 0x10 ; DQS 2 TAP
+D.Set 0xB8000028 %BE %LONG 0x10 ; DQS 3 TAP
+
+; AHB Master timeout 
+D.Set 0xB80000cc %BE %LONG 0xfffff ; Set to max value
+
+;  GPIO programming
+D.Set 0xB8040000 %BE %LONG 0xff30b; 
+D.Set 0xB8040044 %BE %LONG 0x908; 
+D.Set 0xB8040034 %BE %LONG 0x160000; 
+
+enddo

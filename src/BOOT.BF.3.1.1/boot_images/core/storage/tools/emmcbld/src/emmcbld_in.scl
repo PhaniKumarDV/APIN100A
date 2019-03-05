@@ -1,0 +1,117 @@
+// *====*====*====*====*====*====*====*====*====*====*====*====*====*====*====*
+//
+//                     SCATTER LOADING DESCRIPTION FILE TEMPLATE
+//  
+//  Copyright (c) 1998-2010 by QUALCOMM Incorporated. All Rights Reserved.
+//
+//  GENERAL DESCRIPTION
+//
+//  Memory Map for our Lauterbach JTAG ICD FLASH Programming Routine.
+//
+//  This file is a template which gets run through the C pre-processor to
+//  generate the actual scatter load file which will be used.  This allows
+//  this file to be used by all targets and be relocated on the fly.
+//
+//  The code and RW/ZI data all reside between SADDR and PADDR except
+//  for the jtag_flash_param data which starts at PADDR. This area is
+//  where Lauterbach JTAG TRACE32 Debugger commuicates with us and where our buffer
+//  is located. See type_jtag_flash_param struct.
+//                         _______________________
+//                        |                       |
+//                        |                       |
+//                        |                       |
+//                        |                       |
+//                        |                       |
+//                        |                       |
+//                        |                       |
+//                        |                       |
+//                        |                       |
+//                        |                       |
+//                        |                       |
+//                        |                       |
+//                        |                       |
+//                        |                       |
+//                        |         CODE          |
+//       CODE_START_ADDR   _______________________
+//                        |                       |
+//                        |                       |
+//                        |                       |
+//                        |         DATA          |
+//                        |                       |
+//             DATA_ADDR   _______________________
+//                        |                       |
+//                        |                       |
+//                        |                       |
+//                        |                       |
+//                        |                       |
+//                        |                       |
+//                        |                       |
+//                        |                       |
+//                        |    ROM CHIP SELECT    |
+//                        |                       |
+//                        |         AREA          |
+//                        |                       |
+//                        |        (FLASH)        |
+//                        |                       |
+//                        |                       |
+//                        |                       |
+//                        |                       |
+//                        |                       |
+//                        |                       |
+//                        |                       |
+//                        |                       |
+//                        |                       |
+//            0x00000000  -------------------------
+//
+//
+//  NOTE:  CODE_START_ADDR and DATA_ADDR will be replaced by CPP during creation of
+//         JFLASH.SCL.  
+//
+//*====*====*====*====*====*====*====*====*====*====*====*====*====*====*====*
+
+/* ===========================================================================
+
+                           EDIT HISTORY FOR FILE
+  This section contains comments describing changes made to the module.
+  Notice that changes are listed in reverse chronological order.
+
+  $Header: //components/rel/boot.bf/3.1.1/boot_images/core/storage/tools/emmcbld/src/emmcbld_in.scl#1 $ $DateTime: 2014/09/09 14:47:07 $ $Author: pwbldsvc $
+   
+ when       who     what, where, why
+ --------   ---     -------------------------------------------------------
+ 2011-01-11 vj      Fix to resolve issues on 7627 target
+ 2010-01-12 vj      Added Support for 7x27 target
+ 2009-11-15 rh      Initial Revision
+==========================================================================*/
+
+RAM CODE_START_ADDR
+{
+
+#ifdef FEATURE_EMMCBLD_USE_RPM_STARTUP
+    CODE CODE_START_ADDR 
+    {
+      emmcbld_rpm_start.o (RPM_ENTRY_POINT, +FIRST)
+      emmcbld_rpm_start.o RPM_CODE_REGION
+      * (+RO)
+    }
+#else
+    CODE CODE_START_ADDR 
+    {
+      emmcbld_start.o (EMMCBLD_ENTRY_POINT, +FIRST)
+      * (+RO)
+    }
+#endif
+
+    //  This block is for the RW and zero init data
+    //
+    APP_RAM DATA_START_ADDR
+    {
+      * (+RW)
+    }
+    
+    ZI_DATA ZI_BASE
+    {
+      * (+ZI)
+    }
+}
+

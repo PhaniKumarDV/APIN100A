@@ -1,0 +1,30 @@
+choice
+    prompt "Ethernet Speed"
+    default HYD_GIGABIT_ETHERNET
+    help
+        set Ethernet speed
+
+config HYD_GIGABIT_ETHERNET
+    bool "Gigabit Ethernet"
+    help
+        use gigabit ethernet
+
+config HYD_FAST_ETHERNET
+    bool "Fast Ethernet"
+    help
+        use fast ethernet
+
+endchoice
+
+config HYD_WIFI_LOAD_BALANCING
+	bool "Enable Wi-Fi Load Balancing Feature"
+	default y
+	help
+	  This enables Wi-Fi load balancing (aka. steering) in hyd
+
+config HYD_SUPPORT_VHT160
+	bool "Support VHT 160 MHz"
+	depends on PACKAGE_kmod-qca-wifi-10.4-akronite-perf||PACKAGE_kmod-qca-wifi-10.4-dakota-perf||PACKAGE_kmod_qca-wifi-10.4-perf||PACKAGE_kmod_qca-wifi-10.4-unified-perf||PACKAGE_kmod-qca-wifi-10.4-unified-profile
+	default y
+	help
+	  This enables the HYD support for 160 MHz

@@ -1,0 +1,22 @@
+{
+    "copyright": [  "Copyright (c) 2015 Qualcomm Atheros, Inc.",
+                    "All Rights Reserved.",
+                    "Qualcomm Atheros Confidential and Proprietary"
+                 ],
+    "legal":
+    {
+        "Update_License" :  [
+                                "Please help us improve the performance of Streamboost and our related products and services. ",
+                                "By ticking the box, Streamboost will send us anonymous, aggregated stream information and related ",
+                                "analytics from your router. We appreciate your help.<br><br>If you volunteer to help us improve ",
+                                "Streamboost and our related products and services, the StreamBoost enabled router will provide ",
+                                "Qualcomm Atheros Inc. with anonymous, aggregated stream information from your router. Anonymous ",
+                                "stream information may include:  packets of data streamed through the router, available bandwidth ",
+                                "measurements and oversubscription conditions (i.e., amount of bandwidth that is being requested ",
+                                "exceeds the available bandwidth), connected devices and the stream associated with the devices, and ",
+                                "application usage statistics.  In turn, Qualcomm Atheros agrees to keep your StreamBoost enabled ",
+                                "router up to date with the latest stream definitions."
+                            ]
+    }
+}
+

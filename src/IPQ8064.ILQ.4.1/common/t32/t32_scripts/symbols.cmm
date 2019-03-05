@@ -1,0 +1,37 @@
+;###################################################
+//
+// Copyright (C) 2013 Qualcomm Atheros, Inc.
+// Copyright (C) 2013 Qualcomm Technologies, Inc.
+//
+// All rights reserved.  Confidential and Proprietary.
+//
+;###################################################
+
+
+;********************************************************************
+; 		symbols.cmm					   **
+;********************************************************************
+
+local &force
+
+entry &force
+
+if ("&force"!="")
+   goto LOAD_SYMBOL
+
+if (Y.EXIST(AKRONITE))
+(
+    enddo
+)
+
+LOAD_SYMBOL:
+
+print " Loading register symbols ..."
+
+Y.CREATE.L   AKRONITE	0x00000014  ;dummy
+
+do symbols_VI.cmm
+
+print " Done Loading register symbols."
+
+ENDDO

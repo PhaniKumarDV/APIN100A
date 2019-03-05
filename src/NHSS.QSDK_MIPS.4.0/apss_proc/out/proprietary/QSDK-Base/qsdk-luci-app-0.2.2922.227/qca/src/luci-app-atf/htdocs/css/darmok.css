@@ -1,0 +1,382 @@
+/*
+ * Copyright (c) 2015 Qualcomm Atheros, Inc.
+ *
+ * All Rights Reserved.
+ * Qualcomm Atheros Confidential and Proprietary
+ */
+
+HTML
+{
+    overflow-x: auto;
+    background-color: #757a81;
+    height:100%;
+}
+BODY
+{
+    height:100%;
+    background-color:#757a81;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+
+#Screen {
+    /*min-width:1030px;*/
+    height:100%;
+    padding:64px;
+    margin: 0 auto;
+}
+
+#maincontent {
+    min-width: 50%;
+    max-width: 80%;
+    width: 50%;
+    }
+.Main {
+    min-width:800px;
+    height:100%;
+    background-color: #757a81;
+}
+.Menu {
+    width:350px;
+    height:100%;
+    background-color: #495054;
+    float:left;
+    position:absolute;
+    z-index: 25;
+    top:0;
+    left:0;
+}
+.SelectItem {
+    display: table;
+    float: left;
+    width: 100%;
+    margin-left: 61px;
+}
+.SelectRow {
+    display: table-row;
+}
+.SelectLabel {
+    display: table-cell;
+    width: 283px;
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: bold;
+    font-size: 36px;
+    vertical-align: middle;
+    text-align:right;
+    color: white;
+}
+.SelectSub {
+    display: table-cell;
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: bold;
+    font-size: 36px;
+    vertical-align: middle;
+    color: white;
+    position: absolute;
+    width: 800px;
+    left: 425px;
+    top: 55px;
+}
+.SelectIcon {
+    display: table-cell;
+}
+#iconopen
+{
+    width:96px;
+    top:10px;
+    left:10px;
+    position:absolute;
+    z-index:75000;
+}
+
+#submenuopen
+{
+    left:110px;
+    top:48px;
+    z-index:75000;
+}
+.SelectSubMenu {
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    text-align:right;
+    color: white;
+    text-decoration: underline;
+}
+.SubItem {
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: normal;
+    font-size: 16px;
+    text-align:right;
+    color: #bcbcbc;
+    margin-top: 5px;
+}
+.SubItem:hover {
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    text-align:right;
+    color: #ffb400;
+    cursor:pointer;
+    /*text-decoration: underline;*/
+}
+.SubMenu {
+    /*position: absolute;*/
+    /*margin-top: 96px;*/
+    padding-left:65px;
+    width: 200px;
+    top: -32px;
+    position: relative;
+}
+
+.MainMenu {
+    display: table;
+    /* float: left; */
+    width: 100%;
+    margin-left: 32px;
+    /*margin-top: 260px;*/
+}
+.MenuRow {
+    display: table-row;
+    padding-top: 2px;
+}
+.MenuLabel {
+    display: table-cell;
+    width: 283px;
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    vertical-align: middle;
+    text-align:right;
+    color: white;
+    padding-right: 32px;
+}
+.MenuLabel_hover {
+    color: #ffb400;
+    font-weight: 600;
+    cursor:pointer;
+   /* text-decoration: underline; */
+}
+.MenuIcon {
+    display: table-cell;
+    width: 64px;
+}
+.MenuIcon_hover {
+    display: table-cell;
+    width: 64px;
+}
+
+.DeviceIcons {
+    width: 96px;
+    z-index: 16;
+    position: relative;
+    cursor:pointer;
+}
+
+.bwArrows {
+    width: 96px;
+    z-index: 17;
+    position: relative;
+}
+.bwVArrows {
+    height: 96px;
+    z-index: 16;
+    position: relative;
+    z-index:17;
+}
+
+.MeterText {
+    display: inline;
+    position: absolute;
+    text-align: center;
+    vertical-align: middle;
+    width: 96px;
+    margin-top: 5px;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 14px;
+    z-index: 20;
+}
+
+.VMeterText {
+    display: inline;
+    position: absolute;
+    text-align: center;
+    vertical-align: middle;
+    width: 200px;
+    margin-top: 40px;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 14px;
+    z-index: 20;
+    margin-left: -84px;
+    /* Safari */
+    -webkit-transform: rotate(-90deg);
+
+    /* Firefox */
+    -moz-transform: rotate(-90deg);
+
+    /* IE */
+    -ms-transform: rotate(-90deg);
+
+    /* Opera */
+    -o-transform: rotate(-90deg);
+
+    /* Internet Explorer */
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+
+.hline {
+    position: absolute;
+    display: inline;
+    top: 396px;
+    left: 220px;
+    height: 6px;
+    width: 258px;
+    z-index: 5;
+    border: 0px;
+    border-top: 3px;
+    border-style: dashed;
+    border-color: white;
+}
+
+.vline {
+    position: absolute;
+    display: inline;
+    top: 128px;
+    left: 952px;
+    width: 6px;
+    height: 280px;
+    z-index: 5;
+    border: 0px;
+    border-left: 3px;
+    border-style: dashed;
+    border-color: white;
+}
+
+.networkrow {
+    height:96px;
+}
+.DevLabel {
+    font-family: 'Segoe UI', sans-serif;
+}
+
+@media only screen
+  and (min-device-width: 320px)
+  and (max-device-width: 480px)
+  and (-webkit-min-device-pixel-ratio: 2){
+    .Menu {width: 75%;}
+
+    .SubMenu {
+        padding-left:0%;
+        width: 70%;
+        position: relative;
+    }
+
+    #Screen {
+    min-width: 0px;
+    height: 100%;
+    padding: 0px;
+
+    }
+
+    #maincontent
+    {
+        min-width: 0%;
+        max-width: 100%;
+        margin-left: 4px;
+        margin-right: 4px;
+        width: 90%;
+        margin: 0 auto;
+        margin-top: 12%;
+    }
+
+    #iconopen
+    {
+        width: 64px;
+        top: 10px;
+        left: 10px;
+        position: absolute;
+        z-index: 75000;
+    }
+
+    #submenuopen
+    {
+        left: 80px;
+        top: 32px;
+        z-index: 75000;
+        font-size: 32px;
+    }
+
+    .SelectItem
+    {
+        display: table;
+        float: left;
+        width: 100%;
+        margin-left: 45px;
+        margin-bottom: 32px;
+    }
+
+    #icon1
+    {
+        width: 96px;
+    }
+
+    #icon2
+    {
+        width: 96px;
+    }
+}
+
+#NodeTable
+{
+    width: 100%;
+    text-align: center;
+    padding: 64px;
+    min-width: 800px;
+    max-width: 1200px;
+    margin: auto;
+    border-collapse: collapse;
+    border-spacing: 0px;
+    margin-top:32px;
+}
+
+.areaup {
+    fill: #498ba0;
+}
+.areadl {
+    fill: #954745;
+}
+
+#FlowTable
+{
+    width: 100%;
+    text-align: center;
+    min-width: 800px;
+    max-width: 1200px;
+    margin: auto;
+    border-spacing: 0px 10px;
+    margin-top: 16px;
+}
+
+#DeviceTable
+{
+    width: 100%;
+    text-align: center;
+    min-width: 800px;
+    max-width: 1200px;
+    margin: auto;
+    border-spacing: 0px 0px;
+    margin-top: 0px;
+}
+
+.flowrow {
+    height:80px;
+}
+
+.devicerow {
+    height:80px;
+}
+
+.childrow {
+    height:0px;
+    min-height: 0px;
+}

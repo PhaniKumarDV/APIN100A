@@ -1,0 +1,6 @@
+<GetJobAttributesRequest>
+    <JobId>12345</JobId>
+    <RequestedJobAttributes>
+        <JobAttribute>JobState</JobAttribute>
+    </RequestedJobAttributes>
+</GetJobAttributesRequest>

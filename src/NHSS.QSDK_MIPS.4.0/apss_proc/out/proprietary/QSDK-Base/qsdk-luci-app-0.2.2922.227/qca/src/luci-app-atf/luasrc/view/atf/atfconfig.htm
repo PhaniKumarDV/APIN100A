@@ -1,0 +1,911 @@
+<!--
+ * Copyright (c) 2016 Qualcomm Atheros, Inc.
+ *
+ * All Rights Reserved.
+ * Qualcomm Atheros Confidential and Proprietary
+-->
+<%+header%>
+<head>
+        <meta http-equiv="X-UA-Compatible" content="IE=9">
+        <title>Darmok Network View</title>
+
+
+        <!-- include the darmok style sheet-->
+        <!--link rel="stylesheet" href="/css/darmok.css" type="text/css" media="screen"-->
+
+        <!-- include the prerequisite libraries for the flux kit-->
+        <script src="/js/jquery-2.1.4.js" type="text/javascript"></script>
+
+        <!-- include darmok itself-->
+        <script language="javascript" type="text/javascript" src="/js/darmok.js"></script>
+        <script language="javascript" type="text/javascript" src="/js/spin.js"></script>
+
+        <!-- customize styles to make this page draw correctly (unique to this page only) -->
+        <style>
+
+            /* change our tables for our ATF chart */
+            table, caption, tbody, tfoot, thead, tr, th, td {
+                margin: 0;
+                padding: 0;
+                border: 0;
+                outline: 0;
+                font-size: 100%;
+                vertical-align: center;
+                background: transparent;
+                border-top:0px;
+                -webkit-touch-callout: none; /* iOS Safari */
+                -webkit-user-select: none;   /* Chrome/Safari/Opera */
+                -khtml-user-select: none;    /* Konqueror */
+                -moz-user-select: none;      /* Firefox */
+                -ms-user-select: none;       /* IE/Edge */
+                user-select: none;           /* non-prefixed version, currently
+                not supported by any browser */
+                border-collapse: separate;
+            }
+
+            /*ATF Chart row item*/
+            table td {
+                vertical-align: middle;
+                border-top: 0px solid #ddd;
+                text-align: center;
+            }
+
+            /*set atf row item space correctly*/
+            tr:first-child td:first-child { border-top-left-radius: 10px; }
+            tr:first-child td:last-child { border-top-right-radius: 10px; }
+            tr:last-child td:first-child { border-bottom-left-radius: 10px; }
+            tr:last-child td:last-child { border-bottom-right-radius: 10px; }
+
+            /*the style for a ssid row entry*/
+            .ssid {
+                border-radius: 10px;
+                background-color: #81868c;
+                color:white;
+            }
+            .ssid:hover {
+                border-radius: 10px;
+                background-color: #ccc;
+                /*rgb(255,180,0);*/
+                color:black;
+            }
+
+            /*style for a device entry*/
+            .mac {
+                background-color: transparent;
+                border-radius: 0px 0px 10px 10px;
+            }
+            .mac:hover {
+                background-color: #ccc;
+                color:black;
+                border-radius: 0px 0px 10px 10px;
+            }
+
+            /*various page setup details*/
+            #maincontent {
+                width: auto;
+                height: 100%;
+                min-width: 50%;
+                max-width: 100%;
+            }
+            #Page {
+                min-width: 800px;
+                /* max-width: 1200px; */
+                width: 100%;
+            }
+            label {
+              color: none;
+            }
+
+            /* on/off switch for enable/disable atf*/
+            .onoffswitch {
+                position: relative;
+                width: auto;
+                -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+            }
+            .onoffswitch-checkbox {
+                display: none;
+            }
+            .onoffswitch-label {
+                display: block; overflow: hidden; cursor: pointer;
+                border: 2px solid #999999; border-radius: 20px;
+                padding:0px;
+                width:auto;/*90px;*/
+                color:none;
+            }
+            .onoffswitch-inner {
+                display: block; width: 200%; margin-left: -100%;
+                transition: margin 0.3s ease-in 0s;
+            }
+            .onoffswitch-inner:before, .onoffswitch-inner:after {
+                display: block; float: left; width: 50%; height: 30px; padding: 0; line-height: 30px;
+                font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+                box-sizing: border-box;
+            }
+            .onoffswitch-inner:before {
+                content: "ON";
+                padding-left: 10px;
+                background-color: #3D8DA1; color: #FFFFFF;
+            }
+            .onoffswitch-inner:after {
+                content: "OFF";
+                padding-right: 10px;
+                background-color: #EEEEEE; color: #999999;
+                text-align: right;
+            }
+            .onoffswitch-switch {
+                display: block; width: 11px; margin: 9.5px;
+                background: #FFFFFF;
+                position: absolute; top: 0; bottom: 0;
+                right: 56px;
+                border: 2px solid #999999; border-radius: 20px;
+                transition: all 0.3s ease-in 0s;
+                height: 11px;
+                top: auto;
+            }
+            .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+                margin-left: 0;
+            }
+            .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+                right: 0px;
+            }
+
+
+            /* strict/fair switch for scheduling toggle*/
+            .strictswitch {
+                position: relative;
+                width: auto;
+                -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+            }
+            .strictswitch-checkbox {
+                display: none;
+            }
+            .strictswitch-label {
+                display: block; overflow: hidden; cursor: pointer;
+                border: 2px solid #999999; border-radius: 20px;
+                padding:0px;
+                width:auto;
+                color:none;
+            }
+            .strictswitch-inner {
+                display: block; width: 200%; margin-left: -100%;
+                transition: margin 0.3s ease-in 0s;
+            }
+            .strictswitch-inner:before, .strictswitch-inner:after {
+                display: block; float: left; width: 50%; height: 30px; padding: 0; line-height: 30px;
+                font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+                box-sizing: border-box;
+            }
+            .strictswitch-inner:before {
+                content: "STRICT";
+                padding-left: 10px;
+                background-color: #3D8DA1; color: #FFFFFF;
+            }
+            .strictswitch-inner:after {
+                content: "FAIR";
+                padding-right: 10px;
+                background-color: #EEEEEE; color: #999999;
+                text-align: right;
+            }
+            .strictswitch-switch {
+                display: block; width: 11px; margin: 9.5px;
+                background: #FFFFFF;
+                position: absolute; top: 0; bottom: 0;
+                right: 56px;
+                border: 2px solid #999999; border-radius: 20px;
+                transition: all 0.3s ease-in 0s;
+                height: 11px;
+                top: auto;
+            }
+            .strictswitch-checkbox:checked + .strictswitch-label .strictswitch-inner {
+                margin-left: 0;
+            }
+            .strictswitch-checkbox:checked + .strictswitch-label .strictswitch-switch {
+                right: 0px;
+            }
+        </style>
+
+        <script>
+
+        //adjustments for our theme
+        if($("#MainMenu").length != 0)
+        {
+            //append the darmok styles
+            $('head:first').append('<link rel="stylesheet" href="/css/darmok.css" type="text/css" media="screen" />');
+        }
+        else // other peoples themes
+        {
+            //create our non darmok styles
+            var style = "";
+
+            style += "<style type='text/css'>";
+            style += "table td { padding:5px; }";
+            style += "tr { height: 78px;border-radius: 10px; }";
+            style += "#onoffswitch {width:100px;}";
+            style += "#strictswitch{width:100px;}";
+            style += "#atflabel{color:black;}";
+            style += "</style>";
+
+            //append our custom non darmok styles
+            $('head:first').append(style);
+
+        }
+
+        /*
+            variable: atf
+
+            this class allow access to all the config
+            state of the Airtime Fairness functionality
+            in the router
+
+            see darmok.js for implementation
+        */
+        var atf = new dkATF();
+
+        //init the config class with the current page path
+        atf.init(window.location.pathname);
+
+        /*
+            variable: atfview
+
+            this class is the functionality for drawing a
+            table designed to display atf config information
+        */
+        var atfview = new dkATFConfig();
+
+        /*
+            variable: g_arrSave
+
+            this is an array of everything that needs to be written
+            out to the router when the user clicks save. The items
+            in here are added by the belowe atfview.OnChange event.
+
+            entries in the format of:
+            {
+                "ssid": "",
+                "mac": "",
+                "interface": "",
+                "reserve": 0
+            }
+
+            If mac is "" this is a ssid change.
+            If ssid is "" this is a device change.
+        */
+        var g_arrSave = [];
+
+        // hook up our on change handler to the atf table
+        // this function pushes our save data into an
+        // array that can be walked for save button clicks
+        // see the below save()
+        atfview.onChange(function(nParent,nItem,nReserve,id)
+        {
+            //this is the scruct push into the array
+            //If mac is "" this is a ssid change.
+            //If ssid is "" this is a device change.
+            var cmd = {
+                "ssid": "",
+                "mac": "",
+                "interface": "",
+                "reserve": 0
+            };
+
+            //set our common data
+            cmd.reserve     = nReserve;
+
+            //if no parent then we are a ssid
+            if(nParent == -1)
+            {
+                cmd.interface   = g_ssids[nItem]["interface"];
+                cmd.ssid    = id;
+                cmd.mac     = "";
+            }
+            else //else we are a device
+            {
+                cmd.interface   = g_ssids[nParent]["interface"];
+                cmd.mac     = id.replace(/:/g,"");
+                cmd.ssid    = "";
+            }
+
+            //kill any dups if this ssid/mac
+            for(var x in g_arrSave)
+            {
+                var testCMD = g_arrSave[x];
+
+                if( testCMD.ssid == cmd.ssid &&
+                    testCMD.mac == cmd.mac)
+                {
+                    g_arrSave.splice(x,1);
+                    break;
+                }
+            }
+
+            //now put it in the array
+            g_arrSave.push(cmd);
+
+            //enable the buttons
+            enableButtons(true);
+        });
+
+
+        /*
+            function: enableButtons
+
+            this is used to set the button states an enable/disable
+            their look and their events
+
+            parameters:
+            bEnable -   true  = allow buttons to function
+                        false = grey out and disable the buttons
+
+            returns:
+            nothing
+        */
+        function enableButtons(bEnable)
+        {
+            //show visual enable/disable buttons
+            atfview.changed(bEnable);
+
+            //if enabled hook up the buttons
+            if(bEnable)
+            {
+                //hook up the apply button
+                $("#btApply").unbind().bind("click",fnApply);
+
+                //hook up the reset button
+                $("#btReset").unbind().bind("click",fnReset);
+
+                //hook up the reset button
+                $("#btDefaults").unbind().bind("click",fnDefaults);
+            }
+            else
+            {
+                //remove exist apply button
+                $("#btApply").unbind();
+
+                //remove exist reset button
+                $("#btReset").unbind();
+
+                //remove exist reset button
+                $("#btDefaults").unbind();
+            }
+        }
+
+        /*
+            function: save
+
+            call this function on a save/apply to write the
+            new state to the router
+
+            parameters:
+            none.
+
+            returns:
+            nothing
+        */
+        function save()
+        {
+            //enable the buttons
+            enableButtons(false);
+
+            //ATF enable state
+            var bEnabled = false;
+
+            //get the enable toggle state
+            if($("#enableATF").is(':checked'))
+            {
+                bEnabled = true;
+            }
+
+            //save enable/disable state
+            if(g_lastSaveState.bEnabled != bEnabled)
+            {
+                //cache our new value
+                g_lastSaveState.bEnabled = bEnabled;
+
+                //send the command
+                atf.enable(bEnabled);
+            }
+
+            //only need to save the rest of the state if we are enabled
+            if(bEnabled == true)
+            {
+                //stict/fair state
+                var bStrict = false;
+
+                //get the strict fair toggle state
+                if($("#selStrictFair").is(':checked'))
+                {
+                    bStrict = true;
+                }
+
+                //save strict/fair state
+                if(g_lastSaveState.bStrict != bStrict)
+                {
+                    //cache our new value
+                    g_lastSaveState.bStrict = bStrict;
+
+                    //send the command
+                    atf.strict(bStrict);
+                }
+
+                //save the sta/ssid data
+                for(var x in g_arrSave)
+                {
+                    //next save element
+                    var cmd = g_arrSave[x];
+
+                    //if this is a device/mac change
+                    if(cmd.ssid == "")
+                    {
+                        //delete other versions
+                        for(var n in g_ssids)
+                        {
+                            s = g_ssids[n];
+
+                            if(s["interface"] != cmd.interface)
+                            {
+                                atf.delSTA( s["interface"],
+                                            cmd.mac);
+                            }
+                        }
+
+                        //if we have a reserve
+                        if(cmd.reserve > 0)
+                        {
+                            atf.addSTA( cmd.interface,
+                                        cmd.mac,
+                                        cmd.reserve);
+                        }
+                        else //if no reserve remove from atf
+                        {
+                            atf.delSTA( cmd.interface,
+                                        cmd.mac);
+                        }
+                    }
+                    else // else this is a ssid change
+                    {
+                        //if we have a reserve
+                        if(cmd.reserve > 0)
+                        {
+                            atf.addSSID(cmd.interface,
+                                        cmd.ssid,
+                                        cmd.reserve);
+                        }
+                        else //if no reserve remove from atf
+                        {
+                            atf.delSSID( cmd.interface,
+                                        cmd.ssid);
+                        }
+                    }
+                }
+
+                //if we saved this all clear the save commands
+                g_arrSave = [];
+            }
+
+            //we are now in an unchanged state
+            atfview.changed(false);
+
+            //hide the wait spinner
+            setTimeout(function()
+            {
+                wait(false);
+            },
+            3000);
+        }
+
+        /*
+            variable: g_ssids
+
+            save info lookup table
+            this table is used to create the save data
+            after a change on the gui
+            it caches the gui parent/child ids
+            with the associated date necassary to
+            generate a new save state
+        */
+        var g_ssids = [];
+
+        /*
+            variable: ssid2id
+
+            ssid 2 id lookup table for drawing the table
+        */
+        var ssid2id = [];
+
+        /*
+            variable: uuid2id
+
+            ssid+mac 2 id lookup table for drawing the table
+            child items to see if they already exist
+        */
+        var uuid2id  = [];
+
+        /*
+            variable g_leases
+
+            name/lease information for each ip/mac
+        */
+        var g_leases = [];
+
+        /*
+            function: getTable
+
+            call this to get the current and atfdata and add each
+            element to the atfviews table
+        */
+        function getTable()
+        {
+            //get the ssid table data
+            atf.ssids().done(function(data)
+            {
+                //cache an original copy for save stuff later
+                g_ssids = clone(data);
+
+                atf.leases().done(function(leases)
+                {
+                    //cache an original copy for save stuff later
+                    g_leases = clone(leases);
+
+                    //walk each ssid
+                    for(var n in g_ssids)
+                    {
+                        //the current ssid element
+                        var e = g_ssids[n];
+
+                        if(typeof ssid2id[e["essid"]] == "undefined")
+                        {
+                            //add a table entry for this ssid
+                            var nID = atfview.addSSID(  e["essid"],
+                                                        e["frequency"],
+                                                        e["bit-rate"],
+                                                        0,
+                                                        0);
+
+                            //cache of this table id in a ssid lookuptable
+                            //so childred can look up the visual element by
+                            //ssid and know which to add to too
+                            ssid2id[e["essid"]] = nID;
+                        }
+
+                        //get the atf managed devices on this ssid
+                        atf.atftable(e["interface"],e["essid"]).then(function(data,wifi,ssid)
+                        {
+                            //walk the data
+                            for(var n in data)
+                            {
+                                //if we have a ssid entry
+                                if(typeof data[n]["ssid"] != 'undefined')
+                                {
+                                    //set ssid for table lookup
+                                    ssid = data[n]["ssid"];
+
+                                    //update the ssid with the reserve from this guy
+                                    atfview.updateSSID( ssid2id[ssid],
+                                                        data[n]["atf"],
+                                                        data[n]["configatf"]);
+
+                                    g_ssids[ssid2id[ssid]]["atf"]       = data[n]["atf"];
+                                    g_ssids[ssid2id[ssid]]["configatf"] = data[n]["configatf"];
+                                }
+                                else if(ssid!="") //if we have as ssid
+                                {
+                                    //if this isn't another ssid
+                                    if(typeof data[n]["ssid"] == 'undefined')
+                                    {
+                                        //make uuid for this child on this ssid
+                                        var uuid = ssid+data[n]["mac"];
+                                        var strName = undefined;
+
+                                        //if this child doesn't exist
+                                        if(typeof uuid2id[uuid] == "undefined")
+                                        {
+                                            for(var ls in g_leases)
+                                            {
+                                                if(g_leases[ls]["mac"] == data[n]["mac"])
+                                                {
+                                                    strName = g_leases[ls]["name"];
+                                                    break;
+                                                }
+                                            }
+                                            //add the device to our ssid in the table
+                                            uuid2id[uuid] = atfview.addMAC( ssid2id[ssid],
+                                                                            data[n]["mac"],
+                                                                            data[n]["atf"],
+                                                                            data[n]["configatf"],
+                                                                            strName);
+                                        }
+                                        else
+                                        {
+                                            //add the device to our ssid in the table
+                                            uuid2id[uuid] = atfview.updateMAC(  uuid2id[uuid],
+                                                                                data[n]["atf"],
+                                                                                data[n]["configatf"]);
+                                        }
+
+                                        //if we don't have a spot for the device to go create it
+                                        if(typeof g_ssids[ssid2id[ssid]]["macs"] == "undefined")
+                                        {
+                                            g_ssids[ssid2id[ssid]]["macs"]  = [];
+                                        }
+
+                                        //add the device to its parent ssid child mac list
+                                        g_ssids[ssid2id[ssid]]["macs"][data[n]["mac"]] = clone(data[n]);
+                                    }
+                                }
+                            }
+
+                            //now add the non atf managed devices
+                            atf.liststa(wifi,ssid).done(function(data,wifi,ssid)
+                            {
+                                //walk the data
+                                for(var n in data)
+                                {
+
+                                    var d = [];
+
+                                    //create the atf entry in case
+                                    //we have to add it
+                                    d["myssid"]        = ssid;
+                                    d["interface"]     = wifi;
+                                    d["mac"]           = data[n]["mac"];
+                                    d["atf"]           = 0;
+                                    d["configatf"]     = 0;
+                                    d["peerstatus"]    = 0;
+
+                                    //make uuid for this child on this ssid
+                                    var uuid = ssid+data[n]["mac"];
+
+                                    //if this child doesn't exist
+                                    if(typeof uuid2id[uuid] == "undefined")
+                                    {
+                                        var strName = undefined;
+
+                                        for(var ls in g_leases)
+                                        {
+                                            if(g_leases[ls]["mac"] == data[n]["mac"])
+                                            {
+                                                strName = g_leases[ls]["name"];
+                                                break;
+                                            }
+                                        }
+
+                                        //add the device to our ssid in the table
+                                        uuid2id[uuid] = atfview.addMAC( ssid2id[ssid],
+                                                                        d["mac"],
+                                                                        d["atf"],
+                                                                        d["configatf"],
+                                                                        strName);
+
+                                        //if we don't have a spot for the device to go create it
+                                        if(typeof g_ssids[ssid2id[ssid]]["macs"] == "undefined")
+                                        {
+                                            g_ssids[ssid2id[ssid]]["macs"]  = [];
+                                        }
+
+                                        //add the device to its parent ssid child mac list
+                                        g_ssids[ssid2id[ssid]]["macs"][d["mac"]] = clone(d);
+                                    }
+                                }
+
+                            })
+                            .fail(function(err)
+                            {
+                                //nothing to do on fail
+                            });
+                        })
+                        .fail(function(err)
+                        {
+                            //nothing to do on fail
+                        });
+                    }
+                })
+                .fail(function(err)
+                {
+                    //nothing to do on fail
+                });
+
+            }).fail(function(err)
+            {
+
+            });
+        }
+
+        // state changes to be written
+        // in the save() function
+        var g_lastSaveState = {
+            bEnabled: false,
+            bStrict: false,
+            lsTable: []
+        }
+
+        /*
+            function: fnApply
+
+            apply button handler
+        */
+        function fnApply()
+        {
+            //Show the wait spinner
+            wait(true,"Applying changes...");
+            document.body.scrollTop = document.documentElement.scrollTop = 0;
+
+            //do the save
+            save();
+        };
+
+        /*
+            function: fnReset
+
+            reset button handler
+        */
+        function fnReset()
+        {
+            location.reload();
+        };
+
+        /*
+            function: fnDefaults
+
+            defaults button handler
+        */
+        function fnDefaults()
+        {
+            //Show the wait spinner
+            wait(true,"Applying changes...");
+
+            //clear the table
+            atf.flushtable();
+
+            //the the table a couple of seconds to refresh
+            setTimeout(function()
+            {
+                location.reload();
+            },
+            2000);
+        };
+
+        /*
+            function: doToggles
+
+            call this to make the current toggle button state valid
+            and to set the apply/cancel to the correct state as well
+        */
+        function doToggles()
+        {
+            //enabled state
+            var bStrict = false;
+            //strict state
+            var bEnabled = false;
+
+            //get toggle button state
+            if($("#selStrictFair").is(':checked'))
+            {
+                bStrict = true;
+            }
+
+            //if checked
+            if($("#enableATF").is(':checked'))
+            {
+                bEnabled = true;
+            }
+
+            //is this a new value
+            if( g_lastSaveState.bEnabled != bEnabled ||
+                g_lastSaveState.bStrict != bStrict ||
+                g_arrSave.length > 0)
+            {
+                enableButtons(true);
+            }
+            else //if same value as before
+            {
+                enableButtons(false);
+            }
+            //show the table if enabled
+            if(bEnabled)
+            {
+                $("#atfcontent").css("display","block").fadeTo('slow',1.0)
+                $("#scheduling").css("display","block").fadeTo('slow',1.0);
+            }
+            else //hide the table if disabled
+            {
+                $("#atfcontent").fadeTo('slow',.0).css("display","none");
+                $("#scheduling").fadeTo('slow',.0).css("display","none");
+            }
+        }
+
+        //when the page is loaded
+        $(document).ready(function()
+        {
+            //disable both dialog buttons
+            enableButtons(false);
+
+            //make the table
+            atfview.init("atfcontent");
+
+            //set the initial button state for enable/disable
+            atf.enabled().done(function(bEnabled)
+            {
+                //set the toggle button
+                $( "#enableATF").prop('checked', bEnabled);
+
+                //if enabled show the table
+                if(bEnabled)
+                {
+                    $("#atfcontent").css("display","block").fadeTo('slow',1.0)
+                    $("#scheduling").css("display","block").fadeTo('slow',1.0);
+                }
+                else //if disabled hide the table
+                {
+                    $("#atfcontent").fadeTo('slow',.0).css("display","none");
+                    $("#scheduling").fadeTo('slow',.0).css("display","none");
+                }
+
+                //cache our last valid state
+                g_lastSaveState.bEnabled = bEnabled;
+            });
+
+            //set the initial button state for enable/disable
+            atf.isStrict().done(function(bEnabled)
+            {
+                $( "#selStrictFair").prop('checked', bEnabled);
+
+                g_lastSaveState.bStrict = bEnabled;
+            });
+
+            //populate the table
+            getTable();
+
+            //click handler for the enable atf toggle
+            $("#enableATF").click(function(e)
+            {
+                doToggles();
+            });
+
+            //click handler for the stict/fair toggle
+            $("#selStrictFair").click(function(e)
+            {
+                doToggles();
+            });
+        });
+        </script>
+    </head>
+    <div id="Page" class="Main">
+        <fieldset class="cbi-section" id="maindialog" style="width: 100%;min-width: 800px;max-width: 1200px;margin: auto;border-spacing: 0px 0px;margin-top: 0px;">
+
+            <div class="cbi-value" id="cbi-appflow-tccontroller-enable_streamboost" style="height: 48px;">
+                <label id="atflabel" class="cbi-value-title" for="enable_streamboost" style="padding-right: 0px;padding-left: 0px;">Enable Airtime Fairness</label>
+                <div class="cbi-value-field" style="width:333px;">
+                    <div id="onoffswitch" class="onoffswitch">
+                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="enableATF" checked>
+                        <label class="onoffswitch-label" for="enableATF">
+                            <span class="onoffswitch-inner"></span>
+                            <span class="onoffswitch-switch"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="cbi-value" id="scheduling">
+                <label id="atflabel" class="cbi-value-title" for="enable_streamboost" style="padding-right: 0px;padding-left: 0px;">Scheduling</label>
+                <div class="cbi-value-field" style="width:333px;">
+                    <div id="strictswitch" class="strictswitch">
+                        <input type="checkbox" name="strictswitch" class="strictswitch-checkbox" id="selStrictFair" checked>
+                        <label class="strictswitch-label" for="selStrictFair">
+                            <span class="strictswitch-inner"></span>
+                            <span class="strictswitch-switch"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <br>
+        </fieldset>
+
+        <div id="mytable">
+        <div id="atfcontent">
+            <div style="color:white; border-style: solid; border-bottom: solid 1px #ffffff;border-top: none;border-left: none;border-right: none;min-width: 800px; max-width: 1200px;margin: auto;">
+                WiFi: SSID Networks and their Devices by MAC
+            </div>
+            <br>
+        </div>
+    </div>
+<%+footer%>

@@ -1,0 +1,66 @@
+#============================================================================
+#  Name:
+#    emmcbld_bsp.min
+#
+#  Description:
+#    Min file to differentiate the MSM target bsp file
+#
+#
+#  Copyright © 2010-2011 by QUALCOMM, Incorporated.  
+#  All Rights Reserved.
+#  Qualcomm Confidential and Proprietary
+#----------------------------------------------------------------------------
+
+#============================================================================
+#
+#                          EDIT HISTORY FOR MODULE
+#
+#  This section contains comments describing changes made to the module.
+#  Notice that changes are listed in reverse chronological order.
+#
+#  $Header: //components/rel/boot.bf/3.1.1/boot_images/core/storage/tools/emmcbld/src/bsp/emmcbld_bsp.min#1 $
+#  $DateTime: 2014/09/09 14:47:07 $
+#  $Author: pwbldsvc $
+#  
+# when         who     what, where, why
+# ----------   ---     ------------------------------------------------------
+# 2011-01-07   vj      Add 7627A support
+# 2010-01-22   sp      Initial Revision
+#============================================================================
+
+#EMMCBLD_BSP_SLOTNO
+#SDC1 -> 0
+#SDC2 -> 1
+#SDC3 -> 2
+#SDC4 -> 3
+
+# Karura
+ifeq ($(TARGET_ID), 7627)
+  EMMCBLD_BSP_PLATFORM = BSP_7627
+endif
+
+# Unicorn
+ifeq ($(TARGET_ID), 7627A)
+  EMMCBLD_BSP_PLATFORM = BSP_7627A
+endif
+
+# ---------------------------------------------------------------------------
+# BSP_7627 (Karura)
+# ---------------------------------------------------------------------------
+ifeq ($(EMMCBLD_BSP_PLATFORM), BSP_7627)
+  EMMCBLD_BSP_SLOTNO=0
+endif
+
+# ---------------------------------------------------------------------------
+# BSP_7627A (Unicorn)
+# ---------------------------------------------------------------------------
+ifeq ($(EMMCBLD_BSP_PLATFORM), BSP_7627A)
+  EMMCBLD_BSP_SLOTNO=2
+endif
+
+EMMCBLD_BSP_PATH=./bsp
+EMMCBLD_BSP_SOURCES=emmcbld_bsp.c
+
+EMMCBLD_BSP_OBJS :=  $(addprefix $(TARGETDIR)/, $(EMMCBLD_BSP_SOURCES:%.c=%.o))
+
+vpath %.c $(EMMCBLD_BSP_PATH)

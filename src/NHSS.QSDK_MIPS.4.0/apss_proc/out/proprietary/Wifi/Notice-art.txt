@@ -1,0 +1,355 @@
+=====================================================================================================================
+
+This Notice.txt file contains certain notices of software components included with the software that Qualcomm Atheros, Inc. (“Qualcomm Atheros”) is required to provide you. Notwithstanding anything in the notices in this file, your use of these software components together with the Qualcomm Atheros software (Qualcomm Atheros software hereinafter referred to as “Software”) is subject to the terms of your license from Qualcomm Atheros. Compliance with all copyright laws and software license agreements included in the notice section of this file are the responsibility of the user. Except as may be granted by separate express written agreement, this file provides no license to any Qualcomm Atheros patents, trademarks, copyrights, or other intellectual property.
+Copyright (c) 2014 Qualcomm Atheros, Inc. All rights reserved. 
+Qualcomm is a trademark of Qualcomm Incorporated, registered in the United States and other countries. All Qualcomm Incorporated trademarks are used with permission. Atheros is a trademark of Qualcomm Atheros, Inc., registered in the United States and other countries. Other products and brand names may be trademarks or registered trademarks of their respective owners. 
+
+
+
+
+=====================================================================================================================
+
+
+=====================================================================================================================
+
+
+/*
+ * Copyright (c) 2002-2006 Sam Leffler, Errno Consulting
+ * Copyright (c) 2005-2006 Atheros Communications, Inc.
+ * Copyright (c) 2010, Atheros Communications Inc.
+ *
+ * Permission to use, copy, modify, and/or distribute this software for any
+ * purpose with or without fee is hereby granted, provided that the above
+ * copyright notice and this permission notice appear in all copies.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ *
+ * This module contains the regulatory domain private structure definitions . 
+ *
+ */
+
+=====================================================================================================================
+
+
+
+/*
+ * Copyright (c) 2002-2006 Sam Leffler, Errno Consulting
+ * Copyright (c) 2005-2006 Atheros Communications, Inc.
+ * Copyright (c) 2010, Atheros Communications Inc.
+ *
+ * Permission to use, copy, modify, and/or distribute this software for any
+ * purpose with or without fee is hereby granted, provided that the above
+ * copyright notice and this permission notice appear in all copies.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ */
+
+=====================================================================================================================
+
+/* LzmaLib.c -- LZMA library wrapper
+2008-08-05
+Igor Pavlov
+Public domain */
+
+
+/* LzmaDec.c -- LZMA Decoder
+2008-11-06 : Igor Pavlov : Public domain */
+
+
+=====================================================================================================================
+
+
+/*  LzmaEnc.h -- LZMA Encoder
+2008-10-04 : Igor Pavlov : Public domain */
+=====================================================================================================================
+
+/* Alloc.h -- Memory allocation functions
+2008-03-13
+Igor Pavlov
+Public domain */
+=====================================================================================================================
+
+
+2008-09-24
+Igor Pavlov
+Public domain */
+
+=====================================================================================================================
+
+
+/* LzFind.h -- Match finder for LZ algorithms
+2008-10-04 : Igor Pavlov : Public domain */
+
+
+=====================================================================================================================
+
+
+/* LzHash.h -- HASH functions for LZ algorithms
+2008-10-04 : Igor Pavlov : Public domain */
+
+=====================================================================================================================
+
+/* LzmaDec.h -- LZMA Decoder
+2008-10-04 : Igor Pavlov : Public domain */
+
+=====================================================================================================================
+
+/* LzmaLib.h -- LZMA library interface
+2008-08-05
+Igor Pavlov
+Public domain */
+
+=====================================================================================================================
+
+
+/* Types.h -- Basic types
+2008-11-23 : Igor Pavlov : Public domain */
+
+=====================================================================================================================
+
+
+// 
+// Name:        lz.h
+// Author:      Marcus Geelnard
+// Description: LZ77 coder/decoder interface.
+// Reentrant:   Yes
+// ------------------------------------------------------------------------
+// $ATH_LICENSE_NULL$
+// Copyright (c) 2003-2006 Marcus Geelnard
+// 
+// This software is provided 'as-is', without any express or implied
+// warranty. In no event will the authors be held liable for any damages
+// arising from the use of this software.
+// 
+// Permission is granted to anyone to use this software for any purpose,
+// including commercial applications, and to alter it and redistribute it
+// freely, subject to the following restrictions:
+// 
+// 1. The origin of this software must not be misrepresented; you must not
+//    claim that you wrote the original software. If you use this software
+//    in a product, an acknowledgment in the product documentation would
+//    be appreciated but is not required.
+// 
+// 2. Altered source versions must be plainly marked as such, and must not
+//    be misrepresented as being the original software.
+// 
+// 3. This notice may not be removed or altered from any source
+//    distribution.
+// 
+// Marcus Geelnard
+// marcus.geelnard at home.se
+// 
+
+=====================================================================================================================
+
+
+/*
+ * Copyright (c) 2002-2006 Sam Leffler, Errno Consulting
+ * Copyright (c) 2005-2006 Atheros Communications, Inc.
+ * Copyright (c) 2010, Atheros Communications Inc.
+ *
+ * Permission to use, copy, modify, and/or distribute this software for any
+ * purpose with or without fee is hereby granted, provided that the above
+ * copyright notice and this permission notice appear in all copies.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ */
+
+
+
+
+ 
+
+
+=====================================================================================================================
+
+
+ wxWindows Library Licence, Version 3.1
+======================================
+
+Copyright (c) 1998-2005 Julian Smart, Robert Roebling et al
+
+Everyone is permitted to copy and distribute verbatim copies
+of this licence document, but changing it is not allowed.
+
+WXWINDOWS LIBRARY LICENCE
+TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+
+This library is free software; you can redistribute it and/or modify it
+under the terms of the GNU Library General Public Licence as published by
+the Free Software Foundation; either version 2 of the Licence, or (at your
+option) any later version.
+
+This library is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE. See the GNU Library General Public
+Licence for more details.
+
+You should have received a copy of the GNU Library General Public Licence
+along with this software, usually in a file named COPYING.LIB. If not,
+write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth
+Floor, Boston, MA 02110-1301 USA.
+
+EXCEPTION NOTICE
+
+1. As a special exception, the copyright holders of this library give
+permission for additional uses of the text contained in this release of the
+library as licenced under the wxWindows Library Licence, applying either
+version 3.1 of the Licence, or (at your option) any later version of the
+Licence as published by the copyright holders of version 3.1 of the Licence
+document.
+
+2. The exception is that you may use, copy, link, modify and distribute
+under your own terms, binary object code versions of works based on the
+Library.
+
+3. If you copy code from files distributed under the terms of the GNU
+General Public Licence or the GNU Library General Public Licence into a
+copy of this library, as this licence permits, the exception does not apply
+to the code that you add in this way. To avoid misleading anyone as to the
+status of such modified files, you must delete this exception notice from
+such code and/or adjust the licensing conditions notice accordingly.
+
+4. If you write modifications of your own for this library, it is your
+choice whether to permit this exception to apply to your modifications. If
+you do not wish that, you must delete the exception notice from such code
+and/or adjust the licensing conditions notice accordingly.
+
+
+
+
+QCA has chosen to take wxWidgets subject to the terms of the wxWindows Library Licence v3.1 and its relevant exceptions.
+=====================================================================================================================
+
+
+* Copyright (c) 2002-2007, Jouni Malinen <j@w1.fi>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ *
+ * Alternatively, this software may be distributed under the terms of BSD
+ * license.
+
+For these files, which were received with alternative licensing options for distribution, Qualcomm Atheros, Inc. has selected the BSD license.
+=====================================================================================================================
+
+**  Copyright (c) 2002-2004 Sam Leffler, Errno Consulting.
+**  Copyright (c) 2005-2007 Atheros Communications Inc.
+**
+**  All rights reserved.
+**
+** Redistribution and use in source and binary forms are permitted
+** provided that the following conditions are met:
+** 1. The materials contained herein are unmodified and are used
+**    unmodified.
+** 2. Redistributions of source code must retain the above copyright
+**    notice, this list of conditions and the following NO
+**    ''WARRANTY'' disclaimer below (''Disclaimer''), without
+**    modification.
+** 3. Redistributions in binary form must reproduce at minimum a
+**    disclaimer similar to the Disclaimer below and any redistribution
+**    must be conditioned upon including a substantially similar
+**    Disclaimer requirement for further binary redistribution.
+** 4. Neither the names of the above-listed copyright holders nor the
+**    names of any contributors may be used to endorse or promote
+**    product derived from this software without specific prior written
+**    permission.
+**
+** NO WARRANTY
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** ''AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+** LIMITED TO, THE IMPLIED WARRANTIES OF NONINFRINGEMENT,
+** MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+** IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE LIABLE
+** FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
+** USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+** ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+** OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+** OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+** SUCH DAMAGES.
+=====================================================================================================================
+
+
+ Copyright (C) 1991-1996, Thomas G. Lane.
+ 
+ This file is part of the Independent JPEG Group's software
+ 
+=====================================================================================================================
+
+"this software is based in part on the work of the Independent JPEG Group." 
+
+=====================================================================================================================
+
+ Copyright 1991 by the Massachusetts Institute of Technology
+#
+# Permission to use, copy, modify, distribute, and sell this software and its
+# documentation for any purpose is hereby granted without fee, provided that
+# the above copyright notice appear in all copies and that both that
+# copyright notice and this permission notice appear in supporting
+# documentation, and that the name of M.I.T. not be used in advertising or
+# publicity pertaining to distribution of the software without specific,
+# written prior permission.  M.I.T. makes no representations about the
+# suitability of this software for any purpose.  It is provided "as is"
+# without express or implied warranty.
+
+=====================================================================================================================
+
+
+#   Copyright (C) 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999,
+#   2000, 2001, 2002, 2003, 2004 Free Software Foundation, Inc.
+
+
+# This file is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+#
+# As a special exception to the GNU General Public License, if you
+# distribute this file as part of a program that contains a
+# configuration script generated by Autoconf, you may include it under
+# the same distribution terms that you use for the rest of that program.
+
+=====================================================================================================================
+
+
+# Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004,
+# 2005, 2006  Free Software Foundation, Inc.
+# This file is free software; the Free Software Foundation
+# gives unlimited permission to copy and/or distribute it,
+# with or without modifications, as long as this notice is preserved.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY, to the extent permitted by law; without
+# even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
+
+

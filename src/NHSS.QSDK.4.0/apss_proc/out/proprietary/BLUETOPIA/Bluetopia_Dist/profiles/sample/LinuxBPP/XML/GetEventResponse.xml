@@ -1,0 +1,7 @@
+<GetEventResponse>
+    <JobId>12345</JobId>
+    <JobState>stopped</JobState>
+    <PrinterState>stopped</PrinterState>
+    <PrinterStateReasons>media-empty</PrinterStateReasons>
+    <OperationStatus>0x0000</OperationStatus>
+</GetEventResponse>

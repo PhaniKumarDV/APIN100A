@@ -1,0 +1,8 @@
+BEGIN:VCARD
+VERSION:2.1
+FN:John Q. Public
+N:Public;John;Q.;;
+EMAIL;INTERNET:jpublic@stonestreetone.com
+TEL;PREF;WORK:502-708-3500
+ADR;POSTAL;WORK:9960 Corporate Campus Drive Suite 3300;Lousville, KY;;;;40223;USA
+END:VCARD

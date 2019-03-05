@@ -1,0 +1,16 @@
+;###################################################
+//
+// Copyright (C) 2013 Qualcomm Atheros, Inc.
+// Copyright (C) 2013 Qualcomm Technologies, Inc.
+//
+// All rights reserved.  Confidential and Proprietary.
+//
+;###################################################
+
+;********************************************************************
+; 		t32_config_rpm.cmm				   **
+;********************************************************************
+
+setup.bakfile off
+
+enddo
